@@ -1,0 +1,5 @@
+# Simulink cache files
+*.slxc
+
+# Simulink temp project folder
+slprj/

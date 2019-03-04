@@ -1,0 +1,4199 @@
+Library {
+  Name			  "qlib"
+  Version		  7.0
+  MdlSubVersion		  0
+  Description		  "  Quaternion Library for Simulink\n  Version 1.5 (JASP) 20-Jul-2009\n  ========================================================================\n  Copyright (c) 2000-2009, Jay A. St. Pierre.  All rights reserved.\n  This software is licensed under the terms of the BSD license.\n  See the file license.txt that came with the software for more details.\n  ========================================================================\n \n  This is a library of blocks that allows manipulation of quaternions.\n \n  The available blocks are:\n \n    Quaternion Normalize\n    Quaternion Conjugate\n    Quaternion Multiply\n \n    Quaternion Propagation\n    Quaternion Vector Transform\n    Quaternion Vector Rotation\n \n    Quaternion Decomposition\n    Quaternion to DCM\n    DCM to Quaternion\n \n  For purposes of this library, a quaternion, q, is just a four element\n  vector where q(1:3) is the \"imaginary\" or \"vector\" portion of the\n  hypercomplex number, and q(4) is the \"real\" or \"scalar\" portion.\n  Consequently, if q represents a rotation, then:\n \n    q(1) = v1*sin(phi/2)\n    q(2) = v2*sin(phi/2)\n    q(3) = v3*sin(phi/2)\n    q(4) =    cos(phi/2)\n \n  where phi is the amount of rotation about the unit vector [v1 v2 v3].\n \n  IMPORTANT NOTE: For purposes of quaternion/DCM equivalence, the\n  relationship is chosen to be:\n \n     R v = q* v q\n \n  Therefore a \"transform\" is (q* v q) and a \"rotation\" is (q v q*). This\n  follows the convention used in \"Spacecraft Attitude Determination and\n  Control\", edited by James R. Wertz, Copyright 1978.  Note that many\n  recent uses of quaternions choose the opposite convention (the \"left\"\n  quaternion being the equivalent), including many computer graphics\n  libraries.\n \n  See also QUATERNIONS, the quaternion manipulation toolbox for the\n  MATLAB command line.  RM2MAT and MAT2RM are also useful for handling\n  row-major form matrices, and can be found in the Matrix Library for\n  Simulink."
+  SavedCharacterEncoding  "UTF-8"
+  LibraryType		  "BlockLibrary"
+  SaveDefaultBlockParams  on
+  SampleTimeColors	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  off
+  StatusBar		  off
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  Created		  "Fri Oct 20 07:21:09 2000"
+  Creator		  "stpierre"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "stpierre"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Sat Dec 12 12:46:33 2009"
+  RTWModifiedTimeStamp	  0
+  ModelVersionFormat	  "1.%<AutoIncrement:55>"
+  ConfigurationManager	  "none"
+  SimulationMode	  "normal"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock off
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  BlockDefaults {
+    Orientation		    "right"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      BusCreator
+      Inputs		      "4"
+      DisplayOption	      "none"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      NonVirtualBus	      off
+    }
+    Block {
+      BlockType		      BusSelector
+      OutputAsBus	      off
+    }
+    Block {
+      BlockType		      Demux
+      Outputs		      "4"
+      DisplayOption	      "none"
+      BusSelectionMode	      off
+    }
+    Block {
+      BlockType		      From
+      IconDisplay	      "Tag"
+    }
+    Block {
+      BlockType		      Fcn
+      Expr		      "sin(u[1])"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Gain
+      Gain		      "1"
+      Multiplication	      "Element-wise(K.*u)"
+      ParamMin		      "[]"
+      ParamMax		      "[]"
+      ParameterDataTypeMode   "Same as input"
+      ParameterDataType	      "fixdt(1,16,0)"
+      ParameterScalingMode    "Best Precision: Matrix-wise"
+      ParameterScaling	      "[]"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Same as input"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Goto
+      IconDisplay	      "Tag"
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchByCopyingInsideSignal off
+      Interpolate	      on
+    }
+    Block {
+      BlockType		      Integrator
+      ExternalReset	      "none"
+      InitialConditionSource  "internal"
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit    "inf"
+      LowerSaturationLimit    "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+      IgnoreLimit	      off
+      ZeroCross		      on
+      ContinuousStateAttributes	"''"
+    }
+    Block {
+      BlockType		      Math
+      Operator		      "exp"
+      OutputSignalType	      "auto"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Same as first input"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+    }
+    Block {
+      BlockType		      Mux
+      Inputs		      "4"
+      DisplayOption	      "none"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      NonVirtualBus	      off
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      Product
+      Inputs		      "2"
+      Multiplication	      "Element-wise(.*)"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Same as first input"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      LockScale		      off
+      RndMeth		      "Zero"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Reference
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
+    }
+    Block {
+      BlockType		      Sum
+      IconShape		      "rectangular"
+      Inputs		      "++"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Same as first input"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+    Block {
+      BlockType		      Reshape
+      OutputDimensionality    "1-D array"
+      OutputDimensions	      "[1,1]"
+    }
+    Block {
+      BlockType		      Constant
+      Value		      "1"
+      VectorParams1D	      on
+      SamplingMode	      "Sample based"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Inherit from 'Constant value'"
+      OutDataType	      "fixdt(1,16,0)"
+      ConRadixGroup	      "Use specified scaling"
+      OutScaling	      "[]"
+      SampleTime	      "inf"
+      FramePeriod	      "inf"
+    }
+    Block {
+      BlockType		      Signum
+      ZeroCross		      on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Trigonometry
+      Operator		      "sin"
+      OutputSignalType	      "auto"
+      SampleTime	      "-1"
+    }
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  System {
+    Name		    "qlib"
+    Location		    [333, 83, 671, 540]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    Block {
+      BlockType		      SubSystem
+      Name		      "DCM to\nQuaternion"
+      Ports		      [1, 1]
+      Position		      [230, 238, 270, 272]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "DCM to Quaternion"
+      MaskDescription	      "Converts a direction cosine matrix (DCM) to a quaternion that would perform the equivalent vector transformation, i.e., q*vq = Rv, where R is the DCM, v is a vector, and q is the quaternion.\n\nNote that for purposes of quaternion-vector multiplication, a vector is treated as a quaterion with a scalar element of zero."
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      System {
+	Name			"DCM to\nQuaternion"
+	Location		[660, 249, 1418, 792]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "DCM"
+	  Position		  [20, 173, 50, 187]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "9"
+	}
+	Block {
+	  BlockType		  BusCreator
+	  Name			  "Bus\nCreator"
+	  Ports			  [9, 1]
+	  Position		  [125, 84, 130, 276]
+	  ShowName		  off
+	  Inputs		  "9"
+	  DisplayOption		  "bar"
+	  Port {
+	    PortNumber		    1
+	    Name		    "A"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  BusSelector
+	  Name			  "Bus\nSelector"
+	  Ports			  [1, 3]
+	  Position		  [185, 52, 190, 98]
+	  ShowName		  off
+	  OutputSignals		  "A11,A22,A33"
+	  Port {
+	    PortNumber		    1
+	    Name		    "A11"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "A22"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    3
+	    Name		    "A33"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  BusSelector
+	  Name			  "Bus\nSelector1"
+	  Ports			  [1, 2]
+	  Position		  [225, 305, 230, 340]
+	  ShowName		  off
+	  OutputSignals		  "A23,A32"
+	  Port {
+	    PortNumber		    1
+	    Name		    "A23"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "A32"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  BusSelector
+	  Name			  "Bus\nSelector2"
+	  Ports			  [1, 2]
+	  Position		  [225, 355, 230, 390]
+	  ShowName		  off
+	  OutputSignals		  "A13,A31"
+	  Port {
+	    PortNumber		    1
+	    Name		    "A13"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "A31"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  BusSelector
+	  Name			  "Bus\nSelector3"
+	  Ports			  [1, 2]
+	  Position		  [225, 400, 230, 435]
+	  ShowName		  off
+	  OutputSignals		  "A12,A21"
+	  Port {
+	    PortNumber		    1
+	    Name		    "A12"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "A21"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Constant"
+	  Position		  [295, 15, 315, 35]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  "Demux2"
+	  Ports			  [1, 9]
+	  Position		  [75, 85, 80, 275]
+	  BackgroundColor	  "black"
+	  ShowName		  off
+	  Outputs		  "9"
+	  Port {
+	    PortNumber		    1
+	    Name		    "A11"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "A12"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    3
+	    Name		    "A13"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    4
+	    Name		    "A21"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    5
+	    Name		    "A22"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    6
+	    Name		    "A23"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    7
+	    Name		    "A31"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    8
+	    Name		    "A32"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    9
+	    Name		    "A33"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn"
+	  Position		  [390, 54, 460, 86]
+	  ShowName		  off
+	  Expr			  "sqrt((u>0)*u)"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn1"
+	  Position		  [390, 109, 460, 141]
+	  ShowName		  off
+	  Expr			  "sqrt((u>0)*u)"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn2"
+	  Position		  [390, 164, 460, 196]
+	  ShowName		  off
+	  Expr			  "sqrt((u>0)*u)"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn3"
+	  Position		  [390, 219, 460, 251]
+	  ShowName		  off
+	  Expr			  "sqrt((u>0)*u)"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn4"
+	  Position		  [405, 313, 460, 337]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  Expr			  "(u==0)+u"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn5"
+	  Position		  [405, 363, 460, 387]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  Expr			  "(u==0)+u"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn6"
+	  Position		  [405, 408, 460, 432]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  Expr			  "(u==0)+u"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain"
+	  Position		  [480, 54, 520, 86]
+	  ShowName		  off
+	  Gain			  "0.5"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain1"
+	  Position		  [480, 109, 520, 141]
+	  ShowName		  off
+	  Gain			  "0.5"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain3"
+	  Position		  [480, 164, 520, 196]
+	  ShowName		  off
+	  Gain			  "0.5"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain4"
+	  Position		  [480, 219, 520, 251]
+	  ShowName		  off
+	  Gain			  "0.5"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Ports			  [4, 1]
+	  Position		  [645, 96, 650, 229]
+	  ShowName		  off
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Ports			  [2, 1]
+	  Position		  [570, 63, 600, 92]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product1"
+	  Ports			  [2, 1]
+	  Position		  [570, 117, 600, 148]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product2"
+	  Ports			  [2, 1]
+	  Position		  [570, 172, 600, 203]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Signum
+	  Name			  "Sign 1"
+	  Position		  [345, 309, 380, 341]
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Signum
+	  Name			  "Sign 2"
+	  Position		  [345, 359, 380, 391]
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Signum
+	  Name			  "Sign 3"
+	  Position		  [345, 404, 380, 436]
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Ports			  [3, 1]
+	  Position		  [290, 53, 315, 97]
+	  ShowName		  off
+	  Inputs		  "+--"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum1"
+	  Ports			  [3, 1]
+	  Position		  [290, 108, 315, 152]
+	  ShowName		  off
+	  Inputs		  "-+-"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum10"
+	  Ports			  [2, 1]
+	  Position		  [290, 403, 320, 432]
+	  ShowName		  off
+	  Inputs		  "+-"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum2"
+	  Ports			  [3, 1]
+	  Position		  [290, 163, 315, 207]
+	  ShowName		  off
+	  Inputs		  "--+"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum3"
+	  Ports			  [3, 1]
+	  Position		  [290, 218, 315, 262]
+	  ShowName		  off
+	  Inputs		  "+++"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum4"
+	  Ports			  [2, 1]
+	  Position		  [355, 52, 370, 83]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum5"
+	  Ports			  [2, 1]
+	  Position		  [355, 107, 370, 138]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum6"
+	  Ports			  [2, 1]
+	  Position		  [355, 162, 370, 193]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum7"
+	  Ports			  [2, 1]
+	  Position		  [355, 217, 370, 248]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum8"
+	  Ports			  [2, 1]
+	  Position		  [290, 308, 320, 337]
+	  ShowName		  off
+	  Inputs		  "+-"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum9"
+	  Ports			  [2, 1]
+	  Position		  [290, 358, 320, 387]
+	  ShowName		  off
+	  Inputs		  "-+"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "q"
+	  Position		  [685, 158, 715, 172]
+	  BackgroundColor	  "yellow"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "[0 0 0 1]"
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "Sum4"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum1"
+	  SrcPort		  1
+	  DstBlock		  "Sum5"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Constant"
+	  SrcPort		  1
+	  Points		  [10, 0; 0, 35]
+	  Branch {
+	    DstBlock		    "Sum4"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 55]
+	    Branch {
+	      DstBlock		      "Sum5"
+	      DstPort		      1
+	    }
+	    Branch {
+	      Points		      [0, 55]
+	      Branch {
+		DstBlock		"Sum6"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[0, 55]
+		DstBlock		"Sum7"
+		DstPort			1
+	      }
+	    }
+	  }
+	}
+	Line {
+	  SrcBlock		  "Sum4"
+	  SrcPort		  1
+	  DstBlock		  "Fcn"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum3"
+	  SrcPort		  1
+	  DstBlock		  "Sum7"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum2"
+	  SrcPort		  1
+	  DstBlock		  "Sum6"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Gain"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Gain1"
+	  SrcPort		  1
+	  DstBlock		  "Product1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Gain3"
+	  SrcPort		  1
+	  DstBlock		  "Product2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum5"
+	  SrcPort		  1
+	  DstBlock		  "Fcn1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum6"
+	  SrcPort		  1
+	  DstBlock		  "Fcn2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum7"
+	  SrcPort		  1
+	  DstBlock		  "Fcn3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn"
+	  SrcPort		  1
+	  DstBlock		  "Gain"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "Gain1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn3"
+	  SrcPort		  1
+	  DstBlock		  "Gain4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn2"
+	  SrcPort		  1
+	  DstBlock		  "Gain3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum8"
+	  SrcPort		  1
+	  DstBlock		  "Sign 1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn4"
+	  SrcPort		  1
+	  Points		  [70, 0; 0, -240]
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sign 1"
+	  SrcPort		  1
+	  DstBlock		  "Fcn4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum9"
+	  SrcPort		  1
+	  DstBlock		  "Sign 2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn5"
+	  SrcPort		  1
+	  Points		  [80, 0; 0, -235]
+	  DstBlock		  "Product1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sign 2"
+	  SrcPort		  1
+	  DstBlock		  "Fcn5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum10"
+	  SrcPort		  1
+	  DstBlock		  "Sign 3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn6"
+	  SrcPort		  1
+	  Points		  [90, 0]
+	  DstBlock		  "Product2"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sign 3"
+	  SrcPort		  1
+	  DstBlock		  "Fcn6"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "A23"
+	  Labels		  [1, 0]
+	  SrcBlock		  "Bus\nSelector1"
+	  SrcPort		  1
+	  DstBlock		  "Sum8"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "A32"
+	  Labels		  [1, 0]
+	  SrcBlock		  "Bus\nSelector1"
+	  SrcPort		  2
+	  DstBlock		  "Sum8"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "A22"
+	  Labels		  [0, 1]
+	  SrcBlock		  "Bus\nSelector"
+	  SrcPort		  2
+	  Points		  [40, 0]
+	  Branch {
+	    Labels		    [-1, 1]
+	    DstBlock		    "Sum"
+	    DstPort		    2
+	  }
+	  Branch {
+	    Points		    [0, 55]
+	    Branch {
+	      Labels		      [-1, 1]
+	      DstBlock		      "Sum1"
+	      DstPort		      2
+	    }
+	    Branch {
+	      Points		      [0, 55]
+	      Branch {
+		Labels			[-1, 1]
+		Points			[0, 55]
+		DstBlock		"Sum3"
+		DstPort			2
+	      }
+	      Branch {
+		Labels			[-1, 1]
+		DstBlock		"Sum2"
+		DstPort			2
+	      }
+	    }
+	  }
+	}
+	Line {
+	  Name			  "A11"
+	  Labels		  [0, 1]
+	  SrcBlock		  "Bus\nSelector"
+	  SrcPort		  1
+	  Points		  [50, 0]
+	  Branch {
+	    Labels		    [-1, 1]
+	    DstBlock		    "Sum"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 55]
+	    Branch {
+	      Labels		      [-1, 1]
+	      DstBlock		      "Sum1"
+	      DstPort		      1
+	    }
+	    Branch {
+	      Points		      [0, 55]
+	      Branch {
+		Labels			[-1, 1]
+		DstBlock		"Sum2"
+		DstPort			1
+	      }
+	      Branch {
+		Labels			[-1, 1]
+		Points			[0, 55]
+		DstBlock		"Sum3"
+		DstPort			1
+	      }
+	    }
+	  }
+	}
+	Line {
+	  Name			  "A33"
+	  Labels		  [0, 1]
+	  SrcBlock		  "Bus\nSelector"
+	  SrcPort		  3
+	  Points		  [30, 0]
+	  Branch {
+	    Labels		    [-1, 1]
+	    DstBlock		    "Sum"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [0, 55]
+	    Branch {
+	      Labels		      [-1, 1]
+	      DstBlock		      "Sum1"
+	      DstPort		      3
+	    }
+	    Branch {
+	      Points		      [0, 55]
+	      Branch {
+		Labels			[-1, 1]
+		Points			[0, 55]
+		DstBlock		"Sum3"
+		DstPort			3
+	      }
+	      Branch {
+		Labels			[-1, 1]
+		DstBlock		"Sum2"
+		DstPort			3
+	      }
+	    }
+	  }
+	}
+	Line {
+	  Name			  "A13"
+	  Labels		  [1, 0]
+	  SrcBlock		  "Bus\nSelector2"
+	  SrcPort		  1
+	  DstBlock		  "Sum9"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "A31"
+	  Labels		  [1, 0]
+	  SrcBlock		  "Bus\nSelector2"
+	  SrcPort		  2
+	  DstBlock		  "Sum9"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "A21"
+	  Labels		  [1, 0]
+	  SrcBlock		  "Bus\nSelector3"
+	  SrcPort		  2
+	  DstBlock		  "Sum10"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "A12"
+	  Labels		  [1, 0]
+	  SrcBlock		  "Bus\nSelector3"
+	  SrcPort		  1
+	  DstBlock		  "Sum10"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "A11"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  1
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "A12"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  2
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "A13"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  3
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  3
+	}
+	Line {
+	  Name			  "A21"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  4
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  4
+	}
+	Line {
+	  Name			  "A22"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  5
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  5
+	}
+	Line {
+	  Name			  "A23"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  6
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  6
+	}
+	Line {
+	  Name			  "A31"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  7
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  7
+	}
+	Line {
+	  Name			  "A32"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  8
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  8
+	}
+	Line {
+	  Name			  "A33"
+	  Labels		  [-1, 0]
+	  SrcBlock		  "Demux2"
+	  SrcPort		  9
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  9
+	}
+	Line {
+	  SrcBlock		  "DCM"
+	  SrcPort		  1
+	  DstBlock		  "Demux2"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "A"
+	  Labels		  [1, 1]
+	  SrcBlock		  "Bus\nCreator"
+	  SrcPort		  1
+	  Points		  [20, 0]
+	  Branch {
+	    Points		    [0, -105]
+	    DstBlock		    "Bus\nSelector"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 145]
+	    Branch {
+	      DstBlock		      "Bus\nSelector1"
+	      DstPort		      1
+	    }
+	    Branch {
+	      Points		      [0, 50]
+	      Branch {
+		DstBlock		"Bus\nSelector2"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[0, 45]
+		DstBlock		"Bus\nSelector3"
+		DstPort			1
+	      }
+	    }
+	  }
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  Points		  [5, 0; 0, 30]
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product1"
+	  SrcPort		  1
+	  Points		  [5, 0; 0, 10]
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Product2"
+	  SrcPort		  1
+	  Points		  [5, 0; 0, -10]
+	  DstBlock		  "Mux"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Gain4"
+	  SrcPort		  1
+	  Points		  [85, 0; 0, -20]
+	  DstBlock		  "Mux"
+	  DstPort		  4
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  DstBlock		  "q"
+	  DstPort		  1
+	}
+	Annotation {
+	  Name			  "Used Fcn blocks here because\nI have found strange behavior\nfor the Relational block for\nvery small timesteps."
+	  Position		  [636, 366]
+	  ForegroundColor	  "blue"
+	}
+	Annotation {
+	  Name			  "q1 = 1/2 sqrt( 1 + A_11 - A_22 - A_33 )  sgn( A_23 - A_32 )"
+	  Position		  [317, 458]
+	}
+	Annotation {
+	  Name			  "q2 = 1/2 sqrt( 1 - A_11 + A_22 - A_33 )  sgn( A_31 - A_13 )"
+	  Position		  [317, 473]
+	}
+	Annotation {
+	  Name			  "q3 = 1/2 sqrt( 1 - A_11 - A_22 + A_33 )  sgn( A_12 - A_21 )"
+	  Position		  [317, 488]
+	}
+	Annotation {
+	  Name			  "q4 = 1/2 sqrt( 1 + A_11 + A_22 + A_33 ) "
+	  Position		  [267, 503]
+	}
+	Annotation {
+	  Name			  "Equations:"
+	  Position		  [126, 459]
+	}
+	Annotation {
+	  Name			  "Note that in this case, sgn(0) = 1"
+	  Position		  [570, 458]
+	}
+	Annotation {
+	  Name			  "Also note that in the implementation,\nfor sqrt(x), x<0, we are setting x=0.\nThis is arbitrary, but seemed to produce\nthe best results."
+	  Position		  [574, 495]
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Matrix to\nRow Major"
+      Ports		      [1, 1]
+      Position		      [220, 328, 280, 372]
+      ShowName		      off
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Matrix to Row Major"
+      MaskDescription	      "Converts a matrix to row major vector form."
+      MaskDisplay	      "fprintf('Matrix to\\nRow Major');"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      System {
+	Name			"Matrix to\nRow Major"
+	Location		[409, 352, 768, 454]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "matrix"
+	  Position		  [15, 23, 45, 37]
+	  BackgroundColor	  "cyan"
+	  FontName		  "helvetica"
+	  FontSize		  12
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Math
+	  Name			  "Math\nFunction"
+	  Ports			  [1, 1]
+	  Position		  [100, 15, 130, 45]
+	  AttributesFormatString  "%<Operator>"
+	  FontName		  "helvetica"
+	  FontSize		  12
+	  Operator		  "transpose"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Reshape
+	  Name			  "Reshape"
+	  Position		  [205, 15, 245, 45]
+	  AttributesFormatString  "Output: %<OutputDimensionality>"
+	  FontName		  "helvetica"
+	  FontSize		  12
+	  OutputDimensions	  "[3, 3]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "vector"
+	  Position		  [300, 23, 330, 37]
+	  BackgroundColor	  "yellow"
+	  FontName		  "helvetica"
+	  FontSize		  12
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Math\nFunction"
+	  SrcPort		  1
+	  DstBlock		  "Reshape"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "matrix"
+	  SrcPort		  1
+	  DstBlock		  "Math\nFunction"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Reshape"
+	  SrcPort		  1
+	  DstBlock		  "vector"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Quaternion\nConjugate"
+      Ports		      [1, 1]
+      Position		      [140, 89, 180, 121]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Quaternion Conjugate"
+      MaskDescription	      "q* = [ -q(1)  -q(2)  -q(3)  q(4) ]"
+      MaskDisplay	      "disp('q*')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      System {
+	Name			"Quaternion\nConjugate"
+	Location		[348, 366, 662, 478]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "q"
+	  Position		  [25, 48, 55, 62]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "4"
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  "Demux"
+	  Ports			  [1, 2]
+	  Position		  [80, 36, 85, 74]
+	  BackgroundColor	  "black"
+	  ShowName		  off
+	  Outputs		  "[3 1]"
+	  Port {
+	    PortNumber		    1
+	    Name		    "[ q(1)  q(2)  q(3) ]"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "q(4)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain"
+	  Position		  [180, 30, 210, 60]
+	  NamePlacement		  "alternate"
+	  ShowName		  off
+	  Gain			  "-1"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Ports			  [2, 1]
+	  Position		  [230, 36, 235, 74]
+	  ShowName		  off
+	  Inputs		  "2"
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "q*"
+	  Position		  [255, 48, 285, 62]
+	  BackgroundColor	  "yellow"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "q"
+	  SrcPort		  1
+	  DstBlock		  "Demux"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "[ q(1)  q(2)  q(3) ]"
+	  Labels		  [0, 1]
+	  SrcBlock		  "Demux"
+	  SrcPort		  1
+	  DstBlock		  "Gain"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Gain"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q(4)"
+	  Labels		  [0, 1]
+	  SrcBlock		  "Demux"
+	  SrcPort		  2
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  DstBlock		  "q*"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Quaternion\nDecomposition"
+      Ports		      [1, 2]
+      Position		      [50, 237, 90, 273]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Quaternion Decomposition"
+      MaskDescription	      "Breaks down a quaternion into its unit vector and total rotation angle about that vector.  If the components of the quaternion are denoted:\n\n     q = [ q(1)  q(2)  q(3)  q(4) ]\n\nThen:\n\n     q(1) = v1 sin(phi/2)\n     q(2) = v2 sin(phi/2)\n     q(3) = v3 sin(phi/2)\n     q(4) = cos(phi/2)\n\nWhere phi is the amount of rotation about the unit vector [ v1  v2  v3 ]."
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      System {
+	Name			"Quaternion\nDecomposition"
+	Location		[7, 117, 623, 329]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "q"
+	  Position		  [20, 68, 50, 82]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "4"
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  "Demux"
+	  Ports			  [1, 2]
+	  Position		  [145, 19, 150, 126]
+	  BackgroundColor	  "black"
+	  ShowName		  off
+	  Outputs		  "[3 1]"
+	  Port {
+	    PortNumber		    1
+	    Name		    "[ q(1)  q(2)  q(3) ]"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "q(4)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn"
+	  Position		  [340, 82, 435, 118]
+	  Expr			  "1/((u==0)+u)"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain"
+	  Position		  [380, 145, 410, 175]
+	  Gain			  "2"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Ports			  [2, 1]
+	  Position		  [485, 37, 515, 68]
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nNormalize"
+	  Ports			  [1, 1]
+	  Position		  [80, 59, 120, 91]
+	  SourceBlock		  "qlib/Quaternion\nNormalize"
+	  SourceType		  "Quaternion Normalize"
+	}
+	Block {
+	  BlockType		  Trigonometry
+	  Name			  "Trigonometric\nFunction"
+	  Ports			  [1, 1]
+	  Position		  [200, 85, 230, 115]
+	  ShowName		  off
+	  Operator		  "acos"
+	}
+	Block {
+	  BlockType		  Trigonometry
+	  Name			  "Trigonometric\nFunction1"
+	  Ports			  [1, 1]
+	  Position		  [280, 85, 310, 115]
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Vector"
+	  Position		  [545, 48, 575, 62]
+	  BackgroundColor	  "yellow"
+	  NamePlacement		  "alternate"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Phi"
+	  Position		  [545, 153, 575, 167]
+	  BackgroundColor	  "yellow"
+	  NamePlacement		  "alternate"
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nNormalize"
+	  SrcPort		  1
+	  DstBlock		  "Demux"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "[ q(1)  q(2)  q(3) ]"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q(4)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  2
+	  DstBlock		  "Trigonometric\nFunction"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Trigonometric\nFunction1"
+	  SrcPort		  1
+	  DstBlock		  "Fcn"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Trigonometric\nFunction"
+	  SrcPort		  1
+	  Points		  [15, 0]
+	  Branch {
+	    DstBlock		    "Trigonometric\nFunction1"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 60]
+	    DstBlock		    "Gain"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Gain"
+	  SrcPort		  1
+	  DstBlock		  "Phi"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "q"
+	  SrcPort		  1
+	  DstBlock		  "Quaternion\nNormalize"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Vector"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn"
+	  SrcPort		  1
+	  Points		  [15, 0; 0, -40]
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Annotation {
+	  Name			  "phi/2"
+	  Position		  [269, 154]
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Quaternion\nMultiply"
+      Ports		      [2, 1]
+      Position		      [230, 87, 270, 123]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Quaternion Multiply"
+      MaskDescription	      "Multiplies input quaternions: qout = (q1)(q2)"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      System {
+	Name			"Quaternion\nMultiply"
+	Location		[239, 345, 675, 703]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "q1"
+	  Position		  [20, 13, 50, 27]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "4"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "q2"
+	  Position		  [15, 178, 45, 192]
+	  BackgroundColor	  "cyan"
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "4"
+	}
+	Block {
+	  BlockType		  BusCreator
+	  Name			  "Bus\nCreator"
+	  Ports			  [4, 1]
+	  Position		  [115, 148, 120, 217]
+	  ShowName		  off
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  BusSelector
+	  Name			  "Bus\nSelector"
+	  Ports			  [1, 4]
+	  Position		  [170, 39, 175, 106]
+	  ShowName		  off
+	  OutputSignals		  "q2(4),q2(3),q2(2),q2(1)"
+	  Port {
+	    PortNumber		    1
+	    Name		    "q2(4)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "q2(3)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    3
+	    Name		    "q2(2)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    4
+	    Name		    "q2(1)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  BusSelector
+	  Name			  "Bus\nSelector1"
+	  Ports			  [1, 4]
+	  Position		  [170, 114, 175, 181]
+	  ShowName		  off
+	  OutputSignals		  "q2(3),q2(4),q2(1),q2(2)"
+	  Port {
+	    PortNumber		    1
+	    Name		    "q2(3)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "q2(4)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    3
+	    Name		    "q2(1)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    4
+	    Name		    "q2(2)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  BusSelector
+	  Name			  "Bus\nSelector2"
+	  Ports			  [1, 4]
+	  Position		  [170, 189, 175, 256]
+	  ShowName		  off
+	  OutputSignals		  "q2(2),q2(1),q2(4),q2(3)"
+	  Port {
+	    PortNumber		    1
+	    Name		    "q2(2)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "q2(1)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    3
+	    Name		    "q2(4)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    4
+	    Name		    "q2(3)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  "Demux"
+	  Ports			  [1, 4]
+	  Position		  [65, 147, 70, 218]
+	  BackgroundColor	  "black"
+	  ShowName		  off
+	  Port {
+	    PortNumber		    1
+	    Name		    "q2(1)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "q2(2)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    3
+	    Name		    "q2(3)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    4
+	    Name		    "q2(4)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  "Demux1"
+	  Ports			  [1, 2]
+	  Position		  [155, 281, 160, 319]
+	  BackgroundColor	  "black"
+	  ShowName		  off
+	  Outputs		  "[3 1]"
+	  Port {
+	    PortNumber		    1
+	    Name		    "[ q(1)  q(2)  q(3) ]"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "q(4)"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Dot Product 1"
+	  Ports			  [2, 1]
+	  Position		  [320, 54, 345, 81]
+	  ShowName		  off
+	  SourceBlock		  "simulink/Math\nOperations/Dot Product"
+	  SourceType		  "Dot Product"
+	  InputSameDT		  "on"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutputDataTypeScalingMode "Inherit via internal rule"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^-10"
+	  LockScale		  "off"
+	  RndMeth		  "Floor"
+	  DoSatur		  "off"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Dot Product 2"
+	  Ports			  [2, 1]
+	  Position		  [320, 129, 345, 156]
+	  ShowName		  off
+	  SourceBlock		  "simulink/Math\nOperations/Dot Product"
+	  SourceType		  "Dot Product"
+	  InputSameDT		  "on"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutputDataTypeScalingMode "Inherit via internal rule"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^-10"
+	  LockScale		  "off"
+	  RndMeth		  "Floor"
+	  DoSatur		  "off"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Dot Product 3"
+	  Ports			  [2, 1]
+	  Position		  [320, 204, 345, 231]
+	  ShowName		  off
+	  SourceBlock		  "simulink/Math\nOperations/Dot Product"
+	  SourceType		  "Dot Product"
+	  InputSameDT		  "on"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutputDataTypeScalingMode "Inherit via internal rule"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^-10"
+	  LockScale		  "off"
+	  RndMeth		  "Floor"
+	  DoSatur		  "off"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Dot Product 4"
+	  Ports			  [2, 1]
+	  Position		  [320, 279, 345, 306]
+	  ShowName		  off
+	  SourceBlock		  "simulink/Math\nOperations/Dot Product"
+	  SourceType		  "Dot Product"
+	  InputSameDT		  "on"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutputDataTypeScalingMode "Inherit via internal rule"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^-10"
+	  LockScale		  "off"
+	  RndMeth		  "Floor"
+	  DoSatur		  "off"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain 2"
+	  Position		  [225, 71, 250, 89]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "-1"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain 3"
+	  Position		  [225, 116, 250, 134]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "-1"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain 5"
+	  Position		  [225, 206, 250, 224]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "-1"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain 6"
+	  Position		  [245, 281, 270, 299]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "-1"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux1"
+	  Ports			  [4, 1]
+	  Position		  [275, 39, 280, 106]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux2"
+	  Ports			  [4, 1]
+	  Position		  [275, 114, 280, 181]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux3"
+	  Ports			  [4, 1]
+	  Position		  [275, 189, 280, 256]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux4"
+	  Ports			  [2, 1]
+	  Position		  [285, 281, 290, 319]
+	  ShowName		  off
+	  Inputs		  "2"
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux5"
+	  Ports			  [4, 1]
+	  Position		  [370, 29, 375, 336]
+	  ShowName		  off
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "q1q2"
+	  Position		  [395, 178, 425, 192]
+	  BackgroundColor	  "yellow"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Line {
+	  Name			  "q(4)"
+	  Labels		  [0, 1]
+	  SrcBlock		  "Demux1"
+	  SrcPort		  2
+	  DstBlock		  "Mux4"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Gain 6"
+	  SrcPort		  1
+	  DstBlock		  "Mux4"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "[ q(1)  q(2)  q(3) ]"
+	  Labels		  [-1, 1]
+	  SrcBlock		  "Demux1"
+	  SrcPort		  1
+	  DstBlock		  "Gain 6"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux4"
+	  SrcPort		  1
+	  DstBlock		  "Dot Product 4"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "q2(3)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector2"
+	  SrcPort		  4
+	  DstBlock		  "Mux3"
+	  DstPort		  4
+	}
+	Line {
+	  Name			  "q2(2)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector2"
+	  SrcPort		  1
+	  DstBlock		  "Mux3"
+	  DstPort		  1
+	}
+	Line {
+	  Labels		  [0, 0]
+	  SrcBlock		  "Gain 5"
+	  SrcPort		  1
+	  DstBlock		  "Mux3"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "q2(1)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector2"
+	  SrcPort		  2
+	  DstBlock		  "Gain 5"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q2(2)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector1"
+	  SrcPort		  4
+	  DstBlock		  "Mux2"
+	  DstPort		  4
+	}
+	Line {
+	  Name			  "q2(1)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector1"
+	  SrcPort		  3
+	  DstBlock		  "Mux2"
+	  DstPort		  3
+	}
+	Line {
+	  Labels		  [0, 0]
+	  SrcBlock		  "Gain 3"
+	  SrcPort		  1
+	  DstBlock		  "Mux2"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q2(3)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector1"
+	  SrcPort		  1
+	  DstBlock		  "Gain 3"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q2(1)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector"
+	  SrcPort		  4
+	  DstBlock		  "Mux1"
+	  DstPort		  4
+	}
+	Line {
+	  Labels		  [0, 0]
+	  SrcBlock		  "Gain 2"
+	  SrcPort		  1
+	  DstBlock		  "Mux1"
+	  DstPort		  3
+	}
+	Line {
+	  Name			  "q2(2)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector"
+	  SrcPort		  3
+	  DstBlock		  "Gain 2"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q2(3)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector"
+	  SrcPort		  2
+	  DstBlock		  "Mux1"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "q2(4)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector"
+	  SrcPort		  1
+	  DstBlock		  "Mux1"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q2(4)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector1"
+	  SrcPort		  2
+	  DstBlock		  "Mux2"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "q2(4)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus\nSelector2"
+	  SrcPort		  3
+	  DstBlock		  "Mux3"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Mux1"
+	  SrcPort		  1
+	  DstBlock		  "Dot Product 1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Mux2"
+	  SrcPort		  1
+	  DstBlock		  "Dot Product 2"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Mux3"
+	  SrcPort		  1
+	  DstBlock		  "Dot Product 3"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "q1"
+	  SrcPort		  1
+	  Points		  [240, 0; 0, 40]
+	  Branch {
+	    DstBlock		    "Dot Product 1"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 75]
+	    Branch {
+	      DstBlock		      "Dot Product 2"
+	      DstPort		      1
+	    }
+	    Branch {
+	      Points		      [0, 75]
+	      Branch {
+		DstBlock		"Dot Product 3"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[0, 75]
+		DstBlock		"Dot Product 4"
+		DstPort			1
+	      }
+	    }
+	  }
+	}
+	Line {
+	  SrcBlock		  "Dot Product 1"
+	  SrcPort		  1
+	  DstBlock		  "Mux5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Dot Product 3"
+	  SrcPort		  1
+	  DstBlock		  "Mux5"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Dot Product 4"
+	  SrcPort		  1
+	  DstBlock		  "Mux5"
+	  DstPort		  4
+	}
+	Line {
+	  SrcBlock		  "Mux5"
+	  SrcPort		  1
+	  DstBlock		  "q1q2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Dot Product 2"
+	  SrcPort		  1
+	  DstBlock		  "Mux5"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Bus\nCreator"
+	  SrcPort		  1
+	  Points		  [10, 0]
+	  Branch {
+	    Points		    [0, 40]
+	    Branch {
+	      Points		      [0, 75]
+	      DstBlock		      "Demux1"
+	      DstPort		      1
+	    }
+	    Branch {
+	      DstBlock		      "Bus\nSelector2"
+	      DstPort		      1
+	    }
+	  }
+	  Branch {
+	    Points		    [0, -35]
+	    Branch {
+	      Points		      [0, -75]
+	      DstBlock		      "Bus\nSelector"
+	      DstPort		      1
+	    }
+	    Branch {
+	      DstBlock		      "Bus\nSelector1"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Line {
+	  Labels		  [1, 0]
+	  SrcBlock		  "q2"
+	  SrcPort		  1
+	  DstBlock		  "Demux"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q2(1)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  1
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q2(2)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  2
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "q2(3)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  3
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  3
+	}
+	Line {
+	  Name			  "q2(4)"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  4
+	  DstBlock		  "Bus\nCreator"
+	  DstPort		  4
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Quaternion\nNormalize"
+      Ports		      [1, 1]
+      Position		      [50, 89, 90, 121]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Quaternion Normalize"
+      MaskDescription	      "qout = q/sqrt(q(1)^2+q(2)^2+q(3)^2+q(4)^2)"
+      MaskInitialization      "pos = get_param(gcb, 'Position');\nwidth = pos(3) - pos(1); height = pos(4) - pos(2);\nfontsize = get_param(gcb, 'fontsize');\nif fontsize==-1, scale=1; else scale=fontsize/10; end"
+      MaskDisplay	      "text(width/2-scale*3, (height/2+scale*10), 'q')\ntext(width/2-scale*8, (height/2-scale*6), '||q||')\nplot([width/2-scale*10 width/2+scale*10], height/2*[1 1])"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      System {
+	Name			"Quaternion\nNormalize"
+	Location		[7, 366, 335, 496]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "q"
+	  Position		  [25, 53, 55, 67]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "4"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Ports			  [2, 1]
+	  Position		  [230, 24, 245, 71]
+	  Inputs		  "*/"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Math
+	  Name			  "Square"
+	  Ports			  [1, 1]
+	  Position		  [90, 47, 115, 73]
+	  Operator		  "square"
+	}
+	Block {
+	  BlockType		  Math
+	  Name			  "Square\nRoot"
+	  Ports			  [1, 1]
+	  Position		  [175, 45, 205, 75]
+	  Operator		  "sqrt"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Ports			  [1, 1]
+	  Position		  [135, 50, 155, 70]
+	  IconShape		  "round"
+	  Inputs		  "1"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "qnorm"
+	  Position		  [270, 43, 300, 57]
+	  BackgroundColor	  "yellow"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "qnorm"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Square\nRoot"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "q"
+	  SrcPort		  1
+	  Points		  [10, 0]
+	  Branch {
+	    Points		    [0, -25]
+	    DstBlock		    "Product"
+	    DstPort		    1
+	  }
+	  Branch {
+	    DstBlock		    "Square"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Square"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "Square\nRoot"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Quaternion\nPropagation"
+      Ports		      [1, 1]
+      Position		      [50, 164, 95, 196]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Quaternion Propagation"
+      MaskDescription	      "Integrates dq/dt to propagate a quaternion, where:\n\n    dq/dt = (1/2) (q) ([w 0])\n \nand the product (q)([w 0]) is calculated as a quaternion multiplication.\n\nThe input rates, w, are inertial, but written in the body frame coordinates.  The quaternion indicates the orientation of the body frame with respect to the inertial frame.  The initlal quaternion, q0, must be specfied below.\n\nThe quaternion is renormalized at each iteration. "
+      MaskPromptString	      "q0"
+      MaskStyleString	      "edit"
+      MaskTunableValueString  "on"
+      MaskEnableString	      "on"
+      MaskVisibilityString    "on"
+      MaskToolTipString	      "on"
+      MaskVariables	      "q0=@1;"
+      MaskInitialization      "pos = get_param(gcb, 'Position');\nwidth = pos(3) - pos(1); height = pos(4) - pos(2);\nfontsize = get_param(gcb, 'fontsize');\nif fontsize==-1, scale=1; else scale=fontsize/10; end\n\nt1=-pi/2:(pi/2)/20:0; t2=pi:-(pi/2)/20:(pi/2);\nx=[cos(t1)  cos(t2)+2]; y=[sin(t1)+1  sin(t2)+4];\n\nny=0.9*y/max(y)*scale;\nnx=0.9*x/max(y)*scale;\n\ns=20;\nsy=s*(ny - max(ny)/2) + height/2;\nsx=s*nx + width/2 - 15*scale;\n\nt=0:2*pi/100:2*pi;\na=1;\ntx=a*cos(t)+width/2-5*scale; ty=a*sin(t)+height/2+4*scale;\n"
+      MaskDisplay	      "plot(sx,sy);\ntext(width/2-7*scale, height/2, 'q dt');\nplot(tx,ty)\n\n"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      MaskValueString	      "[0 0 0 1]"
+      System {
+	Name			"Quaternion\nPropagation"
+	Location		[7, 559, 529, 697]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "w"
+	  Position		  [20, 58, 50, 72]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "3"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Constant"
+	  Position		  [60, 74, 80, 96]
+	  Value			  "0"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain"
+	  Position		  [230, 45, 270, 85]
+	  Gain			  "0.5"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "Integrator"
+	  Ports			  [1, 1]
+	  Position		  [300, 47, 330, 83]
+	  InitialCondition	  "q0"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Ports			  [2, 1]
+	  Position		  [110, 56, 115, 94]
+	  ShowName		  off
+	  Inputs		  "2"
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nMultiply"
+	  Ports			  [2, 1]
+	  Position		  [155, 47, 195, 83]
+	  SourceBlock		  "qlib/Quaternion\nMultiply"
+	  SourceType		  "Quaternion Multiply"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nNormalize"
+	  Ports			  [1, 1]
+	  Position		  [370, 49, 410, 81]
+	  SourceBlock		  "qlib/Quaternion\nNormalize"
+	  SourceType		  "Quaternion Normalize"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "q"
+	  Position		  [465, 58, 495, 72]
+	  BackgroundColor	  "yellow"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nMultiply"
+	  SrcPort		  1
+	  DstBlock		  "Gain"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Gain"
+	  SrcPort		  1
+	  DstBlock		  "Integrator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Integrator"
+	  SrcPort		  1
+	  DstBlock		  "Quaternion\nNormalize"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nNormalize"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  Branch {
+	    DstBlock		    "q"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, -40; -310, 0; 0, 30]
+	    DstBlock		    "Quaternion\nMultiply"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "w"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Constant"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  DstBlock		  "Quaternion\nMultiply"
+	  DstPort		  2
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Quaternion\nVector Rotation"
+      Ports		      [2, 1]
+      Position		      [230, 162, 270, 198]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Quaternion Vector Rotation"
+      MaskDescription	      "Rotates a vector using a quaternion:\n\n    vout = (q)(v)(q*)\n\nThe first input is the vector, the second input is the quaternion.\n\nNote that for purposes of quaternion-vector multiplication, a vector is treated as a quaterion with a scalar element of zero."
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      System {
+	Name			"Quaternion\nVector Rotation"
+	Location		[497, 761, 975, 918]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "V"
+	  Position		  [30, 38, 60, 52]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "3"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "q"
+	  Position		  [95, 38, 125, 52]
+	  BackgroundColor	  "cyan"
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "4"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Constant"
+	  Position		  [85, 104, 105, 126]
+	  Value			  "0"
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  "Demux"
+	  Ports			  [1, 2]
+	  Position		  [355, 61, 360, 99]
+	  BackgroundColor	  "black"
+	  ShowName		  off
+	  Outputs		  "[3 1]"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Ports			  [2, 1]
+	  Position		  [135, 86, 140, 124]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  Inputs		  "2"
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nConjugate"
+	  Ports			  [1, 1]
+	  Position		  [215, 79, 235, 101]
+	  SourceBlock		  "qlib/Quaternion\nConjugate"
+	  SourceType		  "Quaternion Conjugate"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nMultiply 1"
+	  Ports			  [2, 1]
+	  Position		  [205, 37, 245, 73]
+	  NamePlacement		  "alternate"
+	  SourceBlock		  "qlib/Quaternion\nMultiply"
+	  SourceType		  "Quaternion Multiply"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nMultiply 2"
+	  Ports			  [2, 1]
+	  Position		  [290, 62, 330, 98]
+	  NamePlacement		  "alternate"
+	  SourceBlock		  "qlib/Quaternion\nMultiply"
+	  SourceType		  "Quaternion Multiply"
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Terminator"
+	  Position		  [385, 80, 405, 100]
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "qVq*"
+	  Position		  [415, 63, 445, 77]
+	  BackgroundColor	  "yellow"
+	  NamePlacement		  "alternate"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "q"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  Branch {
+	    Points		    [0, 45]
+	    DstBlock		    "Quaternion\nConjugate"
+	    DstPort		    1
+	  }
+	  Branch {
+	    DstBlock		    "Quaternion\nMultiply 1"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Constant"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  Labels		  [3, 0]
+	  SrcBlock		  "V"
+	  SrcPort		  1
+	  Points		  [15, 0; 0, 50]
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Demux"
+	  SrcPort		  1
+	  DstBlock		  "qVq*"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Demux"
+	  SrcPort		  2
+	  DstBlock		  "Terminator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nMultiply 2"
+	  SrcPort		  1
+	  DstBlock		  "Demux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nMultiply 1"
+	  SrcPort		  1
+	  Points		  [15, 0; 0, 15]
+	  DstBlock		  "Quaternion\nMultiply 2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  Points		  [30, 0; 0, -40]
+	  DstBlock		  "Quaternion\nMultiply 1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nConjugate"
+	  SrcPort		  1
+	  DstBlock		  "Quaternion\nMultiply 2"
+	  DstPort		  2
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Quaternion\nVector Transform"
+      Ports		      [2, 1]
+      Position		      [140, 162, 180, 198]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Quaternion Vector Transform"
+      MaskDescription	      "Transforms a vector using a quaternion:\n\n    vout = (q*)(v)(q)\n\nThe first input is the quaternion, the second input is the vector.\n\nNote that for purposes of quaternion-vector multiplication, a vector is treated as a quaterion with a scalar element of zero."
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "pixels"
+      System {
+	Name			"Quaternion\nVector Transform"
+	Location		[11, 680, 489, 837]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "q"
+	  Position		  [20, 38, 50, 52]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "4"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "V"
+	  Position		  [20, 88, 50, 102]
+	  BackgroundColor	  "cyan"
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "3"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Constant"
+	  Position		  [60, 104, 80, 126]
+	  Value			  "0"
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  "Demux"
+	  Ports			  [1, 2]
+	  Position		  [365, 61, 370, 99]
+	  BackgroundColor	  "black"
+	  ShowName		  off
+	  Outputs		  "[3 1]"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Ports			  [2, 1]
+	  Position		  [110, 86, 115, 124]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  Inputs		  "2"
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nConjugate"
+	  Ports			  [1, 1]
+	  Position		  [155, 34, 175, 56]
+	  NamePlacement		  "alternate"
+	  SourceBlock		  "qlib/Quaternion\nConjugate"
+	  SourceType		  "Quaternion Conjugate"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nMultiply 1"
+	  Ports			  [2, 1]
+	  Position		  [215, 37, 255, 73]
+	  NamePlacement		  "alternate"
+	  SourceBlock		  "qlib/Quaternion\nMultiply"
+	  SourceType		  "Quaternion Multiply"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Quaternion\nMultiply 2"
+	  Ports			  [2, 1]
+	  Position		  [300, 62, 340, 98]
+	  NamePlacement		  "alternate"
+	  SourceBlock		  "qlib/Quaternion\nMultiply"
+	  SourceType		  "Quaternion Multiply"
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Terminator"
+	  Position		  [395, 80, 415, 100]
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "q*Vq"
+	  Position		  [425, 63, 455, 77]
+	  BackgroundColor	  "yellow"
+	  NamePlacement		  "alternate"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Line {
+	  Labels		  [1, 0]
+	  SrcBlock		  "V"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Constant"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "q"
+	  SrcPort		  1
+	  Points		  [75, 0]
+	  Branch {
+	    Points		    [0, 45]
+	    DstBlock		    "Quaternion\nMultiply 2"
+	    DstPort		    2
+	  }
+	  Branch {
+	    DstBlock		    "Quaternion\nConjugate"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nMultiply 2"
+	  SrcPort		  1
+	  DstBlock		  "Demux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Demux"
+	  SrcPort		  2
+	  DstBlock		  "Terminator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Demux"
+	  SrcPort		  1
+	  DstBlock		  "q*Vq"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  Points		  [65, 0; 0, -40]
+	  DstBlock		  "Quaternion\nMultiply 1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nConjugate"
+	  SrcPort		  1
+	  DstBlock		  "Quaternion\nMultiply 1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Quaternion\nMultiply 1"
+	  SrcPort		  1
+	  Points		  [15, 0; 0, 15]
+	  DstBlock		  "Quaternion\nMultiply 2"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Quaternion\nto DCM"
+      Ports		      [1, 1]
+      Position		      [140, 238, 180, 272]
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Quaternion to DCM"
+      MaskDescription	      "Converts a quaternion to the direction cosine matrix (DCM) that would perform the equivalent vector transformation, i.e., Rv = q*vq, where R is the DCM, v is a vector, and q is the quaternion.\n\nNote that for purposes of quaternion-vector multiplication, a vector is treated as a quaterion with a scalar element of zero."
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      System {
+	Name			"Quaternion\nto DCM"
+	Location		[7, 249, 647, 963]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "q"
+	  Position		  [35, 178, 60, 192]
+	  BackgroundColor	  "cyan"
+	  IconDisplay		  "Port number"
+	  PortDimensions	  "4"
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  "Demux"
+	  Ports			  [1, 4]
+	  Position		  [90, 85, 95, 285]
+	  BackgroundColor	  "black"
+	  ShowName		  off
+	  Port {
+	    PortNumber		    1
+	    Name		    "q1"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    2
+	    Name		    "q2"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    3
+	    Name		    "q3"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	  Port {
+	    PortNumber		    4
+	    Name		    "q4"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From"
+	  Position		  [70, 411, 105, 429]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From1"
+	  Position		  [70, 431, 105, 449]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q2"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From10"
+	  Position		  [400, 411, 435, 429]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q3"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From11"
+	  Position		  [400, 431, 435, 449]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From12"
+	  Position		  [335, 66, 380, 84]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1q2"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From13"
+	  Position		  [335, 86, 380, 104]
+	  ForegroundColor	  "gray"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q3q4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From14"
+	  Position		  [335, 106, 380, 124]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1q3"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From15"
+	  Position		  [335, 126, 380, 144]
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q2q4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From16"
+	  Position		  [335, 146, 380, 164]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1q2"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From17"
+	  Position		  [335, 166, 380, 184]
+	  ForegroundColor	  "gray"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q3q4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From18"
+	  Position		  [335, 226, 380, 244]
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q2q3"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From19"
+	  Position		  [335, 246, 380, 264]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1q4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From2"
+	  Position		  [70, 461, 105, 479]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From20"
+	  Position		  [335, 266, 380, 284]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1q3"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From21"
+	  Position		  [335, 286, 380, 304]
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q2q4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From22"
+	  Position		  [335, 306, 380, 324]
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q2q3"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From23"
+	  Position		  [335, 326, 380, 344]
+	  ForegroundColor	  "gray"
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1q4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From3"
+	  Position		  [70, 481, 105, 499]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q3"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From4"
+	  Position		  [70, 506, 105, 524]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q1"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From5"
+	  Position		  [70, 526, 105, 544]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From6"
+	  Position		  [240, 411, 275, 429]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q2"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From7"
+	  Position		  [240, 431, 275, 449]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q3"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From8"
+	  Position		  [240, 461, 275, 479]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q2"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From9"
+	  Position		  [240, 481, 275, 499]
+	  ShowName		  off
+	  CloseFcn		  "tagdialog Close"
+	  GotoTag		  "q4"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain"
+	  Position		  [445, 74, 470, 96]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "2"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain1"
+	  Position		  [445, 114, 470, 136]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "2"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain2"
+	  Position		  [445, 154, 470, 176]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "2"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain3"
+	  Position		  [445, 234, 470, 256]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "2"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain4"
+	  Position		  [445, 274, 470, 296]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "2"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain5"
+	  Position		  [445, 314, 470, 336]
+	  ShowName		  off
+	  FontSize		  8
+	  Gain			  "2"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto"
+	  Position		  [145, 126, 180, 144]
+	  ShowName		  off
+	  GotoTag		  "q1"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto1"
+	  Position		  [145, 176, 180, 194]
+	  ShowName		  off
+	  GotoTag		  "q2"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto10"
+	  Position		  [170, 516, 215, 534]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  GotoTag		  "q1q4"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto11"
+	  Position		  [340, 421, 385, 439]
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "q2q3"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto12"
+	  Position		  [340, 471, 385, 489]
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "q2q4"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto13"
+	  Position		  [500, 421, 545, 439]
+	  ForegroundColor	  "gray"
+	  ShowName		  off
+	  GotoTag		  "q3q4"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto2"
+	  Position		  [145, 226, 180, 244]
+	  ShowName		  off
+	  GotoTag		  "q3"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto3"
+	  Position		  [145, 276, 180, 294]
+	  ShowName		  off
+	  GotoTag		  "q4"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto8"
+	  Position		  [170, 421, 215, 439]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  GotoTag		  "q1q2"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Goto9"
+	  Position		  [170, 471, 215, 489]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  GotoTag		  "q1q3"
+	  TagVisibility		  "local"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Ports			  [9, 1]
+	  Position		  [500, 25, 505, 385]
+	  BackgroundColor	  "black"
+	  NamePlacement		  "alternate"
+	  ShowName		  off
+	  Inputs		  "9"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Ports			  [2, 1]
+	  Position		  [165, 101, 190, 119]
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product1"
+	  Ports			  [2, 1]
+	  Position		  [165, 151, 190, 169]
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product2"
+	  Ports			  [2, 1]
+	  Position		  [165, 201, 190, 219]
+	  ForegroundColor	  "gray"
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product3"
+	  Ports			  [2, 1]
+	  Position		  [165, 251, 190, 269]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product4"
+	  Ports			  [2, 1]
+	  Position		  [125, 421, 150, 439]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product5"
+	  Ports			  [2, 1]
+	  Position		  [125, 471, 150, 489]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product6"
+	  Ports			  [2, 1]
+	  Position		  [125, 516, 150, 534]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product7"
+	  Ports			  [2, 1]
+	  Position		  [295, 421, 320, 439]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product8"
+	  Ports			  [2, 1]
+	  Position		  [295, 471, 320, 489]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product9"
+	  Ports			  [2, 1]
+	  Position		  [455, 421, 480, 439]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Ports			  [2, 1]
+	  Position		  [400, 74, 425, 96]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum1"
+	  Ports			  [2, 1]
+	  Position		  [400, 114, 425, 136]
+	  ShowName		  off
+	  Inputs		  "+-"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum2"
+	  Ports			  [2, 1]
+	  Position		  [400, 154, 425, 176]
+	  ShowName		  off
+	  Inputs		  "+-"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum3"
+	  Ports			  [2, 1]
+	  Position		  [400, 234, 425, 256]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum4"
+	  Ports			  [2, 1]
+	  Position		  [400, 274, 425, 296]
+	  ShowName		  off
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum5"
+	  Ports			  [2, 1]
+	  Position		  [400, 314, 425, 336]
+	  ShowName		  off
+	  Inputs		  "+-"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum6"
+	  Ports			  [4, 1]
+	  Position		  [305, 21, 320, 69]
+	  ShowName		  off
+	  Inputs		  "+--+"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum7"
+	  Ports			  [4, 1]
+	  Position		  [305, 181, 320, 229]
+	  ShowName		  off
+	  Inputs		  "-+-+"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum8"
+	  Ports			  [4, 1]
+	  Position		  [305, 341, 320, 389]
+	  ShowName		  off
+	  Inputs		  "--++"
+	  CollapseMode		  "All dimensions"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "DCM"
+	  Position		  [555, 198, 580, 212]
+	  BackgroundColor	  "yellow"
+	  IconDisplay		  "Port number"
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Product9"
+	  SrcPort		  1
+	  DstBlock		  "Goto13"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From11"
+	  SrcPort		  1
+	  DstBlock		  "Product9"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "From10"
+	  SrcPort		  1
+	  DstBlock		  "Product9"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product8"
+	  SrcPort		  1
+	  DstBlock		  "Goto12"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From9"
+	  SrcPort		  1
+	  DstBlock		  "Product8"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "From8"
+	  SrcPort		  1
+	  DstBlock		  "Product8"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product7"
+	  SrcPort		  1
+	  DstBlock		  "Goto11"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From7"
+	  SrcPort		  1
+	  DstBlock		  "Product7"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "From6"
+	  SrcPort		  1
+	  DstBlock		  "Product7"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product6"
+	  SrcPort		  1
+	  DstBlock		  "Goto10"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From5"
+	  SrcPort		  1
+	  DstBlock		  "Product6"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "From4"
+	  SrcPort		  1
+	  DstBlock		  "Product6"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product5"
+	  SrcPort		  1
+	  DstBlock		  "Goto9"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From3"
+	  SrcPort		  1
+	  DstBlock		  "Product5"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "From2"
+	  SrcPort		  1
+	  DstBlock		  "Product5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product4"
+	  SrcPort		  1
+	  DstBlock		  "Goto8"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From1"
+	  SrcPort		  1
+	  DstBlock		  "Product4"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "From"
+	  SrcPort		  1
+	  DstBlock		  "Product4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "q"
+	  SrcPort		  1
+	  DstBlock		  "Demux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product3"
+	  SrcPort		  1
+	  Points		  [20, 0]
+	  Branch {
+	    Points		    [0, 120]
+	    DstBlock		    "Sum8"
+	    DstPort		    4
+	  }
+	  Branch {
+	    Points		    [0, -40]
+	    Branch {
+	      DstBlock		      "Sum7"
+	      DstPort		      4
+	    }
+	    Branch {
+	      Points		      [0, -160]
+	      DstBlock		      "Sum6"
+	      DstPort		      4
+	    }
+	  }
+	}
+	Line {
+	  SrcBlock		  "Product2"
+	  SrcPort		  1
+	  Points		  [40, 0]
+	  Branch {
+	    Points		    [0, 160]
+	    DstBlock		    "Sum8"
+	    DstPort		    3
+	  }
+	  Branch {
+	    DstBlock		    "Sum7"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [0, -160]
+	    DstBlock		    "Sum6"
+	    DstPort		    3
+	  }
+	}
+	Line {
+	  SrcBlock		  "Product1"
+	  SrcPort		  1
+	  Points		  [60, 0]
+	  Branch {
+	    Points		    [0, 40]
+	    Branch {
+	      Points		      [0, 160]
+	      DstBlock		      "Sum8"
+	      DstPort		      2
+	    }
+	    Branch {
+	      DstBlock		      "Sum7"
+	      DstPort		      2
+	    }
+	  }
+	  Branch {
+	    Points		    [0, -120]
+	    DstBlock		    "Sum6"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  Points		  [80, 0]
+	  Branch {
+	    Points		    [0, 80]
+	    Branch {
+	      Points		      [0, 160]
+	      DstBlock		      "Sum8"
+	      DstPort		      1
+	    }
+	    Branch {
+	      DstBlock		      "Sum7"
+	      DstPort		      1
+	    }
+	  }
+	  Branch {
+	    Points		    [0, -80]
+	    DstBlock		    "Sum6"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Sum8"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  9
+	}
+	Line {
+	  SrcBlock		  "Sum7"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  5
+	}
+	Line {
+	  SrcBlock		  "Sum5"
+	  SrcPort		  1
+	  DstBlock		  "Gain5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From22"
+	  SrcPort		  1
+	  DstBlock		  "Sum5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From23"
+	  SrcPort		  1
+	  DstBlock		  "Sum5"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum4"
+	  SrcPort		  1
+	  DstBlock		  "Gain4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From20"
+	  SrcPort		  1
+	  DstBlock		  "Sum4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From21"
+	  SrcPort		  1
+	  DstBlock		  "Sum4"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum3"
+	  SrcPort		  1
+	  DstBlock		  "Gain3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From18"
+	  SrcPort		  1
+	  DstBlock		  "Sum3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From19"
+	  SrcPort		  1
+	  DstBlock		  "Sum3"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum2"
+	  SrcPort		  1
+	  DstBlock		  "Gain2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From16"
+	  SrcPort		  1
+	  DstBlock		  "Sum2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From17"
+	  SrcPort		  1
+	  DstBlock		  "Sum2"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum1"
+	  SrcPort		  1
+	  DstBlock		  "Gain1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From14"
+	  SrcPort		  1
+	  DstBlock		  "Sum1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From15"
+	  SrcPort		  1
+	  DstBlock		  "Sum1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "Gain"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From12"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From13"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Gain5"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  8
+	}
+	Line {
+	  SrcBlock		  "Gain4"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  7
+	}
+	Line {
+	  SrcBlock		  "Gain3"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  6
+	}
+	Line {
+	  SrcBlock		  "Gain2"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  4
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  DstBlock		  "DCM"
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "q1"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  Branch {
+	    Points		    [20, 0]
+	    Branch {
+	      Points		      [0, -5]
+	      DstBlock		      "Product"
+	      DstPort		      1
+	    }
+	    Branch {
+	      Points		      [0, 5]
+	      DstBlock		      "Product"
+	      DstPort		      2
+	    }
+	  }
+	  Branch {
+	    Points		    [0, 25]
+	    DstBlock		    "Goto"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  Name			  "q2"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  2
+	  Points		  [25, 0]
+	  Branch {
+	    Points		    [20, 0]
+	    Branch {
+	      Points		      [0, 5]
+	      DstBlock		      "Product1"
+	      DstPort		      2
+	    }
+	    Branch {
+	      Points		      [0, -5]
+	      DstBlock		      "Product1"
+	      DstPort		      1
+	    }
+	  }
+	  Branch {
+	    Points		    [0, 25]
+	    DstBlock		    "Goto1"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  Name			  "q3"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  3
+	  Points		  [25, 0]
+	  Branch {
+	    Points		    [20, 0]
+	    Branch {
+	      Points		      [0, -5]
+	      DstBlock		      "Product2"
+	      DstPort		      1
+	    }
+	    Branch {
+	      Points		      [0, 5]
+	      DstBlock		      "Product2"
+	      DstPort		      2
+	    }
+	  }
+	  Branch {
+	    Points		    [0, 25]
+	    DstBlock		    "Goto2"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  Name			  "q4"
+	  Labels		  [0, 0]
+	  SrcBlock		  "Demux"
+	  SrcPort		  4
+	  Points		  [25, 0]
+	  Branch {
+	    Points		    [20, 0]
+	    Branch {
+	      Points		      [0, 5]
+	      DstBlock		      "Product3"
+	      DstPort		      2
+	    }
+	    Branch {
+	      Points		      [0, -5]
+	      DstBlock		      "Product3"
+	      DstPort		      1
+	    }
+	  }
+	  Branch {
+	    Points		    [0, 25]
+	    DstBlock		    "Goto3"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Gain1"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Gain"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum6"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Annotation {
+	  Name			  "]"
+	  Position		  [569, 602]
+	  FontName		  "courier"
+	  FontSize		  125
+	}
+	Annotation {
+	  Name			  "["
+	  Position		  [94, 602]
+	  FontName		  "courier"
+	  FontSize		  125
+	}
+	Annotation {
+	  Name			  "Matrix is in\nRow Major Form"
+	  Position		  [567, 152]
+	  VerticalAlignment	  "top"
+	}
+	Annotation {
+	  Name			  "DCM ="
+	  Position		  [54, 618]
+	  FontSize		  14
+	}
+	Annotation {
+	  Name			  "2 (q1q3 + q2q4)"
+	  Position		  [185, 642]
+	}
+	Annotation {
+	  Name			  "2 (q1q2 - q3q4)"
+	  Position		  [185, 617]
+	}
+	Annotation {
+	  Name			  "2 (q2q3 - q1q4)"
+	  Position		  [340, 642]
+	}
+	Annotation {
+	  Name			  "2 (q2q3 + q1q4)"
+	  Position		  [480, 617]
+	}
+	Annotation {
+	  Name			  " q4^2 - q1^2 - q2^2 + q3^2"
+	  Position		  [485, 642]
+	}
+	Annotation {
+	  Name			  "q4^2 + q1^2 - q2^2 - q3^2"
+	  Position		  [180, 592]
+	}
+	Annotation {
+	  Name			  "2 (q1q3 - q2q4)"
+	  Position		  [480, 592]
+	}
+	Annotation {
+	  Name			  "2 (q1q2 + q3q4)"
+	  Position		  [340, 592]
+	}
+	Annotation {
+	  Name			  " q4^2 - q1^2 + q2^2 - q3^2"
+	  Position		  [335, 617]
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Row Major\nto Matrix"
+      Ports		      [1, 1]
+      Position		      [140, 328, 200, 372]
+      ShowName		      off
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      MaskType		      "Row Major to Matrix"
+      MaskDescription	      "Converts a row major representation of a matrix to a normal matrix."
+      MaskPromptString	      "rows|columns"
+      MaskStyleString	      "edit,edit"
+      MaskTunableValueString  "on,on"
+      MaskCallbackString      "|"
+      MaskEnableString	      "on,on"
+      MaskVisibilityString    "on,on"
+      MaskToolTipString	      "on,on"
+      MaskVarAliasString      ","
+      MaskVariables	      "rows=@1;columns=@2;"
+      MaskDisplay	      "fprintf('Row Major\\nto Matrix\\n')\ntext(1, 0, ...\n    sprintf('%dx%d', rows, columns), ...\n    'HorizontalAlignment', 'Right', ...\n    'VerticalAlignment', 'Bottom');"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "normalized"
+      MaskValueString	      "3|3"
+      MaskTabNameString	      ","
+      System {
+	Name			"Row Major\nto Matrix"
+	Location		[409, 204, 768, 295]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "vector"
+	  Position		  [15, 28, 45, 42]
+	  BackgroundColor	  "cyan"
+	  FontName		  "helvetica"
+	  FontSize		  12
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Math
+	  Name			  "Math\nFunction"
+	  Ports			  [1, 1]
+	  Position		  [210, 20, 240, 50]
+	  ShowName		  off
+	  AttributesFormatString  "%<Operator>"
+	  FontName		  "helvetica"
+	  FontSize		  12
+	  Operator		  "transpose"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Reshape
+	  Name			  "Reshape"
+	  Position		  [90, 15, 145, 55]
+	  ShowName		  off
+	  AttributesFormatString  "Output Dimensions = %<OutputDimensions>"
+	  FontName		  "helvetica"
+	  FontSize		  12
+	  OutputDimensionality	  "Customize"
+	  OutputDimensions	  "[3, 3]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "matrix"
+	  Position		  [300, 28, 330, 42]
+	  BackgroundColor	  "yellow"
+	  FontName		  "helvetica"
+	  FontSize		  12
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Math\nFunction"
+	  SrcPort		  1
+	  DstBlock		  "matrix"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "vector"
+	  SrcPort		  1
+	  DstBlock		  "Reshape"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Reshape"
+	  SrcPort		  1
+	  DstBlock		  "Math\nFunction"
+	  DstPort		  1
+	}
+      }
+    }
+    Annotation {
+      Name		      "Quaternion Library"
+      Position		      [162, 7]
+      VerticalAlignment	      "top"
+      FontSize		      12
+      FontWeight	      "bold"
+    }
+    Annotation {
+      Name		      "$Revision: 1.7 $\n$Date: 2009-12-12 20:13:00 $"
+      Position		      [164, 39]
+    }
+    Annotation {
+      Name		      "For this library, q(4) is considered the scalar element."
+      Position		      [159, 66]
+    }
+    Annotation {
+      Name		      "Copyright (c) 2000-2009, Jay A. St. Pierre.  All rights reserved.\nThis software is licensed under the terms of the BSD license.\nSee the file license.txt that came with the software for more details."
+      Position		      [165, 420]
+    }
+    Annotation {
+      Name		      "The DCM's for the\nabove blocks are in\nrow major form.  Use\nthese blocks to convert\nto/from normal matrix\nformat."
+      Position		      [15, 351]
+      HorizontalAlignment     "left"
+    }
+  }
+}
