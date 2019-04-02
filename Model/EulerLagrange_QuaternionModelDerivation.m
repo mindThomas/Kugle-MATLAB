@@ -1,3 +1,6 @@
+%% OBS. This model derivation script uses q1 to q4 as the quaternion elements, where the report uses q0 to q3.
+% Note that the scalar element of the quaternion in this derivative is q1, where it is q0 in the report.
+
 clear all;
 Constants_Kugle; % load some constants but replace other with symbolic variables
 
@@ -264,7 +267,7 @@ for (m = 1:np)
 end
 
 M
-%matlabFunction(M, 'file', 'mass', 'outputs', {'M'});
+
 
 %% Find Coriolis matrix
 dyneq3 = simplify( dyneq2 - M*ddchi_ ); % remaining equation part after Mass matrix has been split
@@ -300,13 +303,13 @@ for (i = 1:2)
 end
 
 C
-%matlabFunction(C, 'file', 'coriolis', 'outputs', {'C'});
+
 
 %% Find Gravity matrix
 dyneq4 = simplify( dyneq2 - M*ddchi_ - C*dchi_ ); % remaining equation part after Coriolis matrix has been split
 
 G = dyneq4
-%matlabFunction(G, 'file', 'gravity', 'outputs', {'G'});
+
 
 %% See if we can ressemble system equations (check if the system is correct)
 %simplify( dyneq2 == M*ddchi_ + C*dchi_ + G + D)

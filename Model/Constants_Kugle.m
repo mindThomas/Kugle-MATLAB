@@ -27,12 +27,11 @@ Jk = 2/3 * Mk * (rk-coating)^2;
 rw = 0.05;
 Mw = 0.270;
 i_gear = 13/3; % gear ratio = 4.3 : 1   (https://www.maxonmotor.com/maxon/view/product/223081)
+Jgear = 1.2e-6; % 12 g cm^2   (inertia motors see: https://support.maxonmotor.com/hc/en-us/articles/360006129633-Gearhead-Mass-inertia)
 %Jow = 1/2 * Mw * rw^2; % 3.375 * 10^-4  but Rezero = 9*10^-4
 Jow = 9 * 10^-4; % Rezero - assumed larger than disk equation, probably because type of wheel with larger mass concentration around perimeter
-Jm = 1.21 * 10^-4;
-%Jow = 900 * 10^-6;
-%Jm = 3.33 * 10^-6;
-Jw = Jow + i_gear^2*Jm;
+Jm = 1.21 * 10^-4;  % 1210 g cm^2
+Jw = Jow + i_gear^2*(Jm+Jgear);
 
 Mb = 14.31 + 1.844;
 
@@ -44,20 +43,21 @@ COM = [COM_X, COM_Y, COM_Z]';
 
 l = norm(COM); % distance to COM from ball center
 
-COM_X = 0;
-COM_Y = 0;
-COM_Z = l;
-COM = [COM_X, COM_Y, COM_Z]';
-
 % Moment of inertia around center of mass
 Jb_COM = (1e-3)^2 * [
         1.29465e+6,     -6.43967e+1,    2.37297e+2
         -6.43967e+1,    1.30640e+6,     3.17317e+4
         2.37297e+2,     3.17317e+4,     1.00218e+5];
-
+    
 % Shift moment of inertia to be around origin = ball center using
 % generalized parallel axis theorem (https://en.wikipedia.org/wiki/Parallel_axis_theorem)
 Jb = Jb_COM + Mb*(COM'*COM*eye(3) - COM*COM');
+
+% Correct COM used in model to be right above ball origin
+COM_X = 0;
+COM_Y = 0*0.005;
+COM_Z = l;
+COM = [COM_X, COM_Y, COM_Z]';
 
 % OBS! Maybe the model should be enhanced/changed to allow non-diagonal inertias
 % (constants should be the inertia tensor elements)
