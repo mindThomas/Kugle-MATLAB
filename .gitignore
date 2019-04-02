@@ -3,3 +3,6 @@
 
 # Simulink temp project folder
 slprj/
+
+# MATLAB autosave/temp files
+*.asv
