@@ -1,4 +1,5 @@
 %% This script linearizes the model by adding a small pertubation, thus computing the partial derivatives numerically
+addpath('../Parameters');
 addpath('../Model');
 addpath('../Model/generated');
 Constants_Kugle

@@ -2,7 +2,8 @@
 % Note that the scalar element of the quaternion in this derivative is q1, where it is q0 in the report.
 
 clear all;
-Constants_Kugle; % load some constants but replace other with symbolic variables
+addpath('../Parameters');
+Constants_Kugle; % load some constants (eg. alpha and gamma defining the wheel contact points) but replace other with symbolic variables
 
 % When simplifying consider the option "'IgnoreAnalyticConstraints', true"
 

@@ -1,4 +1,5 @@
 clear all;
+addpath('../Parameters');
 
 % Parameters
 syms g positive % gravity
