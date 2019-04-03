@@ -75,6 +75,14 @@ B_withLabels = array2table(B,'RowNames',rowNames,'VariableNames',colNames)
 
 save('generated/ClosedLoopModelMatrices_SlidingMode', 'A', 'B', 'A_withLabels', 'B_withLabels');
 
+%% Pole/zero analysis
+C = [0,0,0,0,0,0,1,0,0,0,0,0;
+     0,0,0,0,0,0,0,1,0,0,0,0];
+
+sys = ss(A, B, C, zeros(2,4));
+[Poles, Zeros] = pzmap(sys)
+pzmap(sys)
+
 %% Extract the steady state acceleration relationship between qref and linear acceleration
 AccelerationConstant_q3_to_ddx = A(7,5) + B(7,3)
 AccelerationConstant_q2_to_ddy = A(8,4) + B(8,2)

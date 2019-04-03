@@ -12,7 +12,7 @@ q0 = eul2quat(deg2rad([0, 0, 0]), 'ZYX')';
 omeg_b0 = [0, 0, 0]';
 dq0 = 1/2 * Phi(q0) * vec * omeg_b0;
 xy0 = [0, 0]';
-dxy0 = [0, 0]';
+dxy0 = [0.1, 0.2]';
 tau0 = [0, 0, 0]';
 
 X0 = [xy0;q0;dxy0;dq0];
@@ -51,3 +51,10 @@ rowNames = {'dx','dy','dq1','dq2','dq3','dq4','ddx','ddy','ddq1','ddq2','ddq3','
 B_withLabels = array2table(B,'RowNames',rowNames,'VariableNames',colNames)
 
 save('generated/LinearizedModelMatrices', 'A', 'B', 'A_withLabels', 'B_withLabels');
+
+%% Pole/zero analysis
+C = [0,0,0,0,0,0,1,0,0,0,0,0;
+     0,0,0,0,0,0,0,1,0,0,0,0];
+
+sys = ss(A, B, C, zeros(2,3));
+[Poles, Zeros] = pzmap(sys)
