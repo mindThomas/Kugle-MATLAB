@@ -1,6 +1,6 @@
 % Compute balance LQR control action
 % Remember to add the folder with the generated model files:
-%   addpath('../Model/generated');
+%   addpath('../../Model/generated');
 % Note that 'omega_ref' is given in body frame
 function [tau, q_err] = BalanceLQR(X,q_ref,omega_ref,  COM_X,COM_Y,COM_Z,Jbx,Jby,Jbz,Jk,Jw,Mb,Mk,Bvb,Bvk,Bvm,rk,rw,g,  K)
 

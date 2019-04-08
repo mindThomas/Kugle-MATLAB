@@ -62,8 +62,8 @@ for (j = 1:4)
     B(:,j) = (dX1 - dX0) / delta;
 end
 
-A = round(A, -floor(log10(delta)));
-B = round(B, -floor(log10(delta)));
+A = round(A, -floor(log10(delta))-2);
+B = round(B, -floor(log10(delta))-2);
 
 colNames = {'x','y','q1','q2','q3','q4','dx','dy','dq1','dq2','dq3','dq4'};
 rowNames = {'dx','dy','dq1','dq2','dq3','dq4','ddx','ddy','ddq1','ddq2','ddq3','ddq4'};
