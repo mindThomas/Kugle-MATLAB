@@ -12,7 +12,7 @@ q0 = eul2quat(deg2rad([0, 0, 0]), 'ZYX')';
 omeg_b0 = [0, 0, 0]';
 dq0 = 1/2 * Phi(q0) * vec * omeg_b0;
 xy0 = [0, 0]';
-dxy0 = [0.1, 0.2]';
+dxy0 = [0, 0]';
 tau0 = [0, 0, 0]';
 
 X0 = [xy0;q0;dxy0;dq0];
@@ -39,8 +39,8 @@ for (j = 1:3)
     B(:,j) = (dX1 - dX0) / delta;
 end
 
-A = round(A, -floor(log10(delta)));
-B = round(B, -floor(log10(delta)));
+A = round(A, -floor(log10(delta))-2);
+B = round(B, -floor(log10(delta))-2);
 
 colNames = {'x','y','q1','q2','q3','q4','dx','dy','dq1','dq2','dq3','dq4'};
 rowNames = {'dx','dy','dq1','dq2','dq3','dq4','ddx','ddy','ddq1','ddq2','ddq3','ddq4'};
