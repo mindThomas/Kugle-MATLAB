@@ -2,7 +2,8 @@ addpath('../../Parameters');
 addpath('../Misc'); % for quaternion functions
 load('../../Linearization/generated/ClosedLoopModelMatrices_SlidingMode_WithOmegaRef.mat');
 Constants_Kugle;
-Parameters_Controller % load controller parameters
+Parameters_General % load sample rate
+Parameters_Controllers % load controller parameters
 
 Phi = @(q)[q(1) -q(2) -q(3) -q(4);     % for q o p = Phi(q) * p
           q(2) q(1)  -q(4) q(3);
@@ -38,8 +39,11 @@ R = 20 * diag([1 1]); % omega_ref_x, omega_ref_y
 disp(regexprep( mat2str(K), {'\[', '\]', '\s+', '\;'}, {'', '', ',\t', ',\n'}))
 disp(' ');
 
+% Save gain
+VelocityLQRgain = K;
+save('generated/VelocityLQRgain', 'VelocityLQRgain');
+
 Kvel = K;
-save('generated/LQRgain', 'K');
 
 %% Test velocity controller
 % Velocity reference

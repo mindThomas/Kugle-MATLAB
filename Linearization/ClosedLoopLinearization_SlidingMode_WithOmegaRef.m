@@ -4,7 +4,7 @@ addpath('../Model');
 addpath('../Model/generated');
 addpath('../Controllers/SlidingMode');
 Constants_Kugle % load model parameters
-Parameters_Controller % load controller parameters
+Parameters_Controllers % load controller parameters
 
 % Pertubation delta for numerical partial derivation
 delta = 0.000001;

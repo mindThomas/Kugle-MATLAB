@@ -45,7 +45,10 @@ R = 0.05 * diag([1 1 1]); % torque outputs
 [K, S, e] = lqr(Ae, Be, Q, R);
 disp(regexprep( mat2str(K), {'\[', '\]', '\s+', '\;'}, {'', '', ',\t', ',\n'}))
 disp(' ');
-save('generated/LQRgain', 'K');
+
+% Save gain
+BalanceLQRgain = K;
+save('generated/BalanceLQRgain', 'BalanceLQRgain');
 
 %% Test gains
 q = [1,0,0,0]';
