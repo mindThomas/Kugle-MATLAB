@@ -60,5 +60,6 @@ function out = ParseDumpArray(array)
         out.heading(m,:) = atan2(x_vec(2), x_vec(1)); 
         R_heading = [cos(out.heading(m,:)), -sin(out.heading(m,:)); sin(out.heading(m,:)), cos(out.heading(m,:))];        
         out.velocity_ref_heading(m,:) = (R_heading' * out.velocity_ref_inertial(m,:)')';
+        out.velocity_heading(m,:) = (R_heading' * out.velocity(m,:)')';
     end
 end

@@ -1,7 +1,19 @@
-function [dump, vicon] = DumpViconTimeSynchronization(dumpData, viconData)
+function [dump, vicon] = DumpViconTimeSynchronization(dumpData, viconData, varargin)
 
-    figure(10); 
+    if (length(varargin) > 0)
+        plotEnabled = true;
+    else
+        plotEnabled = false;
+    end
 
+    if (plotEnabled)
+        figure(10); 
+    end
+
+    % Find angular velocity peak time in Vicon data
+    %omega_vicon_time = viconData.time(1:end-1) + (diff(viconData.time)/2);
+    %omega_
+    
     % Find peak time in Vicon data
     dq_vicon_time = viconData.time(1:end-1) + (diff(viconData.time)/2);
     dq4_vicon = diff(viconData.q(:,4)) ./ diff(viconData.time);
@@ -9,18 +21,22 @@ function [dump, vicon] = DumpViconTimeSynchronization(dumpData, viconData)
     peakTimes = dq_vicon_time(LOCS-1);
     viconSyncTime = peakTimes(1);
     
-    plot(dq_vicon_time, abs(dq4_vicon));
-    hold on;   
-    plot(dq_vicon_time(LOCS(1)), PKS(1), 'bx');
+    if (plotEnabled)
+        plot(dq_vicon_time, abs(dq4_vicon));
+        hold on;   
+        plot(dq_vicon_time(LOCS(1)), PKS(1), 'bx');
+    end
     
     % Find peak time in dump data
     [PKS,LOCS] = findpeaks(abs(dumpData.mti_dq(:,4)), 'MinPeakHeight', 1, 'MinPeakProminence', 0.2);
     peakTimes = dumpData.time(LOCS-1);
     dumpSyncTime = peakTimes(1);  
     
-    plot(dumpData.time, abs(dumpData.mti_dq(:,4)));    
-    plot(dumpData.time(LOCS(1)), PKS(1), 'rx');
-    hold off;      
+    if (plotEnabled)
+        plot(dumpData.time, abs(dumpData.mti_dq(:,4)));    
+        plot(dumpData.time(LOCS(1)), PKS(1), 'rx');
+        hold off;      
+    end
     
     % Try to find synchronization offset with cross-correlation
     samplesTimeUsedForCrossCorrelation = 20; % use 20 seconds of samples to estimate synchronization
@@ -31,16 +47,27 @@ function [dump, vicon] = DumpViconTimeSynchronization(dumpData, viconData)
     t = t_min:dt:(t_min+samplesTimeUsedForCrossCorrelation);    
     %t = [-t(end:-1:1); t; t(end)+dt+t];
     x = interp1(dq_vicon_time, dq4_vicon, t, 'linear', 0);
-    y = interp1(dumpData.time, dumpData.mti_dq(:,4), t, 'linear', 0);           
+    y = interp1(dumpData.time, dumpData.mti_dq(:,4), t, 'linear', 0);  
+    
+    % Use scalar value of q1 to identity whether or not to flip dq4 or mti (if sign is different)
+    vicon_q1 = interp1(viconData.time, viconData.q(:,1), t, 'linear', 0);
+    dump_q1 = interp1(dumpData.time, dumpData.mti_q(:,1), t, 'linear', 0);  
+    sign_diff = sign(vicon_q1) ~= sign(dump_q1);
+    sign_diff = -2*sign_diff + 1;    
+    y = sign_diff .* y;
+    
+    % Compute correlation between dq4 of Vicon and MTI IMU  (to find synchronization time) 
     [C lags] = xcorr(x, y); %  ceil(maxTimeOffset/dt))        
     [pos idx] = max(C);       
     syncOffset = dt*lags(idx);
     
-    figure(22);    
-    subplot(3,1,1); plot(t, x, t, y); legend('Vicon', 'IMU');    
-    subplot(3,1,2); stem(dt*lags,C); title('Synchronization lag'); xlabel('Delay [s]'); ylabel('Correlation');
-    subplot(3,1,3); plot(t-syncOffset, x, t, y); legend('Vicon', 'IMU');    
-    
+    if (plotEnabled)
+        figure(22);    
+        subplot(3,1,1); plot(t, x, t, y); legend('Vicon', 'IMU');    
+        subplot(3,1,2); stem(dt*lags,C); title('Synchronization lag'); xlabel('Delay [s]'); ylabel('Correlation');
+        subplot(3,1,3); plot(t-syncOffset, x, t, y); legend('Vicon', 'IMU');    
+    end
+        
     % Remove data prior to sync and slightly after (syncWidth)
     syncWidth = -1; % remove two seconds related to sync
     extractionLength = 0; % should only a part of the log be extracted?

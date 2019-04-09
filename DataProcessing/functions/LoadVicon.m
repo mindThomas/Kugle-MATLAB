@@ -21,7 +21,7 @@ function out = LoadVicon(ViconLogFolder, file)
 
     % Prepare different outputs
     out.time = log.ObjData.Time;
-    out.pos = log.ObjData.XYZ;
+    position_vicon_origin = log.ObjData.XYZ / 1000; % convert from millimeter to meter
     out.quality = log.ObjData.Quality;
 
     % Perform quaternion correction (flip based on scalar value)
@@ -42,15 +42,15 @@ function out = LoadVicon(ViconLogFolder, file)
     
     % Compute linear velocity by numerical differentiation
     dxy_time = log.ObjData.Time(1:end-1) + (diff(log.ObjData.Time)/2);
-    dxy = diff(log.ObjData.XYZ) ./ diff(log.ObjData.Time);
+    dxy = diff(log.ObjData.XYZ / 1000) ./ diff(log.ObjData.Time);
     % Interpolate qdot to necessary time locations
-    out.velocity = interp1(dxy_time, dxy, out.time, 'linear', 0);
+    velocity_vicon_origin = interp1(dxy_time, dxy, out.time, 'linear', 'extrap');
     
     % Compute quaternion derivative by numerical differentiation
     dq_time = log.ObjData.Time(1:end-1) + (diff(log.ObjData.Time)/2);
     dq = diff(log.ObjData.Quaternion) ./ diff(log.ObjData.Time);
     % Interpolate qdot to necessary time locations
-    out.dq = interp1(dq_time, dq, out.time, 'linear', 0);
+    out.dq = interp1(dq_time, dq, out.time, 'linear', 'extrap');
 
     % Compute angular velocity in body and inertial frame (based on numerical derivative of quaternion)
     out.omega_body = zeros(length(out.q), 3);
@@ -59,5 +59,24 @@ function out = LoadVicon(ViconLogFolder, file)
         out.omega_body(i,:) = ( 2 * devec * Phi(out.q(i,:)') * out.dq(i,:)' )';
         out.omega_inertial(i,:) = ( 2 * devec * Gamma(out.q(i,:)') * out.dq(i,:)' )';
     end    
+    
+    % Compute position of ball center (origin frame of ballbot) by transforming
+    B_p_vicon = [-9.9; 0; 911.6] / 1000;
+    K_p_vicon = zeros(length(out.q), 3);
+    dK_p_vicon = zeros(length(out.q), 3);
+    for (i = 1:length(out.q))
+        K_p_vicon = ( devec * Phi(out.q(i,:)') * Gamma(out.q(i,:)')' * vec * B_p_vicon )';
+        dK_p_vicon = ( devec * Gamma(out.q(i,:)')' * Gamma(vec * B_p_vicon) * out.dq(i,:)' )';
+    end
+    % position_vicon_origin = I_O_K + K_p_vicon
+    out.position = position_vicon_origin - K_p_vicon;
+    
+    % Compute linear velocity by numerical differentiation
+    dxy_time = log.ObjData.Time(1:end-1) + (diff(log.ObjData.Time)/2);
+    dxy = diff(out.position) ./ diff(log.ObjData.Time);
+    % Interpolate qdot to necessary time locations
+    %out.velocity = interp1(dxy_time, dxy, out.time, 'linear', 'extrap');
+    
+    out.velocity = velocity_vicon_origin - dK_p_vicon;
     
 end
