@@ -25,7 +25,7 @@ function out = LoadVicon(ViconLogFolder, file)
     out.quality = log.ObjData.Quality;
 
     % Perform quaternion correction (flip based on scalar value)
-    signSwapIdx = [1; (find(diff(log.ObjData.Quaternion(:,1)) > 0.5)+1); length(log.ObjData.Time)];
+    signSwapIdx = [1; (find(abs(diff(log.ObjData.Quaternion(:,1))) > 0.5)+1); length(log.ObjData.Time)];
     currentSign = 1;
     q = log.ObjData.Quaternion;
     for (i = 1:(length(signSwapIdx)-1))
@@ -48,7 +48,7 @@ function out = LoadVicon(ViconLogFolder, file)
     
     % Compute quaternion derivative by numerical differentiation
     dq_time = log.ObjData.Time(1:end-1) + (diff(log.ObjData.Time)/2);
-    dq = diff(log.ObjData.Quaternion) ./ diff(log.ObjData.Time);
+    dq = diff(out.q) ./ diff(log.ObjData.Time);
     % Interpolate qdot to necessary time locations
     out.dq = interp1(dq_time, dq, out.time, 'linear', 'extrap');
 
@@ -65,8 +65,8 @@ function out = LoadVicon(ViconLogFolder, file)
     K_p_vicon = zeros(length(out.q), 3);
     dK_p_vicon = zeros(length(out.q), 3);
     for (i = 1:length(out.q))
-        K_p_vicon = ( devec * Phi(out.q(i,:)') * Gamma(out.q(i,:)')' * vec * B_p_vicon )';
-        dK_p_vicon = ( devec * Gamma(out.q(i,:)')' * Gamma(vec * B_p_vicon) * out.dq(i,:)' )';
+        K_p_vicon(i,:) = ( devec * Phi(out.q(i,:)') * Gamma(out.q(i,:)')' * vec * B_p_vicon )';
+        dK_p_vicon(i,:) = ( 2 * devec * Gamma(out.q(i,:)')' * Gamma(vec * B_p_vicon) * out.dq(i,:)' )';
     end
     % position_vicon_origin = I_O_K + K_p_vicon
     out.position = position_vicon_origin - K_p_vicon;
