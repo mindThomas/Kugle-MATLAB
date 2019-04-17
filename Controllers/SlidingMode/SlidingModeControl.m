@@ -55,7 +55,16 @@ function [tau, S, q_err] = SlidingModeControl(X,q_ref,omega_ref,  COM_X,COM_Y,CO
         QuaternionErrorFrame = 1; % body frame
     end
     
-    %% Quaternion error based on reference input
+    %% Specify variable sizes by initializing to zero
+    q_err = [1;0;0;0];
+    dq_ref = [0;0;0;0];
+    omeg = [0,0,0]';
+    S = [0,0,0]';
+    InputInv = eye(3);
+    tau_eq = [0,0,0]';
+    tau_switching = [0,0,0]';
+    
+    %% Quaternion error based on reference input    
     if (QuaternionErrorFrame == 0) % inertial frame
         q_err = Gamma(q_ref)' * q; % quaternion error in inertial frame    
     elseif (QuaternionErrorFrame == 1) % body frame
@@ -66,7 +75,7 @@ function [tau, S, q_err] = SlidingModeControl(X,q_ref,omega_ref,  COM_X,COM_Y,CO
        q_err = -q_err; % inverse quaternion gives the shorter way to the same rotation
     end
 
-    %% Recompute q_ref based on q_err (makes a difference if q_err was negated)
+    %% Recompute q_ref based on q_err (makes a difference if q_err was negated)    
     if (QuaternionErrorFrame == 0) % inertial frame
         q_ref = Phi(q_err)' * q;
         dq_ref = 1/2 * Gamma(q_ref) * [0;omega_ref]; % inertial angular velocity
@@ -75,7 +84,7 @@ function [tau, S, q_err] = SlidingModeControl(X,q_ref,omega_ref,  COM_X,COM_Y,CO
         dq_ref = 1/2 * Phi(q_ref) * [0;omega_ref]; % body angular velocity
     end
 
-    domega_ref = [0,0,0]'; % assumed constant or slowly varying omega ref
+    domega_ref = [0,0,0]'; % assumed constant or slowly varying omega ref        
 
     %% Sliding manifold with q_dot and inertial error
     if (SlidingManifold == 0)        

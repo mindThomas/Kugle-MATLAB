@@ -1,8 +1,8 @@
 % Compute balance LQR control action
 % Remember to add the folder with the generated model files:
 %   addpath('../../Model/generated');
-% Note that 'omega_ref' is given in body frame
-function [tau, q_err] = BalanceLQR(X,q_ref,omega_ref,  COM_X,COM_Y,COM_Z,Jbx,Jby,Jbz,Jk,Jw,Mb,Mk,Bvb,Bvk,Bvm,rk,rw,g,  K)
+% Note that 'omega_b_ref' is angular velocity given in body frame
+function [tau, q_err] = BalanceLQR(X,q_ref,omega_b_ref,  COM_X,COM_Y,COM_Z,Jbx,Jby,Jbz,Jk,Jw,Mb,Mk,Bvb,Bvk,Bvm,rk,rw,g,  K)
 
     Phi = @(q)[q(1) -q(2) -q(3) -q(4);     % for q o p = Phi(q) * p
               q(2) q(1)  -q(4) q(3);
@@ -48,12 +48,12 @@ function [tau, q_err] = BalanceLQR(X,q_ref,omega_ref,  COM_X,COM_Y,COM_Z,Jbx,Jby
 
     % Recompute q_ref based on q_err (makes a difference if q_err was negated)
     q_ref = Gamma(q_err)' * q;
-    dq_ref = 1/2 * Phi(q_ref) * [0;omega_ref]; % body angular velocity    
+    dq_ref = 1/2 * Phi(q_ref) * [0;omega_b_ref]; % body angular velocity    
 
     domega_ref = [0,0,0]'; % assumed constant or slowly varying omega ref
 
 	omega_b = 2*devec * Phi(q)' * dq;
-	omega_b_err = omega_b - omega_ref;
+	omega_b_err = omega_b - omega_b_ref;
     
 	Xe = [q_err(2:4); % extract vector part of quaternion error
 		  omega_b_err];

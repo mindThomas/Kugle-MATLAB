@@ -25,9 +25,23 @@ function out = LoadVicon(ViconLogFolder, file)
     out.quality = log.ObjData.Quality;
 
     % Perform quaternion correction (flip based on scalar value)
-    signSwapIdx = [1; (find(abs(diff(log.ObjData.Quaternion(:,1))) > 0.5)+1); length(log.ObjData.Time)];
+%     idx = find(...
+%                 (((sign(log.ObjData.Quaternion(1:(end-1),1)) ~= sign(log.ObjData.Quaternion(2:end,1))) + ...
+%                 (sign(log.ObjData.Quaternion(1:(end-1),2)) ~= sign(log.ObjData.Quaternion(2:end,2))) + ...
+%                 (sign(log.ObjData.Quaternion(1:(end-1),3)) ~= sign(log.ObjData.Quaternion(2:end,3))) + ...
+%                 (sign(log.ObjData.Quaternion(1:(end-1),4)) ~= sign(log.ObjData.Quaternion(2:end,4)))) > 2) ...
+%             );
+    idx = find( ...
+                ((abs(diff(log.ObjData.Quaternion(:,1))) > 0.5) | ...
+                (abs(diff(log.ObjData.Quaternion(:,2))) > 0.5) | ...
+                (abs(diff(log.ObjData.Quaternion(:,3))) > 0.5) | ...
+                (abs(diff(log.ObjData.Quaternion(:,4))) > 0.5)) ...
+               );
+            
+    signSwapIdx = [1; idx+1; length(log.ObjData.Time)];
+    %signSwapIdx = [1; (find(abs(diff(log.ObjData.Quaternion(:,1))) > 0.5)+1); length(log.ObjData.Time)];
     currentSign = 1;
-    q = log.ObjData.Quaternion;
+    q = log.ObjData.Quaternion;    
     for (i = 1:(length(signSwapIdx)-1))
         q(signSwapIdx(i):signSwapIdx(i+1),:) = currentSign * log.ObjData.Quaternion(signSwapIdx(i):signSwapIdx(i+1),:);
         currentSign = -currentSign;
@@ -38,12 +52,12 @@ function out = LoadVicon(ViconLogFolder, file)
     eul = quat2eul(out.q, 'ZYX');
     out.roll = eul(:,3);
     out.pitch = eul(:,2);
-    out.yaw = eul(:,1);
+    out.yaw = (eul(:,1));
     
     % Compute linear velocity by numerical differentiation
     dxy_time = log.ObjData.Time(1:end-1) + (diff(log.ObjData.Time)/2);
     dxy = diff(log.ObjData.XYZ / 1000) ./ diff(log.ObjData.Time);
-    % Interpolate qdot to necessary time locations
+    % Interpolate velocity to necessary time locations
     velocity_vicon_origin = interp1(dxy_time, dxy, out.time, 'linear', 'extrap');
     
     % Compute quaternion derivative by numerical differentiation
@@ -56,8 +70,8 @@ function out = LoadVicon(ViconLogFolder, file)
     out.omega_body = zeros(length(out.q), 3);
     out.omega_inertial = zeros(length(out.q), 3);
     for (i = 1:length(out.q))
-        out.omega_body(i,:) = ( 2 * devec * Phi(out.q(i,:)') * out.dq(i,:)' )';
-        out.omega_inertial(i,:) = ( 2 * devec * Gamma(out.q(i,:)') * out.dq(i,:)' )';
+        out.omega_body(i,:) = ( 2 * devec * Phi(out.q(i,:)')' * out.dq(i,:)' )';
+        out.omega_inertial(i,:) = ( 2 * devec * Gamma(out.q(i,:)')' * out.dq(i,:)' )';
     end    
     
     % Compute position of ball center (origin frame of ballbot) by transforming
@@ -79,4 +93,9 @@ function out = LoadVicon(ViconLogFolder, file)
     
     out.velocity = velocity_vicon_origin - dK_p_vicon;
     
+    % Compute heading velocity
+    out.velocity_heading = zeros(length(out.q), 3);
+    for (i = 1:length(out.yaw))
+        out.velocity_heading(i,:) = ( rotz(out.yaw(i))'*out.velocity(i,:)' )';
+    end
 end

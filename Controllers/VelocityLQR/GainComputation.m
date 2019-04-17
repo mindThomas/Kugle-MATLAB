@@ -1,5 +1,5 @@
 addpath('../../Parameters');
-addpath('../Misc'); % for quaternion functions
+addpath('../../Misc'); % for quaternion functions
 load('../../Linearization/generated/ClosedLoopModelMatrices_SlidingMode_WithOmegaRef.mat');
 Constants_Kugle;
 Parameters_General % load sample rate

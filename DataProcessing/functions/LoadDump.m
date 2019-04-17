@@ -70,7 +70,9 @@ if (~isempty(covariance))
                 sensorStart
                 data.time(dataStart)
                 covariance.time(covarianceStart)
-                error('Misalignment detected in received data - needs manual correction');
+                %error('Misalignment detected in received data - needs manual correction');
+                warning('Misalignment detected in received covariance data - covariance will be left out');
+                covariance = [];
             end
         end
     end

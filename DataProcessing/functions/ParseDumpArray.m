@@ -44,12 +44,12 @@ function out = ParseDumpArray(array)
     eul = quat2eul(out.q, 'ZYX');
     out.roll = eul(:,3);
     out.pitch = eul(:,2);
-    out.yaw = eul(:,1);
+    out.yaw = unwrap(eul(:,1));
     
     eul_ref = quat2eul(out.q_ref, 'ZYX');
     out.roll_ref = eul_ref(:,3);
     out.pitch_ref = eul_ref(:,2);
-    out.yaw_ref = eul_ref(:,1);
+    out.yaw_ref = unwrap(eul_ref(:,1));
     
     out.omega_body = zeros(size(array,1), 3);    
     out.velocity_ref_heading = zeros(size(array,1), 2);     

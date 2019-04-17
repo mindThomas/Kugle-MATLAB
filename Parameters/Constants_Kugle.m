@@ -14,8 +14,6 @@ I_conj = diag([1,-1,-1,-1]);
 
 g = 9.82;
 
-beta = 0; % quaternion regularization coefficient = disabled for controllers etc. - only needed in ODE
-
 alpha = deg2rad(45); % motor angle of attack on ball
 gamma = deg2rad(120); % motor seperation (3 motors evenly seperated around 360 deg)
 
@@ -36,6 +34,7 @@ Jw = Jow + i_gear^2*(Jm+Jgear);
 Mb = 14.31 + 1.844;
 
 % Body center of mass defined with origin in ball center
+SimulateWithAlignedCOM = true; % if set to true the COM is corrected to be aligned, similar to the calibration performed on the robot
 COM_X = -0.02069e-3;
 COM_Y = -3.20801e-3;
 COM_Z = 550.23854e-3 - rk; % subtract rk since the values are extracted from OnShape with origin in contact point (bottom of ball)
@@ -53,26 +52,19 @@ Jb_COM = (1e-3)^2 * [
 % generalized parallel axis theorem (https://en.wikipedia.org/wiki/Parallel_axis_theorem)
 Jb = Jb_COM + Mb*(COM'*COM*eye(3) - COM*COM');
 
-% Correct COM used in model to be right above ball origin
-COM_X = 0;
-COM_Y = 0*0.005;
-COM_Z = l;
-COM = [COM_X, COM_Y, COM_Z]';
-
 % OBS! Maybe the model should be enhanced/changed to allow non-diagonal inertias
 % (constants should be the inertia tensor elements)
 Jbx = Jb(1,1);
 Jby = Jb(2,2);
 Jbz = Jb(3,3);
 
-Bvk = 0*0.001;%0.0005;
-Bvm = 0*0.001;%0.0002;
-Bvb = 0*0.001;%0.0001;
-
-constants = [Jk, Mk, rk, Mb, Jbx, Jby, Jbz, Jw, rw, Bvk, Bvm, Bvb, l, g]';
-
 % Center of rotation parameter - used in estimator
 CoR = 0.8720; % (2.07 * l)   run "NonlinearModelAnalysis.m" script to get value
+
+% Friction parameters
+Bvk = 0.001;
+Bvm = 0.001;
+Bvb = 0.001;
 
 % Motor limit
 max_motor_current = 15; % ESCON 50/5 motor driver (https://www.maxonmotor.com/maxon/view/product/control/4-Q-Servokontroller/438725)
@@ -113,6 +105,13 @@ battery_max_current = 8; % A continous discharge
 % Encoder parameters
 TicksPrRev = 4*4096 * i_gear; % Maxon encoder gives 4096 pulses pr. revolution, each with 4 edges (due to quadrature detection)   (https://www.maxonmotor.com/maxon/view/product/sensor/encoder/Induktive-Encoder/Encoder-MILE-512-4096/421988)
 
-% Controller parameters
-Ts = 1/200; % 200 Hz controller sample rate
-Ts_heading = 1/10; % 10 Hz SLAM rate (for heading estimate)
+%% Correct COM for simulation
+if (SimulateWithAlignedCOM)
+    COM_X = 0;
+    COM_Y = 0;
+    COM_Z = l;
+    COM = [COM_X; COM_Y; COM_Z];
+end
+
+%% Assemble constant vector used in simulation
+constants = [Jk, Mk, rk, Mb, Jbx, Jby, Jbz, Jw, rw, Bvk, Bvm, Bvb, g]';

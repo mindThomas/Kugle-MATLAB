@@ -12,6 +12,7 @@ devec = [0,1,0,0;0,0,1,0;0,0,0,1]; % 'v' in notes
 vec = [0,0,0;1,0,0;0,1,0;0,0,1]; % '^' in notes
 I_conj = diag([1,-1,-1,-1]);
 
+beta = 0; % quaternion regularization coefficient = disabled for controllers etc. - only needed in ODE where it is manually set
 
 % IMU location
 IMU_height = 0.1; % distance in body frame from center of ball to center of IMU
@@ -20,19 +21,27 @@ IMU_misalignment = eul2rotm(IMU_misalignmentYPR, 'ZYX');
 
 % Sensor Noise parameters
 EnableNoise = false;
+
+% Load sensor covariance from estimator parameters
+Parameters_Estimators;
   
-sigma2_acc = 1.0e-03 * 0.4;
-sigma2_gyro = 1.0e-03 * 0.9;     
-sigma2_encoder = 0.5;   
-sigma2_heading = (deg2rad(10) / 3) ^ 2;
+% Specify noise variance for simulated sensor (can be the same as used in estimator)
+sensor_sigma2_acc = 1.0e-03 * 0.4;
+sensor_sigma2_gyro = 1.0e-03 * 0.9;     
+sensor_sigma2_encoder = 0.5;
+sensor_sigma2_heading = (deg2rad(1) / 3) ^ 2;
+
+% Construct simulated sensor covariance matrices
+sensor_cov_acc = cov_acc; %eye(3) * sensor_sigma2_acc;
+sensor_cov_gyro = cov_gyro; %eye(3) * sensor_sigma2_gyro;
 
 % Sensor Bias parameters
-gyro_bias = [0*-0.025, 0*0.015, 0*-0.008]';  % rad/s
+gyro_bias = 0*[-0.025, 0.015, -0.008]';  % rad/s
 
 % Plant/Sim Initialization parameters
-roll_init_deg = 10;
-pitch_init_deg = 0;
-yaw_init_deg = 0;
+roll_init_deg = 2;
+pitch_init_deg = -2;
+yaw_init_deg = 2;
 omeg_x_init = 0;
 omeg_y_init = 0;
 omeg_z_init = 0;
@@ -42,3 +51,25 @@ x_init = [0,0, q_init', 0,0, dq_init']';
 
 % Estimator initialization parameters
 est_q_init = eul2quat(deg2rad([yaw_init_deg,pitch_init_deg,roll_init_deg]),'ZYX')';
+
+
+%% Reference Test modes
+ReferenceMode = 0; % 0 = constant, 1 = roll sine wave, 2 = roll chirp
+
+% Constant reference mode
+q_ref = eul2quat(deg2rad([0,0,0]), 'ZYX')';
+omega_b_ref = [0,0,0]';
+
+% Roll sine wave
+f_sine = 0.5; % hertz
+roll_sine_amplitude_deg = 3;
+
+% Roll chip
+f0_chirp = 0.5; % hertz
+rate_chirp = 0.05; % hertz per second
+chirp_amplitude_deg = 2;
+
+%% Automatic parameters - do not touch!
+% Used to generate multivariate noise as: R*randn(3,1)
+R_cov_acc = chol(sensor_cov_acc, 'lower');
+R_cov_gyro = chol(sensor_cov_gyro, 'lower');

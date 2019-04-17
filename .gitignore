@@ -6,3 +6,6 @@ slprj/
 
 # MATLAB autosave/temp files
 *.asv
+
+# Simulink autosave files
+*.autosave

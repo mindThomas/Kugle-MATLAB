@@ -35,7 +35,7 @@ function out = ParseSensorDumpArray(array)
     eul_mti = quat2eul(out.mti_q, 'ZYX');
     out.mti_roll = eul_mti(:,3);
     out.mti_pitch = eul_mti(:,2);
-    out.mti_yaw = eul_mti(:,1);        
+    out.mti_yaw = unwrap(eul_mti(:,1));        
     
     out.mti_omega_body = zeros(size(array,1), 3);    
     for (m = 1:size(array,1))

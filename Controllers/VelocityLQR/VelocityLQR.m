@@ -1,6 +1,6 @@
 % Compute balance LQR control action
 % Remember to add the folder with the quaternion functions:
-%   addpath('../Misc');
+%   addpath('../../Misc');
 % Note that:
 %   'vel_ref' input is given in inertial frame
 %   'omega_ref' output is given in body frame
