@@ -11,9 +11,10 @@ devec = [0,1,0,0;0,0,1,0;0,0,0,1]; % 'v' in notes
 vec = [0,0,0;1,0,0;0,1,0;0,0,1]; % '^' in notes
 I_conj = diag([1,-1,-1,-1]); 
 
-addpath('functions');
-addpath('../Model/generated');
-addpath('../Parameters');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, 'functions'));
+addpath(fullfile(scriptDir, '../Model/generated'));
+addpath(fullfile(scriptDir, '../Parameters'));
 Constants_Kugle;
 
 DumpFolder = '~/kugle_dump/';

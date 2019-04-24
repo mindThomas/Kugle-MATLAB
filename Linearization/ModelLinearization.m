@@ -1,7 +1,8 @@
 %% This script linearizes the model by adding a small pertubation, thus computing the partial derivatives numerically
-addpath('../Parameters');
-addpath('../Model');
-addpath('../Model/generated');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, '../Parameters'));
+addpath(fullfile(scriptDir, '../Model'));
+addpath(fullfile(scriptDir, '../Model/generated'));
 Constants_Kugle
 
 % Pertubation delta for numerical partial derivation

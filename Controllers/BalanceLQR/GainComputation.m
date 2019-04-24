@@ -1,6 +1,7 @@
-addpath('../../Model/generated');
-addpath('../../Model/functions');
-addpath('../../Parameters');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, '../../Model/generated'));
+addpath(fullfile(scriptDir, '../../Model/functions'));
+addpath(fullfile(scriptDir, '../../Parameters'));
 Constants_Kugle;
 
 Phi = @(q)[q(1) -q(2) -q(3) -q(4);     % for q o p = Phi(q) * p

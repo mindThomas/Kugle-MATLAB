@@ -1,5 +1,6 @@
-addpath('../../Parameters');
-load('../../Linearization/generated/LinearizedModelMatrices.mat');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, '../../Parameters'));
+load(fullfile(scriptDir, '../../Linearization/generated/LinearizedModelMatrices.mat'));
 Constants_Kugle;
 
 Phi = @(q)[q(1) -q(2) -q(3) -q(4);     % for q o p = Phi(q) * p

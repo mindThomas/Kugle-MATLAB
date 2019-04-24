@@ -1,6 +1,7 @@
-addpath('../../Parameters');
-addpath('../../Misc'); % for quaternion functions
-load('../../Linearization/generated/ClosedLoopModelMatrices_SlidingMode_WithOmegaRef.mat');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, '../../Parameters'));
+addpath(fullfile(scriptDir, '../../Misc')); % for quaternion functions
+load(fullfile(scriptDir, '../../Linearization/generated/ClosedLoopModelMatrices_SlidingMode_WithOmegaRef.mat'));
 Constants_Kugle;
 Parameters_General % load sample rate
 Parameters_Controllers % load controller parameters

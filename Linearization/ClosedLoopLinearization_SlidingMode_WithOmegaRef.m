@@ -1,8 +1,9 @@
 %% This script linearizes the model by adding a small pertubation, thus computing the partial derivatives numerically
-addpath('../Parameters');
-addpath('../Model');
-addpath('../Model/generated');
-addpath('../Controllers/SlidingMode');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, '../Parameters'));
+addpath(fullfile(scriptDir, '../Model'));
+addpath(fullfile(scriptDir, '../Model/generated'));
+addpath(fullfile(scriptDir, '../Controllers/SlidingMode'));
 Constants_Kugle % load model parameters
 Parameters_Controllers % load controller parameters
 
