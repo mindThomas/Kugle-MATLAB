@@ -1,5 +1,6 @@
 clear all;
-addpath('../Parameters');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, '../Parameters'));
 
 % Parameters
 syms g positive % gravity

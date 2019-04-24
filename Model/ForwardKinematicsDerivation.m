@@ -1,6 +1,7 @@
 % The following script is derived by hand (see paper notes)
 clear all;
-addpath('../Parameters');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, '../Parameters'));
 Constants_Kugle; % load some constants (eg. alpha and gamma) but replace other with symbolic variables
 
 Phi = @(q)[q(1) -q(2) -q(3) -q(4);     % for q o p = Phi(q) * p

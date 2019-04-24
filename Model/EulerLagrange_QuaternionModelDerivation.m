@@ -2,22 +2,23 @@
 % Note that the scalar element of the quaternion in this derivative is q1, where it is q0 in the report.
 
 clear all;
-addpath('../Parameters');
+scriptDir = fileparts(mfilename('fullpath'));
+addpath(fullfile(scriptDir, '../Parameters'));
 Constants_Kugle; % load some constants (eg. alpha and gamma defining the wheel contact points) but replace other with symbolic variables
 
 % When simplifying consider the option "'IgnoreAnalyticConstraints', true"
 
 %% Parameters
 syms g positive % gravity
-syms alpha gamma positive;
+%syms alpha gamma positive; % leave alpha and gamma constants defined with their values, such as to simplify the model
 syms Mk rk Jw Mw rw Mb l positive;
 syms COM_X COM_Y real;
 syms COM_Z positive;
 syms Bvk Bvb Bvm positive; % friction coefficients
 
 assumeAlso(g, 'real');
-assumeAlso(alpha, 'real');
-assumeAlso(gamma, 'real');
+%assumeAlso(alpha, 'real');
+%assumeAlso(gamma, 'real');
 assumeAlso(Mk, 'real');
 assumeAlso(rk, 'real');
 assumeAlso(Jw, 'real');
@@ -372,7 +373,7 @@ Q_tilde = [H_*Q; zeros(1,3)];
 % the norm-preserving regularization terms (hence if beta is intended to be used)
 
 %% Save model and generated symbolic function files (used in simulation, MATLAB coder etc.)
-save('SymbolicModel.mat');
+save('generated/SymbolicModel.mat');
 matlabFunction(M_tilde, 'file', 'generated/mass', 'outputs', {'M'});
 matlabFunction(C_tilde, 'file', 'generated/coriolis', 'outputs', {'C'});
 matlabFunction(G_tilde, 'file', 'generated/gravity', 'outputs', {'G'});
