@@ -51,7 +51,7 @@ colNames = {'tau1','tau2','tau3'};
 rowNames = {'dx','dy','dq1','dq2','dq3','dq4','ddx','ddy','ddq1','ddq2','ddq3','ddq4'};
 B_withLabels = array2table(B,'RowNames',rowNames,'VariableNames',colNames)
 
-save('generated/LinearizedModelMatrices', 'A', 'B', 'A_withLabels', 'B_withLabels');
+save(fullfile(scriptDir, 'generated/LinearizedModelMatrices'), 'A', 'B', 'A_withLabels', 'B_withLabels');
 
 %% Pole/zero analysis
 C = [0,0,0,0,0,0,1,0,0,0,0,0;

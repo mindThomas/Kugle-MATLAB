@@ -42,7 +42,7 @@ disp(' ');
 
 % Save gain
 VelocityLQRgain = K;
-save('generated/VelocityLQRgain', 'VelocityLQRgain');
+save(fullfile(scriptDir, 'generated/VelocityLQRgain'), 'VelocityLQRgain');
 
 Kvel = K;
 

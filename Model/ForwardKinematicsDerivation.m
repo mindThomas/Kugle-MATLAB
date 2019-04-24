@@ -53,12 +53,12 @@ K_omeg_k_ = SimplifyWithQuatConstraint(Phi(q_) * Gamma(q_)' * B_omeg_k_, q_) + S
 
 trans_vel = rk * [0,0,1,0;0,-1,0,0] * K_omeg_k_
 rot_vel = [0,0,0,1] * B_omeg_k_
-matlabFunction(trans_vel, 'file', 'generated/ForwardKinematics', 'outputs', {'dxdy'}); % save forward kinematics
+matlabFunction(trans_vel, 'file', fullfile(scriptDir, 'generated/ForwardKinematics'), 'outputs', {'dxdy'}); % save forward kinematics
 
 trans_vel_headingFrame = rk * [0,0,1,0;0,-1,0,0] * SimplifyWithQuatConstraint(Phi(q_)' * Gamma(q_) * K_omeg_k_, q_)
-matlabFunction(trans_vel_headingFrame, 'file', 'generated/ForwardKinematicsInHeadingFrame', 'outputs', {'dxdy_h'}); % save forward kinematics in heading frame
+matlabFunction(trans_vel_headingFrame, 'file', fullfile(scriptDir, 'generated/ForwardKinematicsInHeadingFrame'), 'outputs', {'dxdy_h'}); % save forward kinematics in heading frame
 
-matlabFunction([trans_vel;rot_vel], 'file', 'generated/ForwardKinematics_WithRot', 'outputs', {'dxdydyaw'}); % save forward kinematics
+matlabFunction([trans_vel;rot_vel], 'file', fullfile(scriptDir, 'generated/ForwardKinematics_WithRot'), 'outputs', {'dxdydyaw'}); % save forward kinematics
 
 %% Forward kinematics for COM velocity
 B_p_COM = [0, 0, l]'; % COM in Body frame
@@ -69,7 +69,7 @@ K_dp_COM = devec * (Phi(dq_) * Gamma(q_)' + Phi(q_) * Gamma(dq_)') * [0;B_p_COM]
 I_dp_COM = K_dp_COM + [trans_vel;0];
  
 trans_vel_com = [1,0,0; 0,1,0] * I_dp_COM
-matlabFunction(trans_vel_com, 'file', 'generated/ForwardKinematics_COM', 'outputs', {'dxdy_com'}); % save forward kinematics
+matlabFunction(trans_vel_com, 'file', fullfile(scriptDir, 'generated/ForwardKinematics_COM'), 'outputs', {'dxdy_com'}); % save forward kinematics
 
 %% Forward kinematics for 2*L velocity
 B_p_2L = [0, 0, 2*l]'; % COM in Body frame
@@ -79,7 +79,7 @@ K_dp_2L = devec * (Phi(dq_) * Gamma(q_)' + Phi(q_) * Gamma(dq_)') * [0;B_p_2L];
 I_dp_2L = K_dp_2L + [trans_vel;0];
  
 trans_vel_2L = [1,0,0; 0,1,0] * I_dp_2L
-matlabFunction(trans_vel_2L, 'file', 'generated/ForwardKinematics_2L', 'outputs', {'dxdy_2l'}); % save forward kinematics
+matlabFunction(trans_vel_2L, 'file', fullfile(scriptDir, 'generated/ForwardKinematics_2L'), 'outputs', {'dxdy_2l'}); % save forward kinematics
 
 
 %%

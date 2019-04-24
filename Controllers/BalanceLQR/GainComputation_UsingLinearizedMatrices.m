@@ -49,7 +49,7 @@ disp(' ');
 
 % Save gain
 BalanceLQRgain = K;
-save('generated/BalanceLQRgain', 'BalanceLQRgain');
+save(fullfile(scriptDir, 'generated/BalanceLQRgain'), 'BalanceLQRgain');
 
 %% Test gains
 q = [1,0,0,0]';

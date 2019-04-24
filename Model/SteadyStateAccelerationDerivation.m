@@ -111,7 +111,7 @@ Acceleration = SimplifyWithQuatConstraint( Acceleration, q );
 disp('Finished simplifying acceleration equation');
 
 % Save model
-matlabFunction(Acceleration, 'file', 'generated/SteadyStateAcceleration', 'outputs', {'acceleration'});
+matlabFunction(Acceleration, 'file', fullfile(scriptDir, 'generated/SteadyStateAcceleration'), 'outputs', {'acceleration'});
 disp('Finished saving acceleration model');
 
 %% Simplify model for Jacobian derivation as it will other grow too big by including the wheel inertia
@@ -128,7 +128,7 @@ disp('Finished saving acceleration model');
 %disp('Finished simplifying acceleration dCOM');
 
 %% Save Jacobians
-%matlabFunction(dAcceleration_dq, 'file', 'generated/SteadyStateAcceleration_dq', 'outputs', {'dAcceleration_dq'}); % , 'Optimize', false
+%matlabFunction(dAcceleration_dq, 'file', fullfile(scriptDir, 'generated/SteadyStateAcceleration_dq'), 'outputs', {'dAcceleration_dq'}); % , 'Optimize', false
 %disp('Finished saving acceleration dq');
-%matlabFunction(dAcceleration_dCOM, 'file', 'generated/SteadyStateAcceleration_dCOM', 'outputs', {'dAcceleration_dCOM'});
+%matlabFunction(dAcceleration_dCOM, 'file', fullfile(scriptDir, 'generated/SteadyStateAcceleration_dCOM'), 'outputs', {'dAcceleration_dCOM'});
 %disp('Finished saving acceleration dCOM');

@@ -101,7 +101,7 @@ dpsi = subs(dpsi, dchi, dchi_);
 dpsi = subs(dpsi, chi, chi_);
 dpsi = dpsi(0); % there should be no time dependence, so we evaluate at t=0 just to make MATLAB happy since it is independent of t
 J = simplify( jacobian(dpsi, dchi_) );
-matlabFunction(simplify(dpsi), 'file', 'generated/PlanarInverseKinematics', 'outputs', {'dpsi'}); % save inverse kinematics
+matlabFunction(simplify(dpsi), 'file', fullfile(scriptDir, 'generated/PlanarInverseKinematics'), 'outputs', {'dpsi'}); % save inverse kinematics
 
 Q = simplify( J' * tau ); % generalized input forces
 
@@ -182,11 +182,11 @@ G = dyneq4
 
 
 %% Save matrices
-matlabFunction(M, 'file', 'generated/planar_mass', 'outputs', {'M'});
-matlabFunction(C, 'file', 'generated/planar_coriolis', 'outputs', {'C'});
-matlabFunction(G, 'file', 'generated/planar_gravity', 'outputs', {'G'});
-matlabFunction(Q, 'file', 'generated/planar_input_forces', 'outputs', {'Q'});
-matlabFunction(D, 'file', 'generated/planar_friction', 'outputs', {'D'});
+matlabFunction(M, 'file', fullfile(scriptDir, 'generated/planar_mass'), 'outputs', {'M'});
+matlabFunction(C, 'file', fullfile(scriptDir, 'generated/planar_coriolis'), 'outputs', {'C'});
+matlabFunction(G, 'file', fullfile(scriptDir, 'generated/planar_gravity'), 'outputs', {'G'});
+matlabFunction(Q, 'file', fullfile(scriptDir, 'generated/planar_input_forces'), 'outputs', {'Q'});
+matlabFunction(D, 'file', fullfile(scriptDir, 'generated/planar_friction'), 'outputs', {'D'});
 
 %% Linearize system
 % Normal method of linearizing system, now that the system is small enough
@@ -202,11 +202,11 @@ dx = [dchi_; inv(M)*(Q - C*chi_ - G - D)];
 
 A = simplify( jacobian(dx, x) )
 disp('Saving A matrix'); 
-matlabFunction(A, 'file', 'generated/planar_A_matrix', 'outputs', {'A'}); 
+matlabFunction(A, 'file', fullfile(scriptDir, 'generated/planar_A_matrix'), 'outputs', {'A'}); 
 
 B = simplify( jacobian(dx, tau) )
 disp('Saving B matrix'); 
-matlabFunction(B, 'file', 'generated/planar_B_matrix', 'outputs', {'B'}); 
+matlabFunction(B, 'file', fullfile(scriptDir, 'generated/planar_B_matrix'), 'outputs', {'B'}); 
 
 %% See if we can ressemble system equations
 simplify( dyneq2 == M*ddchi_ + C*dchi_ + G )

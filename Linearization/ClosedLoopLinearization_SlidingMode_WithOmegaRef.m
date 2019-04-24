@@ -78,8 +78,10 @@ colNames = {'omeg_ref_x','omeg_ref_y','omeg_ref_z'};
 rowNames = {'dx','dy','dq1','dq2','dq3','dq4','ddx','ddy','ddq1','ddq2','ddq3','ddq4','dqr0','dqr1','dqr2','dqr3'};
 B_withLabels = array2table(B,'RowNames',rowNames,'VariableNames',colNames)
 
-save('generated/ClosedLoopModelMatrices_SlidingMode_WithOmegaRef', 'A', 'B', 'A_withLabels', 'B_withLabels');
+save(fullfile(scriptDir, 'generated/ClosedLoopModelMatrices_SlidingMode_WithOmegaRef'), 'A', 'B', 'A_withLabels', 'B_withLabels');
 
 %% Extract the steady state acceleration relationship between qref and linear acceleration
 AccelerationConstant_q3_to_ddx = A(7,5) + A(7,15)
 AccelerationConstant_q2_to_ddy = A(8,4) + A(8,14)
+
+save(fullfile(scriptDir, 'generated/SteadyStateAccelerationConstants.mat'fullfile(scriptDir, , 'AccelerationConstant_q3_to_ddx', 'AccelerationConstant_q2_to_ddy');

@@ -226,7 +226,7 @@ dpsi = subs(dpsi, dchi, dchi_);
 dpsi = subs(dpsi, chi, chi_);
 dpsi = dpsi(0); % there should be no time dependence, so we evaluate at t=0 just to make MATLAB happy since it is independent of t
 J = simplify( jacobian(dpsi, dchi_) );
-matlabFunction(simplify(dpsi), 'file', 'generated/InverseKinematics', 'outputs', {'dpsi'}); % save inverse kinematics
+matlabFunction(simplify(dpsi), 'file', fullfile(scriptDir, 'generated/InverseKinematics'), 'outputs', {'dpsi'}); % save inverse kinematics
 
 %TransVelToTau = subs(J, [q1 q2 q3 q4], [1 0 0 0]) * [dx dy 0 0 0 0]';
 %matlabFunction(TransVelToTau, 'file', 'generated/TransVelToTau', 'outputs', {'tau'}); % function for generating test torque inputs based on desired translational velocity
@@ -373,9 +373,9 @@ Q_tilde = [H_*Q; zeros(1,3)];
 % the norm-preserving regularization terms (hence if beta is intended to be used)
 
 %% Save model and generated symbolic function files (used in simulation, MATLAB coder etc.)
-save('generated/SymbolicModel.mat');
-matlabFunction(M_tilde, 'file', 'generated/mass', 'outputs', {'M'});
-matlabFunction(C_tilde, 'file', 'generated/coriolis', 'outputs', {'C'});
-matlabFunction(G_tilde, 'file', 'generated/gravity', 'outputs', {'G'});
-matlabFunction(Q_tilde, 'file', 'generated/input_forces', 'outputs', {'Q'});
-matlabFunction(D_tilde, 'file', 'generated/friction', 'outputs', {'D'});
+save(fullfile(scriptDir, 'generated/SymbolicModel.mat'));
+matlabFunction(M_tilde, 'file', fullfile(scriptDir, 'generated/mass'), 'outputs', {'M'});
+matlabFunction(C_tilde, 'file', fullfile(scriptDir, 'generated/coriolis'), 'outputs', {'C'});
+matlabFunction(G_tilde, 'file', fullfile(scriptDir, 'generated/gravity'), 'outputs', {'G'});
+matlabFunction(Q_tilde, 'file', fullfile(scriptDir, 'generated/input_forces'), 'outputs', {'Q'});
+matlabFunction(D_tilde, 'file', fullfile(scriptDir, 'generated/friction'), 'outputs', {'D'});

@@ -74,7 +74,7 @@ colNames = {'qref1','qref2','qref3','qref4'};
 rowNames = {'dx','dy','dq1','dq2','dq3','dq4','ddx','ddy','ddq1','ddq2','ddq3','ddq4'};
 B_withLabels = array2table(B,'RowNames',rowNames,'VariableNames',colNames)
 
-save('generated/ClosedLoopModelMatrices_SlidingMode', 'A', 'B', 'A_withLabels', 'B_withLabels');
+save(fullfile(scriptDir, 'generated/ClosedLoopModelMatrices_SlidingMode'), 'A', 'B', 'A_withLabels', 'B_withLabels');
 
 %% Pole/zero analysis
 C = [0,0,0,0,0,0,1,0,0,0,0,0;
@@ -87,3 +87,5 @@ pzmap(sys)
 %% Extract the steady state acceleration relationship between qref and linear acceleration
 AccelerationConstant_q3_to_ddx = A(7,5) + B(7,3)
 AccelerationConstant_q2_to_ddy = A(8,4) + B(8,2)
+
+save(fullfile(scriptDir, 'generated/SteadyStateAccelerationConstants.mat'), 'AccelerationConstant_q3_to_ddx', 'AccelerationConstant_q2_to_ddy');
