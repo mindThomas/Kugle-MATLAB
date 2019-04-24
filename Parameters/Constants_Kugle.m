@@ -47,6 +47,7 @@ Jb_COM = (1e-3)^2 * [
         1.29465e+6,     -6.43967e+1,    2.37297e+2
         -6.43967e+1,    1.30640e+6,     3.17317e+4
         2.37297e+2,     3.17317e+4,     1.00218e+5];
+Jb_COM = rotz(deg2rad(-90)) * Jb_COM * rotz(deg2rad(-90))'; % since the x-axis of the OnShape CAD drawing points in the y-axis direction
     
 % Shift moment of inertia to be around origin = ball center using
 % generalized parallel axis theorem (https://en.wikipedia.org/wiki/Parallel_axis_theorem)
