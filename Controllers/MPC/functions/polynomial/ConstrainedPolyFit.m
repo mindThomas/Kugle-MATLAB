@@ -16,6 +16,13 @@ function polyCoeffs = ConstrainedPolyFit(t, data, order, EnforceBeginEndConstrai
         error('Underdetermined least squares polynomial fitting due to too few data points');
     end
     
+    if (EnforceBeginEndAngleConstraint && ...
+            (t(1) == t(2)) ||  ...
+            (t(end) == t(end-1)) ...
+        )
+        error('Can not enforce begin-end angle constraint when input parameter, t, is not changing near the beginning or end');
+    end
+    
     %A = [];    
     %for (j = order:-1:0)
     %    A = [A, t.^j];

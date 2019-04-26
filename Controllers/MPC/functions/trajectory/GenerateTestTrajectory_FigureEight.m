@@ -1,7 +1,7 @@
-function TrajectoryPoints = GenerateTestTrajectory2()
+function TrajectoryPoints = GenerateTestTrajectory_FigureEight()
     %% Generate test trajectory
     TrajectoryPoints = [];
-    for (i = 0:(50+270+100+270+50))
+    for (i = 0:((50+270+100+270+50)-1))
         if (i < 50) 
             p = [i, i]/5;
         elseif (i < 50+270)

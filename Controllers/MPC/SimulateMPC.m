@@ -31,7 +31,7 @@ IncludeLegendInPlot = false; % including the legend will slow down the plotting
 vis = TrajectoryVisualizer(PlotEnabled);
 
 %% Generate trajectory
-TrajectoryPoints = GenerateTestTrajectory;
+TrajectoryPoints = GenerateTestTrajectory; % GenerateTestTrajectory or GenerateTestTrajectory_FigureEight
 
 %% Set initial point and settings
 vis.GlobalTrajectoryPoints = TrajectoryPoints;
