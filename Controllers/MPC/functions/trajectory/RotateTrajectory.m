@@ -1,4 +1,4 @@
-function rotatedPoints = RotateTrajectory(trajectory, rotation)
+function rotatedPoints = RotateTrajectory(trajectory, rotation)  %#codegen
     R = [cos(rotation), sin(rotation);
          -sin(rotation), cos(rotation)];
      

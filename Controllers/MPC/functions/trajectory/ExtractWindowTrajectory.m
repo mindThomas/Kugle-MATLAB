@@ -1,4 +1,4 @@
-function [WindowTrajectory, nTrajPoints, WindowOrientation] = ExtractWindowTrajectory(TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, WindowWidth, WindowHeight, WindowOffset, OrientationSelection)
+function [WindowTrajectory, nTrajPoints, WindowOrientation] = ExtractWindowTrajectory(TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, WindowWidth, WindowHeight, WindowOffset, OrientationSelection)  %#codegen
 
 % OrientationSelection = 0;
 % RobotPos = [4.20, 0.8];

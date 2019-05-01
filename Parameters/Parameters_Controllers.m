@@ -1,3 +1,7 @@
+% General sample rate
+SampleRate = 200; % 200 Hz controller sample rate
+Ts = 1/SampleRate; 
+
 % Torque output parameter
 SaturationTorqueOfMaxOutputTorque = 0.8; % saturation percentage of maximum output torque
 

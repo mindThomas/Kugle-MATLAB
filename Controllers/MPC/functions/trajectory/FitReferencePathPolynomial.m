@@ -1,4 +1,4 @@
-function [TrajectoryPoints, coeff_xs, coeff_ys, windowTrajectoryLength, minDistancePoint] = FitReferencePathPolynomial(WindowTrajectoryPoints, RobotPosInWindow, approximation_order, velocity, ts, N)
+function [TrajectoryPoints, coeff_xs, coeff_ys, windowTrajectoryLength, minDistancePoint] = FitReferencePathPolynomial(WindowTrajectoryPoints, approximation_order, velocity, ts, N)  %#codegen
     % ts = sample time
     % N = MPC horizon (samples)
 

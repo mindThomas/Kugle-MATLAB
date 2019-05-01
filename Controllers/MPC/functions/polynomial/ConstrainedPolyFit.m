@@ -1,5 +1,5 @@
 %% Constrained Least Squares polynomial fit for arbitrary function parameter however with t(1)=0
-function polyCoeffs = ConstrainedPolyFit(t, data, order, EnforceBeginEndConstraint, EnforceBeginEndAngleConstraint)
+function polyCoeffs = ConstrainedPolyFit(t, data, order, EnforceBeginEndConstraint, EnforceBeginEndAngleConstraint)  %#codegen
     if (order < 1)
         error('Polynomial order needs to be at least 1');
     elseif (order < 3 && EnforceBeginEndConstraint && EnforceBeginEndAngleConstraint)

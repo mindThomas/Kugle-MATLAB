@@ -1,4 +1,4 @@
-function dX = LinearMPCmodel(t, X, u, AccelerationConstant_q3_to_ddx, AccelerationConstant_q2_to_ddy)   
+function dX = EvaluateLinearMPCmodel(t, X, u, AccelerationConstant_q3_to_ddx, AccelerationConstant_q2_to_ddy)   
     % Extract states
     q1 = X(1);
     q2 = X(2);

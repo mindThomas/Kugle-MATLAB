@@ -1,5 +1,5 @@
 % Find the minimum by Newton minimization given upper and lower parameter bounds
-function s_min = PolynomialMinimumFinderWithBounds(coeff, s0, sLower, sUpper, stoppingCriteria, maxIterations)
+function s_min = PolynomialMinimumFinderWithBounds(coeff, s0, sLower, sUpper, stoppingCriteria, maxIterations)  %#codegen
     dcoeff = ComputeDerivativePolynomialCoefficients(coeff);
     ddcoeff = ComputeDerivativePolynomialCoefficients(dcoeff);
   

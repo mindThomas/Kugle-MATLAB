@@ -27,24 +27,6 @@ WNmat = diag(WNdiag);
 WindowWidth = 5.0;
 WindowHeight = 5.0;
 WindowOffset = [0, 0]; % Window offset relative to robot, hence positive X means window is moved in positive X direction in robot frame so robot center will move to a negative X position in the window
-WindowOrientation = 0;
 pathApproximationOrder = 8;
+VelocityDefinedWindow = false; % will replace the parameters above if set to true
 WindowOrientationSelection = 0; % 0=inertial frame, 1=robot yaw (heading), 2=velocity direction
-
-%% MPC state init
-% q_init = [1,0,0,0]';
-% xInit = [q_init(2:3)',  2,1,  0,0]';
-% uInit = [0,0]';
-% zInit = [];
-% bValues = [];
-% 
-% timeVec = (0:N)' * Ts_MPC;
-% x_ref = 0;
-% y_ref = 0;
-% references = [timeVec, repmat([x_ref, y_ref], [N+1,1])];
-% 
-% 
-% x_final = x_ref;
-% y_final = y_ref;
-% OData_element = [maxAngle, maxOmegaRef, x_final, y_final];
-% OData = repmat(OData_element, [N+1,1]);

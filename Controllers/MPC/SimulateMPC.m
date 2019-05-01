@@ -11,6 +11,7 @@ addpath(fullfile(scriptDir, '../../Model/generated')); % for SteadyStateAccelera
 load(fullfile(scriptDir, '../../Linearization/generated/SteadyStateAccelerationConstants.mat'));
 Constants_Kugle;
 Parameters_MPC;
+Parameters_Simulation;
 
 Phi = @(q)[q(1) -q(2) -q(3) -q(4);     % for q o p = Phi(q) * p
           q(2) q(1)  -q(4) q(3);
@@ -36,21 +37,20 @@ TrajectoryPoints = GenerateTestTrajectory; % GenerateTestTrajectory or GenerateT
 %% Set initial point and settings
 vis.GlobalTrajectoryPoints = TrajectoryPoints;
 vis.ChangeLimits(-7, -2, 7, 2);
-vis.x = 4;
-vis.y = -2;
+vis.x = x_init(1);
+vis.y = x_init(2);
 vis.yaw = deg2rad( 0 );
 if (PlotEnabled)
     vis.Draw;
 end
 
 % Simulation and configuration parameters
-VelocityDefinedWindow = false; % will replace the parameters above if set to true
 UseNonlinearSteadyStateModelForSimulation = true; % whether to use the steady state acceleration model for simulation
 
 % Simulated obstacle (defined in inertial frame)
-ObstacleAvoidanceEnabled = true;
+ObstacleAvoidanceEnabled = MPC_EnableStaticObstacles;
 Obstacle_Avoidance_Clearance = 0.05;
-RandomizedObstacles = 0; % enable random obstacles by setting this >0
+RandomizedObstacles = MPC_RandomObstacles; % enable random obstacles by setting this >0
 
 % Define some static obstacles that are always present
 %             X     Y     R   
@@ -82,7 +82,7 @@ RobotStates = [eul2quat([vis.yaw,0,0], 'ZYX'),  vis.x,vis.y,  0,0]';
 
 % MPC settings
 order = pathApproximationOrder; % polynomial approximation order
-velocity = 1.0; % desired velocity - note that the final constraint of zero velocity will reduce the maximum drivable velocity (since it has to be able to decelerate within the horizon)
+velocity = MPC_DesiredVelocity; % desired velocity - note that the final constraint of zero velocity will reduce the maximum drivable velocity (since it has to be able to decelerate within the horizon)
 ts = Ts_MPC;
 tEnd = N*ts;
 timeVec = (0:N)' * ts;
@@ -102,7 +102,7 @@ end
 x0 = [0,0,  0,0,  0.001,0.001,  0,0.001,  0,0]; % init with a small velocity - otherwise problem is not feasible ???
 xInit = [timeVec, repmat(x0, [(N+1),1])];
 u0 = [0,0,0,0,0];
-uInit = [timeVec, repmat(u0, [(N+1),1])];
+uInit = [timeVec(1:end-1), repmat(u0, [N,1])];
 
 od0 = [velocity, maxVelocity, maxAngle, maxOmegaRef, 99, 0, [zeros(1,8),1000,0], [zeros(1,8),0,0], repmat([99,99,0.01], [1,5])];
 PreviousHorizonLength = 0;
@@ -178,8 +178,8 @@ for (i = 1:400)
     tWindow = toc;
     
     tic;
-    % Extract and show trajectory reference points        
-    [ReferencePoints, coeff_trajectory_x, coeff_trajectory_y, windowTrajectoryLength, minDistancePoint] = FitReferencePathPolynomial(WindowTrajectory, [0;0], order, velocity, ts, N+1);
+    % Compute reference path polynomial
+    [ReferencePoints, coeff_trajectory_x, coeff_trajectory_y, windowTrajectoryLength, minDistancePoint] = FitReferencePathPolynomial(WindowTrajectory, order, velocity, ts, N+1);
 
     % Compute coordinate on reference path closest to the robot
     x_min = EvaluatePolynomial(coeff_trajectory_x, minDistancePoint);

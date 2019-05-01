@@ -1,5 +1,5 @@
 % Based on http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.5.2912&rep=rep1&type=pdf
-function s = ArcLengthApproximation(coeff_x, coeff_y, t)
+function s = ArcLengthApproximation(coeff_x, coeff_y, t)  %#codegen
     % Arc length is given as:
     % integral( sqrt( dxdt^2 + dydt^2 ) ) dt
     % This can however be approximated by using the velocity polynomial

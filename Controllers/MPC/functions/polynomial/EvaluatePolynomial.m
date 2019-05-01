@@ -1,5 +1,5 @@
 % Evaluate a polynomial   ( similar to Y = polyval(P,X) )
-function y = EvaluatePolynomial(coeff, x)
+function y = EvaluatePolynomial(coeff, x)  %#codegen
     order = length(coeff) - 1;
     n = length(x);
     %y = (coeff' * (x.^(order:-1:0))')';
