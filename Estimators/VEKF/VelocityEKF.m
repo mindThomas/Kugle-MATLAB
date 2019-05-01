@@ -1,4 +1,4 @@
-function [X_out, P_out] = VelocityEKF(X, P_prev, EncoderDiffMeas, eta_encoder, Accelerometer, cov_acc, eta_accelerometer, eta_bias, qQEKF, cov_qQEKF, qdotQEKF, eta_acceleration, SamplePeriod, TicksPrRev, rk,rw,g)
+function [X_out, P_out] = VelocityEKF(X, P_prev, EncoderDiffMeas, eta_encoder, Accelerometer, cov_acc, eta_accelerometer, eta_bias, qQEKF, cov_qQEKF, qdotQEKF, eta_acceleration, SamplePeriod, TicksPrRev, rk,rw,g)  %#codegen
     
     Phi = @(q)[q(1) -q(2) -q(3) -q(4);     % for q o p = Phi(q) * p
               q(2) q(1)  -q(4) q(3);
@@ -36,7 +36,7 @@ function [X_out, P_out] = VelocityEKF(X, P_prev, EncoderDiffMeas, eta_encoder, A
 	W = [W1;W2;W3];	       
        
     %% Prediction step  
-    X_apriori = zeros(4,1);
+    X_apriori = zeros(7,1);
           
     % Rotate acceleration measurement from body frame into inertial frame
     acceleration = devec * Phi(qQEKF) * Gamma(qQEKF)' * [0;Accelerometer];
