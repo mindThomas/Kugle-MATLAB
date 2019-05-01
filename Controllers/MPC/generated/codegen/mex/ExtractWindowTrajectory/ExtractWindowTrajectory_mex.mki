@@ -1,0 +1,14 @@
+# Make settings for ExtractWindowTrajectory 
+COMPILER=cl
+COMPFLAGS=/c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE
+OPTIMFLAGS=/O2 /Oy- /DNDEBUG
+DEBUGFLAGS=/Z7
+LINKER=link
+LINKFLAGS=/nologo /manifest  /export:mexFunction /DLL /LIBPATH:"C:\Program Files\MATLAB\R2018a\extern\lib\win64\microsoft" libmx.lib libmex.lib libmat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /EXPORT:mexFunction
+LINKOPTIMFLAGS=
+LINKDEBUGFLAGS=/debug /PDB:".\ExtractWindowTrajectory_mex.mexw64.pdb"
+MATLAB_ARCH=win64
+OMPFLAGS= 
+OMPLINKFLAGS= 
+EMC_COMPILER=msvc150
+EMC_CONFIG=optim
