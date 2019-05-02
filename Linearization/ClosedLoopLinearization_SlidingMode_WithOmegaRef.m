@@ -81,7 +81,7 @@ B_withLabels = array2table(B,'RowNames',rowNames,'VariableNames',colNames)
 save(fullfile(scriptDir, 'generated/ClosedLoopModelMatrices_SlidingMode_WithOmegaRef'), 'A', 'B', 'A_withLabels', 'B_withLabels');
 
 %% Extract the steady state acceleration relationship between qref and linear acceleration
-AccelerationConstant_q2_to_ddx = A(7,5) + A(7,15)
-AccelerationConstant_q1_to_ddy = A(8,4) + A(8,14)
+AccelerationConstant_q3_to_ddx = A(7,5) + A(7,15)
+AccelerationConstant_q2_to_ddy = A(8,4) + A(8,14)
 
-save(fullfile(scriptDir, 'generated/SteadyStateAccelerationConstants.mat'), 'AccelerationConstant_q2_to_ddx', 'AccelerationConstant_q1_to_ddy');
+save(fullfile(scriptDir, 'generated/SteadyStateAccelerationConstants.mat'), 'AccelerationConstant_q3_to_ddx', 'AccelerationConstant_q2_to_ddy');

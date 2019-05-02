@@ -1,8 +1,9 @@
 clear all;
 scriptDir = fileparts(mfilename('fullpath'));
 addpath(fullfile(scriptDir, 'functions'));
-cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not already there for export
-    
+load(fullfile(scriptDir, '../../Linearization/generated/SteadyStateAccelerationConstants.mat'));
+cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not already there for export    
+
     problemName = 'kugle_mpc_obstacles';
     enableVerboseMPC = true;
     acadoSet('problemname', [problemName '_codegen']); 
@@ -35,7 +36,8 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     OnlineData desiredVelocity;
     OnlineData maxVelocity;    
     OnlineData maxAngle;
-    OnlineData maxOmegaRef;        
+    OnlineData maxOmegaRef; 
+    OnlineData maxdOmegaRef; 
     OnlineData trajectoryLength;
     OnlineData trajectoryStart;    
     
@@ -195,8 +197,8 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
 %     ocp.subjectTo( 'AT_END', dx == 0 );
 %     ocp.subjectTo( 'AT_END', dy == 0 );
 
-    ocp.subjectTo( 'AT_END', velocity - desiredVelocity <= 0 );
-    ocp.subjectTo( 'AT_END', s_ - trajectoryLength <= 0 );
+    %ocp.subjectTo( 'AT_END', velocity - desiredVelocity <= 0 );
+    %ocp.subjectTo( 'AT_END', s_ - trajectoryLength <= 0 );
     
     %% Define constraints
     quaternion_max = acado.IntermediateState( sin(1/2*(maxAngle)) ); %  + angle_slack
@@ -212,6 +214,11 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     ocp.subjectTo( omega_ref_y - maxOmegaRef <= 0 ); % omega_ref_x <= maxOmegaRef
     ocp.subjectTo( -omega_ref_y - maxOmegaRef <= 0 ); % omega_ref_x >= -maxOmegaRef    
 
+    ocp.subjectTo( domega_ref_x - maxdOmegaRef <= 0 ); % domega_ref_x <= maxdOmegaRef
+    ocp.subjectTo( -domega_ref_x - maxdOmegaRef <= 0 ); % domega_ref_x >= -maxdOmegaRef
+    ocp.subjectTo( domega_ref_y - maxdOmegaRef <= 0 ); % domega_ref_x <= maxdOmegaRef
+    ocp.subjectTo( -domega_ref_y - maxdOmegaRef <= 0 ); % domega_ref_x >= -maxdOmegaRef    
+        
     %ocp.subjectTo( ds >= 0 );       
     %ocp.subjectTo( ds - desiredVelocity <= 0 );
     %ocp.subjectTo( velocity >= 0 );    

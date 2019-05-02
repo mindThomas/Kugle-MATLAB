@@ -6,17 +6,19 @@ N = 20;
 
 %% MPC constraints
 minVelocity = 0.0; % m/s
-maxVelocity = 3.0; % m/s
-maxAngle = deg2rad(10); % rad
+maxVelocity = 0.5; % m/s
+maxAngle = deg2rad(5); % rad
 maxOmegaRef = deg2rad(30); % rad/s
+maxdOmegaRef = deg2rad(30); % rad/s^2  (this setting is crucial when torque saturations come into play)
 
 %% Weights
-WPathFollow = 50.0;
-WVelocity = 10.0;
-WSmoothness = 10.0;
+WPathFollow = 200.0;
+WVelocity = 20.0;
+WSmoothness = 100.0;
+WOmega = 100;
 
 % Horizon weight matrix (cost)
-Wdiag = [WPathFollow, WPathFollow,  0.1,0.1,  0.1,0.1,  99999,WVelocity,  WSmoothness,WSmoothness,  99999.0,99999999.0]; % [ x_err;y_err; q2;q3;  omega_ref_x;omega_ref_y;  velocity_matching; velocity_error;   domega_ref_x;domega_ref_y;   velocity_slack_variable;angle_slack_variable;proximity_slack_variable ]
+Wdiag = [WPathFollow, WPathFollow,  0.1,0.1,  WOmega,WOmega,  99999,WVelocity,  WSmoothness,WSmoothness,  99999.0,99999999.0]; % [ x_err;y_err; q2;q3;  omega_ref_x;omega_ref_y;  velocity_matching; velocity_error;   domega_ref_x;domega_ref_y;   velocity_slack_variable;proximity_slack_variable ]
 Wmat = diag(Wdiag);
 
 % Final state weight matrix (cost)

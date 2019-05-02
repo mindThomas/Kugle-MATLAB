@@ -39,9 +39,9 @@ sensor_cov_gyro = cov_gyro; %eye(3) * sensor_sigma2_gyro;
 gyro_bias = 0*[-0.025, 0.015, -0.008]';  % rad/s
 
 % Plant/Sim Initialization parameters
-roll_init_deg = 2;
-pitch_init_deg = -2;
-yaw_init_deg = 2;
+roll_init_deg = 0;
+pitch_init_deg = 0;
+yaw_init_deg = 0;
 omeg_x_init = 0;
 omeg_y_init = 0;
 omeg_z_init = 0;
@@ -54,7 +54,7 @@ est_q_init = eul2quat(deg2rad([yaw_init_deg,pitch_init_deg,roll_init_deg]),'ZYX'
 
 
 %% Reference Test modes
-ReferenceMode = 0; % 0 = constant, 1 = roll sine wave, 2 = roll chirp
+ReferenceMode = 1; % 0 = constant, 1 = roll sine wave, 2 = roll chirp
 
 % Constant reference mode
 q_ref = eul2quat(deg2rad([0,0,0]), 'ZYX')';

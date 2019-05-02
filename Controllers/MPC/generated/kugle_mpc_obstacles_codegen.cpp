@@ -72,6 +72,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     OnlineData maxVelocity; 
     OnlineData maxAngle; 
     OnlineData maxOmegaRef; 
+    OnlineData maxdOmegaRef; 
     OnlineData trajectoryLength; 
     OnlineData trajectoryStart; 
     OnlineData cx9; 
@@ -161,8 +162,8 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     acadodata_f1 << dot(q3) == 5.00000000000000000000e-01*omega_ref_y;
     acadodata_f1 << dot(x) == dx;
     acadodata_f1 << dot(y) == dy;
-    acadodata_f1 << dot(dx) == 1.45289000000000214641e+01*q3;
-    acadodata_f1 << dot(dy) == (-1.45289000000000214641e+01)*q2;
+    acadodata_f1 << dot(dx) == 1.45288999999999930424e+01*q3;
+    acadodata_f1 << dot(dy) == (-1.45288999999999930424e+01)*q2;
     acadodata_f1 << dot(s) == ds;
     acadodata_f1 << dot(ds) == dds;
     acadodata_f1 << dot(omega_ref_x) == domega_ref_x;
@@ -175,8 +176,6 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     ocp1.subjectTo(AT_END, q3 == 0.00000000000000000000e+00);
     ocp1.subjectTo(AT_END, omega_ref_x == 0.00000000000000000000e+00);
     ocp1.subjectTo(AT_END, omega_ref_y == 0.00000000000000000000e+00);
-    ocp1.subjectTo(AT_END, (-desiredVelocity+intS4) <= 0.00000000000000000000e+00);
-    ocp1.subjectTo(AT_END, (intS1-trajectoryLength) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-intS21+q2) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-intS21-q2) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-intS21+q3) <= 0.00000000000000000000e+00);
@@ -185,6 +184,10 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     ocp1.subjectTo((-maxOmegaRef-omega_ref_x) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-maxOmegaRef+omega_ref_y) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-maxOmegaRef-omega_ref_y) <= 0.00000000000000000000e+00);
+    ocp1.subjectTo((domega_ref_x-maxdOmegaRef) <= 0.00000000000000000000e+00);
+    ocp1.subjectTo((-domega_ref_x-maxdOmegaRef) <= 0.00000000000000000000e+00);
+    ocp1.subjectTo((domega_ref_y-maxdOmegaRef) <= 0.00000000000000000000e+00);
+    ocp1.subjectTo((-domega_ref_y-maxdOmegaRef) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-desiredVelocity+intS4-velocity_slack) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((intS1-trajectoryLength) <= 0.00000000000000000000e+00);
     ocp1.subjectTo(intS1 >= 0.00000000000000000000e+00);
@@ -199,7 +202,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 
     ocp1.setNU( 5 );
     ocp1.setNP( 0 );
-    ocp1.setNOD( 41 );
+    ocp1.setNOD( 42 );
     OCPexport ExportModule1( ocp1 );
     ExportModule1.set( GENERATE_MATLAB_INTERFACE, 1 );
     uint options_flag;

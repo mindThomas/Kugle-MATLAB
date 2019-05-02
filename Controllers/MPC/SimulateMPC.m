@@ -262,7 +262,7 @@ for (i = 1:400)
     obstacle5 = NearestObstacles(5,:) - [RobotX, RobotY, 0];
 
     % Prepare online data matrix
-    od0 = [velocity, maxVelocity, maxAngle, maxOmegaRef, windowTrajectoryLength, minDistancePoint, coeff_x, coeff_y, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5];                              
+    od0 = [velocity, maxVelocity, maxAngle, maxOmegaRef, maxdOmegaRef, windowTrajectoryLength, minDistancePoint, coeff_x, coeff_y, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5];                              
     acado_input.od = repmat(od0, [N+1,1]); % Online data  
 
     % Assemble acado_input struct
@@ -343,7 +343,9 @@ for (i = 1:400)
         F(i) = getframe(vis.fig);
     end        
     
-    PreviousHorizonLength = out.STATES(end,8);
+    if (out.CONVERGENCE_ACHIEVED)
+        PreviousHorizonLength = out.STATES(end,8);
+    end
     
     % Control output is given in Window frame
     % We thus need to convert the window frame angular velocity to body frame
@@ -376,7 +378,7 @@ for (i = 1:400)
     if (UseNonlinearSteadyStateModelForSimulation)
         [t1,x1] = ode45(@(t,x) EvaluateNonlinearMPCmodel(t,x,B_omega_ref_input,constants,COM), [0 ts], RobotStates);
     else
-        [t1,x1] = ode45(@(t,x) EvaluateLinearMPCmodel(t,x,B_omega_ref_input,AccelerationConstant_q2_to_ddx,AccelerationConstant_q1_to_ddy), [0 ts], RobotStates);
+        [t1,x1] = ode45(@(t,x) EvaluateLinearMPCmodel(t,x,B_omega_ref_input,AccelerationConstant_q3_to_ddx,AccelerationConstant_q2_to_ddy), [0 ts], RobotStates);
     end
     RobotStates = x1(end,:)';
     YPR = quat2eul(RobotStates(1:4)');

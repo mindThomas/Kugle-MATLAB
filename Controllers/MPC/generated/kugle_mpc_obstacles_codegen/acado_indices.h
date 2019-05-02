@@ -54,6 +54,7 @@ typedef struct od_t
 	real_t maxVelocity;
 	real_t maxAngle;
 	real_t maxOmegaRef;
+	real_t maxdOmegaRef;
 	real_t trajectoryLength;
 	real_t trajectoryStart;
 	real_t cx9;

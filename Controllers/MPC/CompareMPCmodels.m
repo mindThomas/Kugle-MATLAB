@@ -25,9 +25,9 @@ t_nonlinear = [t1;t2;t3];
 x_nonlinear = [x1;x2;x3];
 
 %% Linear simulation
-[t1,x1] = ode45(@(t,x) EvaluateLinearMPCmodel(t,x,omeg_ref1,AccelerationConstant_q2_to_ddx,AccelerationConstant_q1_to_ddy), tspan1, x0);
-[t2,x2] = ode45(@(t,x) EvaluateLinearMPCmodel(t,x,omeg_ref2,AccelerationConstant_q2_to_ddx,AccelerationConstant_q1_to_ddy), tspan2, x1(end,:));
-[t3,x3] = ode45(@(t,x) EvaluateLinearMPCmodel(t,x,omeg_ref3,AccelerationConstant_q2_to_ddx,AccelerationConstant_q1_to_ddy), tspan3, x2(end,:));
+[t1,x1] = ode45(@(t,x) EvaluateLinearMPCmodel(t,x,omeg_ref1,AccelerationConstant_q3_to_ddx,AccelerationConstant_q2_to_ddy), tspan1, x0);
+[t2,x2] = ode45(@(t,x) EvaluateLinearMPCmodel(t,x,omeg_ref2,AccelerationConstant_q3_to_ddx,AccelerationConstant_q2_to_ddy), tspan2, x1(end,:));
+[t3,x3] = ode45(@(t,x) EvaluateLinearMPCmodel(t,x,omeg_ref3,AccelerationConstant_q3_to_ddx,AccelerationConstant_q2_to_ddy), tspan3, x2(end,:));
 
 t_linear = [t1;t2;t3];
 x_linear = [x1;x2;x3];
@@ -37,7 +37,7 @@ x_linear = [x1;x2;x3];
 acceleration_nonlinear = SteadyStateAcceleration(COM_X,COM_Y,COM_Z,Jk,Jw,Mb,Mk,x_nonlinear(:,7),x_nonlinear(:,8),g,x_nonlinear(:,1),x_nonlinear(:,2),x_nonlinear(:,3),x_nonlinear(:,4),rk,rw);
 acceleration_nonlinear = reshape(acceleration_nonlinear, [length(x_nonlinear), 2]);
 
-acceleration_linear = [AccelerationConstant_q2_to_ddx*x_nonlinear(:,3), AccelerationConstant_q1_to_ddy*x_nonlinear(:,2)];
+acceleration_linear = [AccelerationConstant_q3_to_ddx*x_nonlinear(:,3), AccelerationConstant_q2_to_ddy*x_nonlinear(:,2)];
 
 %% Visualize nonlinear simulation
 t = t_nonlinear;

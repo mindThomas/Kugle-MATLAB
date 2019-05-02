@@ -85,7 +85,7 @@ sys = ss(A, B, C, zeros(2,4));
 pzmap(sys)
 
 %% Extract the steady state acceleration relationship between qref and linear acceleration
-AccelerationConstant_q2_to_ddx = A(7,5) + B(7,3)
-AccelerationConstant_q1_to_ddy = A(8,4) + B(8,2)
+AccelerationConstant_q3_to_ddx = A(7,5) + B(7,3)
+AccelerationConstant_q2_to_ddy = A(8,4) + B(8,2)
 
-save(fullfile(scriptDir, 'generated/SteadyStateAccelerationConstants.mat'), 'AccelerationConstant_q2_to_ddx', 'AccelerationConstant_q1_to_ddy');
+save(fullfile(scriptDir, 'generated/SteadyStateAccelerationConstants.mat'), 'AccelerationConstant_q3_to_ddx', 'AccelerationConstant_q2_to_ddy');
