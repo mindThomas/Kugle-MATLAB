@@ -262,6 +262,18 @@ real_t evHu[ 2000 ];
 /** Column vector of size: 20 */
 real_t evHxd[ 20 ];
 
+/** Column vector of size: 2 */
+real_t pocEvH[ 2 ];
+
+/** Matrix of size: 2 x 10 (row major format) */
+real_t pocEvHx[ 20 ];
+
+/** Matrix of size: 2 x 5 (row major format) */
+real_t pocEvHu[ 10 ];
+
+/** Column vector of size: 2 */
+real_t pocEvHxd[ 2 ];
+
 /** Column vector of size: 210 */
 real_t sbar[ 210 ];
 
@@ -292,8 +304,8 @@ real_t w2[ 10 ];
 /** Matrix of size: 100 x 100 (row major format) */
 real_t H[ 10000 ];
 
-/** Matrix of size: 404 x 100 (row major format) */
-real_t A[ 40400 ];
+/** Matrix of size: 406 x 100 (row major format) */
+real_t A[ 40600 ];
 
 /** Column vector of size: 100 */
 real_t g[ 100 ];
@@ -304,17 +316,17 @@ real_t lb[ 100 ];
 /** Column vector of size: 100 */
 real_t ub[ 100 ];
 
-/** Column vector of size: 404 */
-real_t lbA[ 404 ];
+/** Column vector of size: 406 */
+real_t lbA[ 406 ];
 
-/** Column vector of size: 404 */
-real_t ubA[ 404 ];
+/** Column vector of size: 406 */
+real_t ubA[ 406 ];
 
 /** Column vector of size: 100 */
 real_t x[ 100 ];
 
-/** Column vector of size: 504 */
-real_t y[ 504 ];
+/** Column vector of size: 506 */
+real_t y[ 506 ];
 
 
 } ACADOworkspace;

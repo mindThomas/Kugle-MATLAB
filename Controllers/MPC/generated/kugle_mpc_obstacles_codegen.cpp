@@ -124,7 +124,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     IntermediateState intS12 = (dx*intS7+dy*intS8);
     IntermediateState intS13 = (-ds+intS12);
     IntermediateState intS14 = ((-intS7)*intS9-intS10*intS8);
-    IntermediateState intS15 = (intS12-maxVelocity);
+    IntermediateState intS15 = (-desiredVelocity+intS12);
     IntermediateState intS16 = (-obs1_r+sqrt(((-obs1_x+x)*(-obs1_x+x)+(-obs1_y+y)*(-obs1_y+y))));
     IntermediateState intS17 = (-obs2_r+sqrt(((-obs2_x+x)*(-obs2_x+x)+(-obs2_y+y)*(-obs2_y+y))));
     IntermediateState intS18 = (-obs3_r+sqrt(((-obs3_x+x)*(-obs3_x+x)+(-obs3_y+y)*(-obs3_y+y))));
@@ -176,6 +176,8 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     ocp1.subjectTo(AT_END, q3 == 0.00000000000000000000e+00);
     ocp1.subjectTo(AT_END, omega_ref_x == 0.00000000000000000000e+00);
     ocp1.subjectTo(AT_END, omega_ref_y == 0.00000000000000000000e+00);
+    ocp1.subjectTo(AT_END, (intS4-maxVelocity) <= 0.00000000000000000000e+00);
+    ocp1.subjectTo(AT_END, (intS1-trajectoryLength) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-intS21+q2) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-intS21-q2) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-intS21+q3) <= 0.00000000000000000000e+00);
@@ -188,7 +190,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     ocp1.subjectTo((-domega_ref_x-maxdOmegaRef) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((domega_ref_y-maxdOmegaRef) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-domega_ref_y-maxdOmegaRef) <= 0.00000000000000000000e+00);
-    ocp1.subjectTo((-desiredVelocity+intS4-velocity_slack) <= 0.00000000000000000000e+00);
+    ocp1.subjectTo((intS4-maxVelocity-velocity_slack) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((intS1-trajectoryLength) <= 0.00000000000000000000e+00);
     ocp1.subjectTo(intS1 >= 0.00000000000000000000e+00);
     ocp1.subjectTo((intS16+proximity_slack) >= 0.00000000000000000000e+00);

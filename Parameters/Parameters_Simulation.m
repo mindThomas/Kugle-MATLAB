@@ -72,7 +72,7 @@ chirp_amplitude_deg = 2;
 
 %% MPC simulation parameters
 MPC_TrajectoryType = 0; % 0=oval,  1=figure eight
-MPC_EnableStaticObstacles = true;
+MPC_EnableStaticObstacles = false;
 MPC_RandomObstacles = 0;
 MPC_DesiredVelocity = 1.0; % m/s
 MPC_HeadingAngularVelocity = 0.0; % rad/s

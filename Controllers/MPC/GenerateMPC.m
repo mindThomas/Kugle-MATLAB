@@ -158,7 +158,7 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     longitudinal_velocity = acado.IntermediateState(cos_yaw_ref * dx + sin_yaw_ref * dy);  
     velocity_matching = acado.IntermediateState(longitudinal_velocity - ds);
     lag_error = acado.IntermediateState(-cos_yaw_ref * x_err - sin_yaw_ref * y_err);
-    velocity_error = acado.IntermediateState(longitudinal_velocity - maxVelocity); % oddly enough this seems to give better performance, by punishing the MPC to be away from maximum velocity
+    velocity_error = acado.IntermediateState(longitudinal_velocity - desiredVelocity);
 
     % Compute proximity to the nearest 5 obstacles
     proximityObstacle1 = acado.IntermediateState( sqrt( (x - obs1_x)*(x - obs1_x) + (y - obs1_y)*(y - obs1_y) ) - obs1_r );
@@ -193,12 +193,12 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
      
      ocp.subjectTo( 'AT_END', omega_ref_x == 0 );
      ocp.subjectTo( 'AT_END', omega_ref_y == 0 );      
-% 
+ 
 %     ocp.subjectTo( 'AT_END', dx == 0 );
 %     ocp.subjectTo( 'AT_END', dy == 0 );
 
-    %ocp.subjectTo( 'AT_END', velocity - desiredVelocity <= 0 );
-    %ocp.subjectTo( 'AT_END', s_ - trajectoryLength <= 0 );
+    ocp.subjectTo( 'AT_END', velocity - maxVelocity <= 0 );
+    ocp.subjectTo( 'AT_END', s_ - trajectoryLength <= 0 );
     
     %% Define constraints
     quaternion_max = acado.IntermediateState( sin(1/2*(maxAngle)) ); %  + angle_slack
@@ -222,7 +222,7 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     %ocp.subjectTo( ds >= 0 );       
     %ocp.subjectTo( ds - desiredVelocity <= 0 );
     %ocp.subjectTo( velocity >= 0 );    
-    ocp.subjectTo( velocity - desiredVelocity - velocity_slack <= 0 ); %  oddly enough, by putting the constraint on the desired velocity, we end up driving on the constraint boundary, since the cost function will try to push the velocity beyond the constraint at all times
+    ocp.subjectTo( velocity - maxVelocity - velocity_slack <= 0 );
     %ocp.subjectTo( velocity_slack >= 0 );
     
     ocp.subjectTo( s_ - trajectoryLength <= 0 ); % s_ <= trajectoryLength

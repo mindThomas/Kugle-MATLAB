@@ -6,7 +6,7 @@ N = 20;
 
 %% MPC constraints
 minVelocity = 0.0; % m/s
-maxVelocity = 0.5; % m/s
+maxVelocity = 3; % m/s
 maxAngle = deg2rad(5); % rad
 maxOmegaRef = deg2rad(30); % rad/s
 maxdOmegaRef = deg2rad(30); % rad/s^2  (this setting is crucial when torque saturations come into play)
