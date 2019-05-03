@@ -29,7 +29,7 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     Control domega_ref_y;   
     Control dds;
     Control velocity_slack;
-    %Control angle_slack;
+    Control angle_slack;
     Control proximity_slack;     
     
     %OnlineData represents data that can be passed to the solver online (real-time)
@@ -86,6 +86,9 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     OnlineData obs5_x;
     OnlineData obs5_y;
     OnlineData obs5_r;
+    
+    OnlineData proximityOffset;
+    OnlineData proximityScale;
 
     % Evaluate polynomial based on s variable
     % Intermediate states helps to speed up the Automatic Differentiation of ACADO Symbolic
@@ -159,7 +162,8 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     velocity_matching = acado.IntermediateState(longitudinal_velocity - ds);
     lag_error = acado.IntermediateState(-cos_yaw_ref * x_err - sin_yaw_ref * y_err);
     velocity_error = acado.IntermediateState(longitudinal_velocity - desiredVelocity);
-
+    away_from_end_error = acado.IntermediateState(trajectoryLength - s);
+    
     % Compute proximity to the nearest 5 obstacles
     proximityObstacle1 = acado.IntermediateState( sqrt( (x - obs1_x)*(x - obs1_x) + (y - obs1_y)*(y - obs1_y) ) - obs1_r );
     proximityObstacle2 = acado.IntermediateState( sqrt( (x - obs2_x)*(x - obs2_x) + (y - obs2_y)*(y - obs2_y) ) - obs2_r );
@@ -167,10 +171,12 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     proximityObstacle4 = acado.IntermediateState( sqrt( (x - obs4_x)*(x - obs4_x) + (y - obs4_y)*(y - obs4_y) ) - obs4_r );
     proximityObstacle5 = acado.IntermediateState( sqrt( (x - obs5_x)*(x - obs5_x) + (y - obs5_y)*(y - obs5_y) ) - obs5_r );    
 
+    obstacle_proximity = acado.IntermediateState( exp(proximityScale*(-proximityObstacle1 + proximityOffset)) + exp(proximityScale*(-proximityObstacle2 + proximityOffset)) + exp(proximityScale*(-proximityObstacle3 + proximityOffset)) + exp(proximityScale*(-proximityObstacle4 + proximityOffset)) + exp(proximityScale*(-proximityObstacle5 + proximityOffset)) );
+    
     %h = [diffStates; controls]; % 'diffStates' and 'controls' are automatically defined by ACADO
     %hN = [diffStates]; 
-    h = DefineWeightedStates('x_err; y_err; q2;q3;  omega_ref_x;omega_ref_y;  velocity_matching; velocity_error;   domega_ref_x;domega_ref_y;   velocity_slack;proximity_slack');
-    hN = DefineWeightedTerminalStates('x_err;y_err; q2;q3;  omega_ref_x;omega_ref_y;  velocity_matching; velocity_error');
+    h = DefineWeightedStates('lag_error; lateral_deviation;  q2;q3;  omega_ref_x;omega_ref_y;  velocity_error; away_from_end_error;   domega_ref_x;domega_ref_y;   obstacle_proximity;   velocity_slack;angle_slack;proximity_slack');
+    hN = DefineWeightedTerminalStates('lag_error; lateral_deviation;  q2;q3;  omega_ref_x;omega_ref_y;  velocity_error; away_from_end_error;   obstacle_proximity');
     W = acado.BMatrix(eye(length(h))); % Cost-function weighting matrix
     WN = acado.BMatrix(eye(length(hN)));
     
@@ -201,12 +207,12 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     ocp.subjectTo( 'AT_END', s_ - trajectoryLength <= 0 );
     
     %% Define constraints
-    quaternion_max = acado.IntermediateState( sin(1/2*(maxAngle)) ); %  + angle_slack
+    quaternion_max = acado.IntermediateState( sin(1/2*(maxAngle)) + angle_slack );
     ocp.subjectTo( q2 - quaternion_max <= 0 );  % q2 <= sin(1/2*maxAngle)
     ocp.subjectTo( -q2 - quaternion_max <= 0 ); % -q2 <= sin(1/2*maxAngle)  --->  q2 >= -sin(1/2*maxAngle)
     ocp.subjectTo( q3 - quaternion_max <= 0 );  % q3 <= sin(1/2*maxAngle)
     ocp.subjectTo( -q3 - quaternion_max <= 0 ); % -q3 <= sin(1/2*maxAngle)  --->  q2 >= -sin(1/2*maxAngle)
-    %ocp.subjectTo( angle_slack >= 0 );
+    ocp.subjectTo( angle_slack >= 0 );
     %ocp.subjectTo( angle_slack - pi/2 + maxAngle <= 0 );
     
     ocp.subjectTo( omega_ref_x - maxOmegaRef <= 0 ); % omega_ref_x <= maxOmegaRef

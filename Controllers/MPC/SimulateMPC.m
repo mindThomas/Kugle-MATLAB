@@ -101,7 +101,7 @@ end
 % x = [q2,q3, x,y, dx,dy, s,ds, omega_ref_x,omega_ref_y]
 x0 = [0,0,  0,0,  0.001,0.001,  0,0.001,  0,0]; % init with a small velocity - otherwise problem is not feasible ???
 xInit = [timeVec, repmat(x0, [(N+1),1])];
-u0 = [0,0,0,0,0];
+u0 = [0,0,0,0,0,0];
 uInit = [timeVec(1:end-1), repmat(u0, [N,1])];
 
 od0 = [velocity, maxVelocity, maxAngle, maxOmegaRef, 99, 0, [zeros(1,8),1000,0], [zeros(1,8),0,0], repmat([99,99,0.01], [1,5])];
@@ -262,7 +262,7 @@ for (i = 1:400)
     obstacle5 = NearestObstacles(5,:) - [RobotX, RobotY, 0];
 
     % Prepare online data matrix
-    od0 = [velocity, maxVelocity, maxAngle, maxOmegaRef, maxdOmegaRef, windowTrajectoryLength, minDistancePoint, coeff_x, coeff_y, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5];                              
+    od0 = [velocity, maxVelocity, maxAngle, maxOmegaRef, maxdOmegaRef, windowTrajectoryLength, minDistancePoint, coeff_x, coeff_y, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, ProximityOffset, ProximityScale];                              
     acado_input.od = repmat(od0, [N+1,1]); % Online data  
 
     % Assemble acado_input struct
@@ -273,8 +273,8 @@ for (i = 1:400)
     acado_input.x = xInit(1:(N+1),2:end);
     acado_input.x0 = xInit(1,2:end);
     %acado_input.y = [zeros(N, 3), uInit(1:N,2:3)];
-    acado_input.y = zeros(N, 12);
-    acado_input.yN = zeros(1, 8);
+    acado_input.y = zeros(N, 14);
+    acado_input.yN = zeros(1, 9);
     acado_input.u = uInit(1:N,2:end);        
 
     % Run MPC

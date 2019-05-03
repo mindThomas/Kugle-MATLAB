@@ -47,7 +47,7 @@ omeg_y_init = 0;
 omeg_z_init = 0;
 q_init = eul2quat(deg2rad([yaw_init_deg,pitch_init_deg,roll_init_deg]),'ZYX')';
 dq_init = 1/2 * Gamma(q_init) * [0;omeg_x_init;omeg_y_init;omeg_z_init];
-x_init = [4,-2, q_init', 0,0, dq_init']';
+x_init = [3,-2, q_init', 0,0, dq_init']';
 
 % Estimator initialization parameters
 est_q_init = eul2quat(deg2rad([yaw_init_deg,pitch_init_deg,roll_init_deg]),'ZYX')';
@@ -72,7 +72,7 @@ chirp_amplitude_deg = 2;
 
 %% MPC simulation parameters
 MPC_TrajectoryType = 0; % 0=oval,  1=figure eight
-MPC_EnableStaticObstacles = false;
+MPC_EnableStaticObstacles = true;
 MPC_RandomObstacles = 0;
 MPC_DesiredVelocity = 1.0; % m/s
 MPC_HeadingAngularVelocity = 0.0; % rad/s
@@ -83,7 +83,7 @@ Parameters_MPC;
 
 % x = [q2,q3, x,y, dx,dy, s,ds, omega_ref_x,omega_ref_y]
 MPC_x0 = [0,0,  0,0,  0.001,0.001,  0,0.001,  0,0]; % init with a small velocity - otherwise problem is not feasible ???
-MPC_u0 = [0,0,0,0,0];
+MPC_u0 = [0,0,0,0,0,0];
 
 %% Automatic parameters - do not touch!
 % Used to generate multivariate noise as: R*randn(3,1)

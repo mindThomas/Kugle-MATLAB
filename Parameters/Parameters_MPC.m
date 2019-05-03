@@ -6,23 +6,29 @@ N = 20;
 
 %% MPC constraints
 minVelocity = 0.0; % m/s
-maxVelocity = 3; % m/s
+maxVelocity = 10; % m/s
 maxAngle = deg2rad(5); % rad
 maxOmegaRef = deg2rad(30); % rad/s
 maxdOmegaRef = deg2rad(30); % rad/s^2  (this setting is crucial when torque saturations come into play)
 
 %% Weights
-WPathFollow = 200.0;
-WVelocity = 20.0;
-WSmoothness = 100.0;
-WOmega = 100;
+WPathFollow = 9999;  % weight on longitudinal tracking error - should be high to achieve accurate path following
+WLateral = 20;  % weight on lateral tracking error
+WVelocity = 200;  % weight on error between desired velocity and actual longitudinal velocity
+WProgress = 0;  % punishment of being far away from the end of the fitted path
+WSmoothness = 50;  % punishment of changes in angular velocity reference (hence weight on d_omega_ref)
+WOmega = 20;  % weight on angular velocity reference (omega_ref)
+WAngle = 500;  % weight on angle reference
+WObstacles = 20;  % weight on the exponential obstacle proximity, defined by an offset and scale value
+ProximityOffset = 0.2;  % exponential obstacle offset
+ProximityScale = 10;  % exponential obstacle scale
 
 % Horizon weight matrix (cost)
-Wdiag = [WPathFollow, WPathFollow,  0.1,0.1,  WOmega,WOmega,  99999,WVelocity,  WSmoothness,WSmoothness,  99999.0,99999999.0]; % [ x_err;y_err; q2;q3;  omega_ref_x;omega_ref_y;  velocity_matching; velocity_error;   domega_ref_x;domega_ref_y;   velocity_slack_variable;proximity_slack_variable ]
+Wdiag = [WPathFollow, WLateral,  WAngle,WAngle,  WOmega,WOmega,  WVelocity,WProgress,  WSmoothness,WSmoothness,  WObstacles,  99999,99999,99999]; % [ lag_error; lateral_deviation;  q2;q3;  omega_ref_x;omega_ref_y;  velocity_error; away_from_end_error;   domega_ref_x;domega_ref_y;   obstacle_proximity;   velocity_slack;angle_slack;proximity_slack ]
 Wmat = diag(Wdiag);
 
 % Final state weight matrix (cost)
-WNdiag = [WPathFollow, WPathFollow,  0.1,0.1,  0.1,0.1,  99999,WVelocity]; % [ x_err;y_err; q2;q3;  omega_ref_x;omega_ref_y;  velocity_matching; velocity_error ]
+WNdiag = [WPathFollow, 10*WLateral,  WAngle,WAngle,  WOmega,WOmega,  WVelocity,WProgress,  WObstacles]; % [ lag_error; lateral_deviation;  q2;q3;  omega_ref_x;omega_ref_y;  velocity_error; away_from_end_error;   obstacle_proximity ]
 WNmat = diag(WNdiag);
 
 %% Window parameters
