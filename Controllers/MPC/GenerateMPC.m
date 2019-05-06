@@ -1,16 +1,18 @@
 clear all;
 scriptDir = fileparts(mfilename('fullpath'));
 addpath(fullfile(scriptDir, 'functions'));
+addpath(fullfile(scriptDir, '../../Parameters'));
 load(fullfile(scriptDir, '../../Linearization/generated/SteadyStateAccelerationConstants.mat'));
 cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not already there for export    
+Parameters_MPC; % load MPC parameters such as sample rate and horizon length
 
     problemName = 'kugle_mpc_obstacles';
     enableVerboseMPC = true;
     acadoSet('problemname', [problemName '_codegen']); 
 
     %% Define sample rate and horizon length
-    ts = 1/10;   
-    N = 20; 
+    %Ts_MPC = 1/10; % Sample rate, Ts_MPC, is defined in 'Parameters_MPC.m'
+    %N = 20;        % Horizon length, N, is defined in 'Parameters_MPC.m'
     
     %% Define variables (both internal and external/inputs)
     % OBS. The order of construction defines the order in the chi vector
@@ -61,11 +63,7 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     OnlineData cy3;
     OnlineData cy2;
     OnlineData cy1;
-    OnlineData cy0;
-    
-%     OnlineData tubeLeft;
-%     OnlineData tubeRight;
-    
+    OnlineData cy0;  
 
     OnlineData obs1_x;
     OnlineData obs1_y;
@@ -135,7 +133,7 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     
     %% Define optimal control problem (see page 29 in ACADO MATLAB manual)
     %ocp = acado.OCP(0.0, tEnd, N); % note that if the time is optimized, the output time will be normalized between [0:1]
-    ocp = acado.OCP(0.0, N*ts, N);   
+    ocp = acado.OCP(0.0, N*Ts_MPC, N);   
     
     % Define intermediate states and errors used in cost
     velocity = acado.IntermediateState(sqrt(dx*dx + dy*dy));
@@ -194,14 +192,14 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     ocp.setModel( f );  
     
     %% Define final-state requirements    
-     ocp.subjectTo( 'AT_END', q2 == 0 );
-     ocp.subjectTo( 'AT_END', q3 == 0 );    
+    ocp.subjectTo( 'AT_END', q2 == 0 );
+    ocp.subjectTo( 'AT_END', q3 == 0 );    
      
-     ocp.subjectTo( 'AT_END', omega_ref_x == 0 );
-     ocp.subjectTo( 'AT_END', omega_ref_y == 0 );      
+    ocp.subjectTo( 'AT_END', omega_ref_x == 0 );
+    ocp.subjectTo( 'AT_END', omega_ref_y == 0 );      
  
-%     ocp.subjectTo( 'AT_END', dx == 0 );
-%     ocp.subjectTo( 'AT_END', dy == 0 );
+    %ocp.subjectTo( 'AT_END', dx == 0 );
+    %ocp.subjectTo( 'AT_END', dy == 0 );
 
     ocp.subjectTo( 'AT_END', velocity - maxVelocity <= 0 );
     ocp.subjectTo( 'AT_END', s_ - trajectoryLength <= 0 );
@@ -296,5 +294,5 @@ cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not a
     end
     make_acado_solver
     copyfile(['acado_solver.' mexext], ['../' problemName '.' mexext]);
-    WriteArrayIndexFile(ts);
+    WriteArrayIndexFile(Ts_MPC);
     cd('../..');   
