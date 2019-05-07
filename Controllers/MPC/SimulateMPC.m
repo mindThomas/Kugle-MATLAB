@@ -32,11 +32,11 @@ IncludeLegendInPlot = false; % including the legend will slow down the plotting
 vis = TrajectoryVisualizer(PlotEnabled);
 
 %% Generate trajectory
-TrajectoryPoints = GenerateTestTrajectory; % GenerateTestTrajectory or GenerateTestTrajectory_FigureEight
+[TrajectoryPoints, VisualizationLimits] = GenerateTestTrajectory; % GenerateTestTrajectory or GenerateTestTrajectory_FigureEight
 
 %% Set initial point and settings
 vis.GlobalTrajectoryPoints = TrajectoryPoints;
-vis.ChangeLimits(-7, -2, 7, 2);
+vis.ChangeLimits(VisualizationLimits.x_min, VisualizationLimits.y_min, VisualizationLimits.x_max, VisualizationLimits.y_max);
 vis.x = x_init(1);
 vis.y = x_init(2);
 vis.yaw = deg2rad( 0 );
@@ -106,6 +106,7 @@ uInit = [timeVec(1:end-1), repmat(u0, [N,1])];
 
 od0 = [velocity, maxVelocity, maxAngle, maxOmegaRef, 99, 0, [zeros(1,8),1000,0], [zeros(1,8),0,0], repmat([99,99,0.01], [1,5])];
 PreviousHorizonLength = 0;
+PreviousClosestIndex = 0;
 omeg_ref_input_old = [0,0]';
 
 clear acado_input;
@@ -146,9 +147,12 @@ for (i = 1:400)
             py = Obstacles(j,2) - Obstacles(j,3);
             rectangle('Position',[px py d d],'Curvature',[1,1],'EdgeColor',[0 0 1]);            
         end
+        plot(Stateslog(:,5), Stateslog(:,6), 'r-');
         hold off;   
-        xlim([min(TrajectoryPoints(:,1))*1.1, max(TrajectoryPoints(:,1))*1.1]);
-        ylim([min(TrajectoryPoints(:,2))*1.5, max(TrajectoryPoints(:,2))*1.5]);
+        %xlim([min(TrajectoryPoints(:,1))*1.1, max(TrajectoryPoints(:,1))*1.1]);
+        %ylim([min(TrajectoryPoints(:,2))*1.5, max(TrajectoryPoints(:,2))*1.5]);
+        xlim([vis.x_min, vis.x_max]);
+        ylim([vis.y_min, vis.y_max]);
     end
     
     
@@ -172,7 +176,7 @@ for (i = 1:400)
     
     tic
     %[WindowTrajectory, nTrajPoints, WindowOrientation] = ExtractWindowTrajectory(TrajectoryPoints, [RobotX, RobotY], RobotYaw, [RobotStates(7),RobotStates(8)], 1.5*N*ts*velocity, WindowWidth, WindowHeight, WindowOffset, OrientationParameter);    
-    [WindowTrajectory, nTrajPoints, WindowOrientation] = ExtractDistanceTrajectory(TrajectoryPoints, [RobotX, RobotY], RobotYaw, [RobotStates(7),RobotStates(8)], ExtractionLength, WindowOrientationSelection);    
+    [WindowTrajectory, nTrajPoints, WindowOrientation, PreviousClosestIndex] = ExtractDistanceTrajectory(TrajectoryPoints, [RobotX, RobotY], RobotYaw, [RobotStates(7),RobotStates(8)], ExtractionLength, WindowOrientationSelection, PreviousClosestIndex);    
     R_window = [cos(WindowOrientation), sin(WindowOrientation);
              -sin(WindowOrientation), cos(WindowOrientation)];         
     tWindow = toc;

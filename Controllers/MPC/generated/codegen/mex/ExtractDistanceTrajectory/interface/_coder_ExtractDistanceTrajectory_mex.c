@@ -18,14 +18,14 @@
 #include "ExtractDistanceTrajectory_data.h"
 
 /* Function Declarations */
-static void c_ExtractDistanceTrajectory_mex(int32_T nlhs, mxArray *plhs[3],
-  int32_T nrhs, const mxArray *prhs[6]);
+static void c_ExtractDistanceTrajectory_mex(int32_T nlhs, mxArray *plhs[4],
+  int32_T nrhs, const mxArray *prhs[7]);
 
 /* Function Definitions */
-static void c_ExtractDistanceTrajectory_mex(int32_T nlhs, mxArray *plhs[3],
-  int32_T nrhs, const mxArray *prhs[6])
+static void c_ExtractDistanceTrajectory_mex(int32_T nlhs, mxArray *plhs[4],
+  int32_T nrhs, const mxArray *prhs[7])
 {
-  const mxArray *outputs[3];
+  const mxArray *outputs[4];
   int32_T b_nlhs;
   emlrtStack st = { NULL,              /* site */
     NULL,                              /* tls */
@@ -35,12 +35,12 @@ static void c_ExtractDistanceTrajectory_mex(int32_T nlhs, mxArray *plhs[3],
   st.tls = emlrtRootTLSGlobal;
 
   /* Check for proper number of arguments. */
-  if (nrhs != 6) {
-    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 6, 4,
+  if (nrhs != 7) {
+    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 7, 4,
                         25, "ExtractDistanceTrajectory");
   }
 
-  if (nlhs > 3) {
+  if (nlhs > 4) {
     emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:TooManyOutputArguments", 3, 4, 25,
                         "ExtractDistanceTrajectory");
   }

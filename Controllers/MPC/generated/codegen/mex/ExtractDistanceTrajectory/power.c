@@ -19,56 +19,56 @@
 #include "ExtractDistanceTrajectory_data.h"
 
 /* Variable Definitions */
-static emlrtRSInfo o_emlrtRSI = { 49,  /* lineNo */
+static emlrtRSInfo q_emlrtRSI = { 49,  /* lineNo */
   "power",                             /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\lib\\matlab\\ops\\power.m"/* pathName */
 };
 
-static emlrtRSInfo p_emlrtRSI = { 58,  /* lineNo */
+static emlrtRSInfo r_emlrtRSI = { 58,  /* lineNo */
   "power",                             /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\lib\\matlab\\ops\\power.m"/* pathName */
 };
 
-static emlrtRSInfo q_emlrtRSI = { 45,  /* lineNo */
+static emlrtRSInfo s_emlrtRSI = { 45,  /* lineNo */
   "applyBinaryScalarFunction",         /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\applyBinaryScalarFunction.m"/* pathName */
 };
 
-static emlrtRSInfo r_emlrtRSI = { 65,  /* lineNo */
+static emlrtRSInfo t_emlrtRSI = { 65,  /* lineNo */
   "applyBinaryScalarFunction",         /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\applyBinaryScalarFunction.m"/* pathName */
 };
 
-static emlrtRSInfo s_emlrtRSI = { 189, /* lineNo */
+static emlrtRSInfo u_emlrtRSI = { 189, /* lineNo */
   "applyBinaryScalarFunction",         /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\applyBinaryScalarFunction.m"/* pathName */
 };
 
-static emlrtRTEInfo i_emlrtRTEI = { 19,/* lineNo */
+static emlrtRTEInfo k_emlrtRTEI = { 19,/* lineNo */
   24,                                  /* colNo */
   "scalexpAllocNoCheck",               /* fName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\scalexpAllocNoCheck.m"/* pName */
 };
 
-static emlrtRTEInfo j_emlrtRTEI = { 45,/* lineNo */
+static emlrtRTEInfo l_emlrtRTEI = { 45,/* lineNo */
   6,                                   /* colNo */
   "applyBinaryScalarFunction",         /* fName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\applyBinaryScalarFunction.m"/* pName */
 };
 
-static emlrtRTEInfo k_emlrtRTEI = { 58,/* lineNo */
+static emlrtRTEInfo m_emlrtRTEI = { 58,/* lineNo */
   5,                                   /* colNo */
   "power",                             /* fName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\lib\\matlab\\ops\\power.m"/* pName */
 };
 
-static emlrtRTEInfo l_emlrtRTEI = { 1, /* lineNo */
+static emlrtRTEInfo n_emlrtRTEI = { 1, /* lineNo */
   14,                                  /* colNo */
   "power",                             /* fName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\lib\\matlab\\ops\\power.m"/* pName */
 };
 
-static emlrtRTEInfo t_emlrtRTEI = { 17,/* lineNo */
+static emlrtRTEInfo bb_emlrtRTEI = { 17,/* lineNo */
   19,                                  /* colNo */
   "scalexpAlloc",                      /* fName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\scalexpAlloc.m"/* pName */
@@ -99,22 +99,22 @@ void power(const emlrtStack *sp, const emxArray_real_T *a, emxArray_real_T *y)
   e_st.prev = &d_st;
   e_st.tls = d_st.tls;
   emlrtHeapReferenceStackEnterFcnR2012b(sp);
-  emxInit_real_T1(sp, &z, 1, &l_emlrtRTEI, true);
-  emxInit_real_T1(sp, &b_z, 1, &l_emlrtRTEI, true);
-  st.site = &o_emlrtRSI;
-  b_st.site = &p_emlrtRSI;
-  c_st.site = &q_emlrtRSI;
+  emxInit_real_T1(sp, &z, 1, &n_emlrtRTEI, true);
+  emxInit_real_T1(sp, &b_z, 1, &n_emlrtRTEI, true);
+  st.site = &q_emlrtRSI;
+  b_st.site = &r_emlrtRSI;
+  c_st.site = &s_emlrtRSI;
   a_idx_0 = (uint32_T)a->size[0];
   k = b_z->size[0];
   b_z->size[0] = (int32_T)a_idx_0;
-  emxEnsureCapacity_real_T1(&c_st, b_z, k, &i_emlrtRTEI);
+  emxEnsureCapacity_real_T1(&c_st, b_z, k, &k_emlrtRTEI);
   a_idx_0 = (uint32_T)a->size[0];
   b_a_idx_0 = (uint32_T)a->size[0];
   k = z->size[0];
   z->size[0] = (int32_T)b_a_idx_0;
-  emxEnsureCapacity_real_T1(&c_st, z, k, &j_emlrtRTEI);
+  emxEnsureCapacity_real_T1(&c_st, z, k, &l_emlrtRTEI);
   if (!dimagree(z, a)) {
-    emlrtErrorWithMessageIdR2018a(&c_st, &t_emlrtRTEI, "MATLAB:dimagree",
+    emlrtErrorWithMessageIdR2018a(&c_st, &bb_emlrtRTEI, "MATLAB:dimagree",
       "MATLAB:dimagree", 0);
   }
 
@@ -122,13 +122,13 @@ void power(const emlrtStack *sp, const emxArray_real_T *a, emxArray_real_T *y)
   b_a_idx_0 = (uint32_T)a->size[0];
   k = y->size[0];
   y->size[0] = (int32_T)b_a_idx_0;
-  emxEnsureCapacity_real_T1(&b_st, y, k, &k_emlrtRTEI);
-  c_st.site = &r_emlrtRSI;
-  d_st.site = &s_emlrtRSI;
+  emxEnsureCapacity_real_T1(&b_st, y, k, &m_emlrtRTEI);
+  c_st.site = &t_emlrtRSI;
+  d_st.site = &u_emlrtRSI;
   overflow = ((!(1 > b_z->size[0])) && (b_z->size[0] > 2147483646));
   emxFree_real_T(&d_st, &b_z);
   if (overflow) {
-    e_st.site = &j_emlrtRSI;
+    e_st.site = &l_emlrtRSI;
     check_forloop_overflow_error(&e_st);
   }
 

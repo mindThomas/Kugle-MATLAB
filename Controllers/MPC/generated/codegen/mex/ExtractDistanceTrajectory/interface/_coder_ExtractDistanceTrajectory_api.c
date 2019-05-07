@@ -17,7 +17,7 @@
 #include "ExtractDistanceTrajectory_data.h"
 
 /* Variable Definitions */
-static emlrtRTEInfo m_emlrtRTEI = { 1, /* lineNo */
+static emlrtRTEInfo q_emlrtRTEI = { 1, /* lineNo */
   1,                                   /* colNo */
   "_coder_ExtractDistanceTrajectory_api",/* fName */
   ""                                   /* pName */
@@ -171,8 +171,8 @@ static real_T (*h_emlrt_marshallIn(const emlrtStack *sp, const mxArray *src,
   return ret;
 }
 
-void ExtractDistanceTrajectory_api(const mxArray * const prhs[6], int32_T nlhs,
-  const mxArray *plhs[3])
+void ExtractDistanceTrajectory_api(const mxArray * const prhs[7], int32_T nlhs,
+  const mxArray *plhs[4])
 {
   emxArray_real_T *TrajectoryPoints;
   emxArray_real_T *WindowTrajectory;
@@ -181,8 +181,10 @@ void ExtractDistanceTrajectory_api(const mxArray * const prhs[6], int32_T nlhs,
   real_T (*Velocity)[2];
   real_T ExtractDist;
   real_T OrientationSelection;
+  real_T PreviousClosestIndex;
   real_T nTrajPoints;
   real_T WindowOrientation;
+  real_T ClosestIdx;
   emlrtStack st = { NULL,              /* site */
     NULL,                              /* tls */
     NULL                               /* prev */
@@ -190,8 +192,8 @@ void ExtractDistanceTrajectory_api(const mxArray * const prhs[6], int32_T nlhs,
 
   st.tls = emlrtRootTLSGlobal;
   emlrtHeapReferenceStackEnterFcnR2012b(&st);
-  emxInit_real_T(&st, &TrajectoryPoints, 2, &m_emlrtRTEI, true);
-  emxInit_real_T(&st, &WindowTrajectory, 2, &m_emlrtRTEI, true);
+  emxInit_real_T(&st, &TrajectoryPoints, 2, &q_emlrtRTEI, true);
+  emxInit_real_T(&st, &WindowTrajectory, 2, &q_emlrtRTEI, true);
 
   /* Marshall function inputs */
   emlrt_marshallIn(&st, emlrtAlias(prhs[0]), "TrajectoryPoints",
@@ -202,11 +204,13 @@ void ExtractDistanceTrajectory_api(const mxArray * const prhs[6], int32_T nlhs,
   ExtractDist = e_emlrt_marshallIn(&st, emlrtAliasP(prhs[4]), "ExtractDist");
   OrientationSelection = e_emlrt_marshallIn(&st, emlrtAliasP(prhs[5]),
     "OrientationSelection");
+  PreviousClosestIndex = e_emlrt_marshallIn(&st, emlrtAliasP(prhs[6]),
+    "PreviousClosestIndex");
 
   /* Invoke the target function */
   ExtractDistanceTrajectory(&st, TrajectoryPoints, *RobotPos, RobotYaw,
-    *Velocity, ExtractDist, OrientationSelection, WindowTrajectory, &nTrajPoints,
-    &WindowOrientation);
+    *Velocity, ExtractDist, OrientationSelection, PreviousClosestIndex,
+    WindowTrajectory, &nTrajPoints, &WindowOrientation, &ClosestIdx);
 
   /* Marshall function outputs */
   plhs[0] = emlrt_marshallOut(WindowTrajectory);
@@ -220,6 +224,10 @@ void ExtractDistanceTrajectory_api(const mxArray * const prhs[6], int32_T nlhs,
 
   if (nlhs > 2) {
     plhs[2] = b_emlrt_marshallOut(WindowOrientation);
+  }
+
+  if (nlhs > 3) {
+    plhs[3] = b_emlrt_marshallOut(ClosestIdx);
   }
 
   emlrtHeapReferenceStackLeaveFcnR2012b(&st);

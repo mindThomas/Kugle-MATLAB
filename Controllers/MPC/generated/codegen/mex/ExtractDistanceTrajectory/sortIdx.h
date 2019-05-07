@@ -3,14 +3,14 @@
  * course requirements at degree granting institutions only.  Not for
  * government, commercial, or other organizational use.
  *
- * _coder_ExtractDistanceTrajectory_api.h
+ * sortIdx.h
  *
- * Code generation for function '_coder_ExtractDistanceTrajectory_api'
+ * Code generation for function 'sortIdx'
  *
  */
 
-#ifndef _CODER_EXTRACTDISTANCETRAJECTORY_API_H
-#define _CODER_EXTRACTDISTANCETRAJECTORY_API_H
+#ifndef SORTIDX_H
+#define SORTIDX_H
 
 /* Include files */
 #include <math.h>
@@ -24,9 +24,9 @@
 #include "ExtractDistanceTrajectory_types.h"
 
 /* Function Declarations */
-extern void ExtractDistanceTrajectory_api(const mxArray * const prhs[7], int32_T
-  nlhs, const mxArray *plhs[4]);
+extern void sortIdx(const emlrtStack *sp, emxArray_real_T *x, emxArray_int32_T
+                    *idx);
 
 #endif
 
-/* End of code generation (_coder_ExtractDistanceTrajectory_api.h) */
+/* End of code generation (sortIdx.h) */

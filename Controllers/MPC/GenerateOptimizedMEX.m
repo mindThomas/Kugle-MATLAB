@@ -21,14 +21,15 @@ OrientationSelection = coder.typeof(double(0));
 codegen ExtractWindowTrajectory -nargout 3 -args { TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, WindowWidth, WindowHeight, WindowOffset, OrientationSelection };
 
 % Optimize 'ExtractDistanceTrajectory'
-% [WindowTrajectory, nTrajPoints, WindowOrientation] = ExtractDistanceTrajectory(TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, OrientationSelection)
+% [WindowTrajectory, nTrajPoints, WindowOrientation, ClosestIdx] = ExtractDistanceTrajectory(TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, OrientationSelection, PreviousClosestIndex)
 TrajectoryPoints = coder.typeof(double(0), [Inf,2], [1,0]); % define matrix of variable size: m x 2
 RobotPos = coder.typeof(double(0),[1 2],0);
 RobotYaw = coder.typeof(double(0));
 Velocity = coder.typeof(double(0),[1 2],0);
 ExtractDist = coder.typeof(double(0));
 OrientationSelection = coder.typeof(double(0));
-codegen ExtractDistanceTrajectory -nargout 3 -args { TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, OrientationSelection };
+PreviousClosestIndex = coder.typeof(double(0));
+codegen ExtractDistanceTrajectory -nargout 4 -args { TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, OrientationSelection, PreviousClosestIndex };
 
 % Optimize 'FitReferencePathPolynomial'
 % function [TrajectoryPoints, coeff_xs, coeff_ys, windowTrajectoryLength, minDistancePoint] = FitReferencePathPolynomial(WindowTrajectoryPoints, approximation_order, velocity, ts, N)

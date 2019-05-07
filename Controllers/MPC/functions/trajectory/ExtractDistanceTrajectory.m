@@ -1,4 +1,4 @@
-function [WindowTrajectory, nTrajPoints, WindowOrientation] = ExtractDistanceTrajectory(TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, OrientationSelection)  %#codegen
+function [WindowTrajectory, nTrajPoints, WindowOrientation, ClosestIdx] = ExtractDistanceTrajectory(TrajectoryPoints, RobotPos, RobotYaw, Velocity, ExtractDist, OrientationSelection, PreviousClosestIndex)  %#codegen
 
 % OrientationSelection = 0;
 % RobotPos = [4.20, 0.8];
@@ -22,7 +22,19 @@ function [WindowTrajectory, nTrajPoints, WindowOrientation] = ExtractDistanceTra
     
     % Find continuous sequence of points closest to robot
     Dist = RotatedCenteredTrajectory(:,1).^2 + RotatedCenteredTrajectory(:,2).^2;
-    [y,ClosestIdx] = min(Dist);
+    [y,ClosestIdx] = min(Dist);    
+    if (PreviousClosestIndex > 0 && mod(ClosestIdx-PreviousClosestIndex, length(TrajectoryPoints)) > 50) % index jump detected
+        % Instead of just taking the minimum, which will lead to problems with
+        % overlapping trajectories, we find the minimum closest to the previous index
+        [distSorted,idxSorted] = sort(Dist,'ascend');            
+        idxSorted2 = idxSorted(distSorted < 2*distSorted(1));
+        [y,idx] = min(idxSorted2-PreviousClosestIndex);
+        ClosestIdx = idxSorted2(idx);
+        %ClosestIdx = PreviousClosestIndex+10; % note that this jump value of 10 is dependent on the density of the trajectory
+        %if (ClosestIdx > length(TrajectoryPoints))
+        %    ClosestIdx = 1;% + mod(ClosestIdx, length(TrajectoryPoints));
+        %end
+    end
     
     WindowTrajectory_tmp = [RotatedCenteredTrajectory(ClosestIdx:end,:); RotatedCenteredTrajectory(1:ClosestIdx-1,:)];
     
@@ -57,50 +69,5 @@ function [WindowTrajectory, nTrajPoints, WindowOrientation] = ExtractDistanceTra
 
     % Select continuous series of points which includes this closest point
 
-    %WindowTrajectory = RotatedCenteredTrajectory(ClosestPointWithinWindowIdx:end);    
-       
-    
-    
-% figure(1);
-% clf;
-% ax1 = axes;
-% plot(ax1, TrajectoryPoints(:,1), TrajectoryPoints(:,2), 'k-', 'MarkerSize', 10);
-% hold(ax1,'on');   
-% InertialWindowTrajectory = RotateTrajectory(WindowTrajectory, -WindowOrientation) + repmat([RobotPos(1),RobotPos(2)], [length(WindowTrajectory),1]);
-% plot(InertialWindowTrajectory(:,1), InertialWindowTrajectory(:,2), 'k*', 'MarkerSize', 2);
-% PlotAxRobotWithTiltAndVelocity(ax1, [RobotPos(1),RobotPos(2)], WindowOrientation, 0.05, [Velocity(1),Velocity(2)], [0,0]);
-% %plot(InertialReferencePoints(:,1), InertialReferencePoints(:,2), 'g*', 'MarkerSize', 3);
-% %plot(InertialMPCtrajectory(:,1), InertialMPCtrajectory(:,2), 'r*', 'MarkerSize', 3);  
-% WindowCornersCentered = [-WindowHeight/2, -WindowWidth/2
-%                           WindowHeight/2, -WindowWidth/2
-%                           WindowHeight/2, WindowWidth/2
-%                           -WindowHeight/2, WindowWidth/2
-%                           -WindowHeight/2, -WindowWidth/2] + WindowOffset;                     
-% WindowCorners = RotateTrajectory(WindowCornersCentered, -WindowOrientation) + repmat([RobotPos(1), RobotPos(2)], [5,1]);
-% plot(WindowCorners(:,1), WindowCorners(:,2), 'k--'); 
-% hold('off');   
-% axis equal;
-% xlim([min(TrajectoryPoints(:,1))*2, max(TrajectoryPoints(:,1))*2]);
-% ylim([min(TrajectoryPoints(:,2))*2, max(TrajectoryPoints(:,2))*2]);
-% 
-% figure(2);
-% clf;
-% ax2 = axes;
-% plot(ax2, -WindowTrajectory(:,2), WindowTrajectory(:,1), 'k*'); % plot rotated
-% hold(ax2, 'on');
-% Vel = R_orientation * [Velocity(1);Velocity(2)];       
-% PlotAxRobotWithTiltAndVelocity(ax2, [0,0], deg2rad(90)+0, 0.05, [-Vel(2),Vel(1)], [0,0]);    
-% % if (trajectoryLength > 0)
-% %     s = (0:0.01:trajectoryLength)';
-% %     trajectory_x = EvaluatePolynomial(coeff_trajectory_x, s);
-% %     trajectory_y = EvaluatePolynomial(coeff_trajectory_y, s);
-% %     plot(ax2, -trajectory_y, trajectory_x, 'b-');
-% % end    
-% %plot(ax2, -ReferencePoints(:,2), ReferencePoints(:,1), 'g*');
-% %plot(ax2, -MPCtrajectory(:,2), MPCtrajectory(:,1), 'r*');  
-% hold(ax2, 'off');
-% axis(ax2, 'equal');
-% xlim(ax2, [-WindowWidth/2 + WindowOffset(2), WindowWidth/2 + WindowOffset(2)]);
-% ylim(ax2, [-WindowHeight/2 + WindowOffset(1), WindowHeight/2 + WindowOffset(1)]);
-
+    %WindowTrajectory = RotatedCenteredTrajectory(ClosestPointWithinWindowIdx:end);               
 end

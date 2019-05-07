@@ -18,28 +18,28 @@
 #include "blas.h"
 
 /* Variable Definitions */
-static emlrtRSInfo k_emlrtRSI = { 5,   /* lineNo */
+static emlrtRSInfo m_emlrtRSI = { 5,   /* lineNo */
   "RotateTrajectory",                  /* fcnName */
   "C:\\Users\\Thomas\\Documents\\Kugle-MATLAB\\Controllers\\MPC\\functions\\trajectory\\RotateTrajectory.m"/* pathName */
 };
 
-static emlrtRSInfo l_emlrtRSI = { 52,  /* lineNo */
+static emlrtRSInfo n_emlrtRSI = { 52,  /* lineNo */
   "eml_mtimes_helper",                 /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\lib\\matlab\\ops\\eml_mtimes_helper.m"/* pathName */
 };
 
-static emlrtRSInfo n_emlrtRSI = { 118, /* lineNo */
+static emlrtRSInfo p_emlrtRSI = { 118, /* lineNo */
   "mtimes",                            /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\+blas\\mtimes.m"/* pathName */
 };
 
-static emlrtRTEInfo g_emlrtRTEI = { 1, /* lineNo */
+static emlrtRTEInfo i_emlrtRTEI = { 1, /* lineNo */
   26,                                  /* colNo */
   "RotateTrajectory",                  /* fName */
   "C:\\Users\\Thomas\\Documents\\Kugle-MATLAB\\Controllers\\MPC\\functions\\trajectory\\RotateTrajectory.m"/* pName */
 };
 
-static emlrtRTEInfo h_emlrtRTEI = { 118,/* lineNo */
+static emlrtRTEInfo j_emlrtRTEI = { 118,/* lineNo */
   13,                                  /* colNo */
   "mtimes",                            /* fName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\+blas\\mtimes.m"/* pName */
@@ -75,17 +75,17 @@ void RotateTrajectory(const emlrtStack *sp, const emxArray_real_T *trajectory,
   c_st.prev = &b_st;
   c_st.tls = b_st.tls;
   emlrtHeapReferenceStackEnterFcnR2012b(sp);
-  emxInit_real_T(sp, &y, 2, &g_emlrtRTEI, true);
-  emxInit_real_T(sp, &b, 2, &g_emlrtRTEI, true);
+  emxInit_real_T(sp, &y, 2, &i_emlrtRTEI, true);
+  emxInit_real_T(sp, &b, 2, &i_emlrtRTEI, true);
   R[0] = muDoubleScalarCos(rotation);
   R[2] = muDoubleScalarSin(rotation);
   R[1] = -muDoubleScalarSin(rotation);
   R[3] = muDoubleScalarCos(rotation);
-  st.site = &k_emlrtRSI;
+  st.site = &m_emlrtRSI;
   i1 = b->size[0] * b->size[1];
   b->size[0] = 2;
   b->size[1] = trajectory->size[0];
-  emxEnsureCapacity_real_T(&st, b, i1, &g_emlrtRTEI);
+  emxEnsureCapacity_real_T(&st, b, i1, &i_emlrtRTEI);
   loop_ub = trajectory->size[0];
   for (i1 = 0; i1 < loop_ub; i1++) {
     for (i2 = 0; i2 < 2; i2++) {
@@ -94,14 +94,14 @@ void RotateTrajectory(const emlrtStack *sp, const emxArray_real_T *trajectory,
     }
   }
 
-  b_st.site = &l_emlrtRSI;
+  b_st.site = &n_emlrtRSI;
   if (b->size[1] == 0) {
     i1 = y->size[0] * y->size[1];
     y->size[0] = 2;
     y->size[1] = 0;
-    emxEnsureCapacity_real_T(&b_st, y, i1, &g_emlrtRTEI);
+    emxEnsureCapacity_real_T(&b_st, y, i1, &i_emlrtRTEI);
   } else {
-    c_st.site = &n_emlrtRSI;
+    c_st.site = &p_emlrtRSI;
     TRANSA = 'N';
     TRANSB = 'N';
     alpha1 = 1.0;
@@ -115,7 +115,7 @@ void RotateTrajectory(const emlrtStack *sp, const emxArray_real_T *trajectory,
     i1 = y->size[0] * y->size[1];
     y->size[0] = 2;
     y->size[1] = b->size[1];
-    emxEnsureCapacity_real_T(&c_st, y, i1, &h_emlrtRTEI);
+    emxEnsureCapacity_real_T(&c_st, y, i1, &j_emlrtRTEI);
     dgemm(&TRANSA, &TRANSB, &m_t, &n_t, &k_t, &alpha1, &R[0], &lda_t, &b->data[0],
           &ldb_t, &beta1, &y->data[0], &ldc_t);
   }
@@ -124,7 +124,7 @@ void RotateTrajectory(const emlrtStack *sp, const emxArray_real_T *trajectory,
   i1 = rotatedPoints->size[0] * rotatedPoints->size[1];
   rotatedPoints->size[0] = y->size[1];
   rotatedPoints->size[1] = 2;
-  emxEnsureCapacity_real_T(sp, rotatedPoints, i1, &g_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, rotatedPoints, i1, &i_emlrtRTEI);
   for (i1 = 0; i1 < 2; i1++) {
     loop_ub = y->size[1];
     for (i2 = 0; i2 < loop_ub; i2++) {

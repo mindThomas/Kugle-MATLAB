@@ -1,7 +1,7 @@
 if (MPC_TrajectoryType == 0)
-    MPC_Trajectory = GenerateTestTrajectory;
+    [MPC_Trajectory, MPC_VisualizationLimits] = GenerateTestTrajectory;
 elseif (MPC_TrajectoryType == 1)
-    MPC_Trajectory = GenerateTestTrajectory_FigureEight;
+    [MPC_Trajectory, MPC_VisualizationLimits] = GenerateTestTrajectory_FigureEight;
 end
 
 % Simulated obstacle (defined in inertial frame)
@@ -11,7 +11,6 @@ RandomizedObstacles = 0; % enable random obstacles by setting this >0
 
 MPC_Obstacles = [];
 if (MPC_EnableStaticObstacles)    
-
     % Define some static obstacles that are always present
     %             X     Y     R   
     MPC_Obstacles = [ 4,   1.9,  0.2;
@@ -25,8 +24,8 @@ end
             
 if (MPC_RandomObstacles > 0)
     for (n = 1:MPC_RandomObstacles)
-        obs_x = vis.x_min + (vis.x_max-vis.x_min)*rand(1,1);
-        obs_y = vis.y_min + (vis.y_max-vis.y_min)*rand(1,1);
+        obs_x = MPC_VisualizationLimits.x_min + (MPC_VisualizationLimits.x_max-MPC_VisualizationLimits.x_min)*rand(1,1);
+        obs_y = MPC_VisualizationLimits.y_min + (MPC_VisualizationLimits.y_max-MPC_VisualizationLimits.y_min)*rand(1,1);
         obs_r = 0.2 + 0.8 * rand(1,1); % between 0.2-1.0 meter radius
         MPC_Obstacles = [MPC_Obstacles;
                         [obs_x, obs_y, obs_r]];
@@ -34,6 +33,7 @@ if (MPC_RandomObstacles > 0)
 end
 
 % If obstacle avoidance should not be tested, remove all obstacles
-if (MPC_EnableStaticObstacles == false && MPC_RandomObstacles == 0)
-    MPC_Obstacles = repmat([100, 100, 1], [5,1]); % needs at least 5 obstacles, here just set to far away
+% Conversely add null-obstacles since at least 5 obstacles should be in the obstacle list
+if (MPC_EnableStaticObstacles == false && MPC_RandomObstacles < 5)
+    MPC_Obstacles = [MPC_Obstacles; repmat([100, 100, 1], [(5-size(MPC_Obstacles,1)),1])]; % needs at least 5 obstacles, here just set to far away
 end  

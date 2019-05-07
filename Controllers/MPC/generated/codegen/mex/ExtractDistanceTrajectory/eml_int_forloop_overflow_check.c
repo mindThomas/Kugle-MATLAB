@@ -15,7 +15,7 @@
 #include "eml_int_forloop_overflow_check.h"
 
 /* Variable Definitions */
-static emlrtRTEInfo s_emlrtRTEI = { 88,/* lineNo */
+static emlrtRTEInfo ab_emlrtRTEI = { 88,/* lineNo */
   9,                                   /* colNo */
   "eml_int_forloop_overflow_check",    /* fName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\lib\\matlab\\eml\\eml_int_forloop_overflow_check.m"/* pName */
@@ -24,7 +24,7 @@ static emlrtRTEInfo s_emlrtRTEI = { 88,/* lineNo */
 /* Function Definitions */
 void check_forloop_overflow_error(const emlrtStack *sp)
 {
-  emlrtErrorWithMessageIdR2018a(sp, &s_emlrtRTEI,
+  emlrtErrorWithMessageIdR2018a(sp, &ab_emlrtRTEI,
     "Coder:toolbox:int_forloop_overflow", "Coder:toolbox:int_forloop_overflow",
     3, 4, 5, "int32");
 }

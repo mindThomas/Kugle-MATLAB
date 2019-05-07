@@ -27,14 +27,24 @@ emlrtContext emlrtContextGlobal = { true,/* bFirstTime */
   NULL                                 /* fSigMem */
 };
 
-emlrtRSInfo j_emlrtRSI = { 21,         /* lineNo */
+emlrtRSInfo l_emlrtRSI = { 21,         /* lineNo */
   "eml_int_forloop_overflow_check",    /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\lib\\matlab\\eml\\eml_int_forloop_overflow_check.m"/* pathName */
 };
 
-emlrtRSInfo m_emlrtRSI = { 114,        /* lineNo */
+emlrtRSInfo o_emlrtRSI = { 114,        /* lineNo */
   "mtimes",                            /* fcnName */
   "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\+blas\\mtimes.m"/* pathName */
+};
+
+emlrtRSInfo lb_emlrtRSI = { 49,        /* lineNo */
+  "prodsize",                          /* fcnName */
+  "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\prodsize.m"/* pathName */
+};
+
+emlrtRSInfo ac_emlrtRSI = { 506,       /* lineNo */
+  "sortIdx",                           /* fcnName */
+  "C:\\Program Files\\MATLAB\\R2018a\\toolbox\\eml\\eml\\+coder\\+internal\\sortIdx.m"/* pathName */
 };
 
 /* End of code generation (ExtractDistanceTrajectory_data.c) */

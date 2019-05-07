@@ -17,6 +17,9 @@ SRC_FILES =  \
 	power.c \
 	scalexpAlloc.c \
 	error.c \
+	mod.c \
+	sort1.c \
+	sortIdx.c \
 	_coder_ExtractDistanceTrajectory_info.c \
 	_coder_ExtractDistanceTrajectory_api.c \
 	_coder_ExtractDistanceTrajectory_mex.c \

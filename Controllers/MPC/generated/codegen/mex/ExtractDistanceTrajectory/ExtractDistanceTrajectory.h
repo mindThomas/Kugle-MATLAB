@@ -27,8 +27,8 @@
 extern void ExtractDistanceTrajectory(const emlrtStack *sp, const
   emxArray_real_T *TrajectoryPoints, const real_T RobotPos[2], real_T RobotYaw,
   const real_T Velocity[2], real_T ExtractDist, real_T OrientationSelection,
-  emxArray_real_T *WindowTrajectory, real_T *nTrajPoints, real_T
-  *WindowOrientation);
+  real_T PreviousClosestIndex, emxArray_real_T *WindowTrajectory, real_T
+  *nTrajPoints, real_T *WindowOrientation, real_T *ClosestIdx);
 
 #endif
 

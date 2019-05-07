@@ -1,4 +1,4 @@
-function TrajectoryPoints = GenerateTestTrajectory_FigureEight()
+function [TrajectoryPoints, VisualizationLimits] = GenerateTestTrajectory_FigureEight()
     %% Generate test trajectory
     TrajectoryPoints = [];
     for (i = 0:((50+270+100+270+50)-1))
@@ -22,9 +22,8 @@ function TrajectoryPoints = GenerateTestTrajectory_FigureEight()
     
     TrajectoryPoints = TrajectoryPoints / 10; % downscale trajectory
     
-%     figure(1);
-%     plot(TrajectoryPoints(:,1), TrajectoryPoints(:,2), 'r*');
-%     axis equal;
-%     xlim([-6 6]);
-%     ylim([-2 2]);
+    VisualizationLimits.x_min = -6;
+    VisualizationLimits.y_min = -2;
+    VisualizationLimits.x_max = 6;
+    VisualizationLimits.y_max = 2;       
 end
