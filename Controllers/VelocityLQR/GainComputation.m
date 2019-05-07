@@ -99,7 +99,7 @@ vel_err_integral_prev = [0,0]';
 
 vel_ref = vref(1,:)';
 
-omega_ref_xy = VelocityLQR(X, q_ref0, vel_err_integral_prev, vel_ref, Ts, K)
+omega_ref_xy = VelocityLQR(X, q_ref0, vel_err_integral_prev, vel_ref, Ts, K, VelocityLQR_IntegralEnabled, VelocityLQR_PositionControlAtZeroVelocityReference)
 
 %% Pole/zero analysis
 C = [0,0,0,0,1,0,0,0,0,0;

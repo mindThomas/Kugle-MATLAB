@@ -3,8 +3,9 @@ This test set is used to test and validate the developed algorithms. All plots i
 
 ## Measurement dataset
 The measurement dataset contain the following 28 tests:
+
 | Type | Test index | Test name | Description / notes |
-|---|---|---|---|
+|------|------|------|------|
 |Model verification|**#1**|Kinematics verification|Robot moved around manually in Vicon
 |QEKF Estimator|**#2**|MTI Sensor Covariance|Raw MTI IMU measurements at standstill
 ||**#3**|QEKF test without controller with MTI| Test QEKF by turning robot around<br>1. Hold robot upright for bias estimation for 15 seconds<br>2. Tilt robot 90 degree for z-axis bias estimation for 15 seconds<br>3. Hold robot upright for 15 seconds<br>4. Tilt roll +10 to +30 degrees<br>5. Tilt roll -10 to -30 degrees<br>6. Tilt pitch +10 to +30 degrees<br>7. Tilt pitch -10 to -30 degrees<br>8. Tilt forward right (roll and pitch positive)<br>9. Tilt forward left (roll negative, pitch positive)<br>10. Turn yaw +90 degrees while being upright<br>11. Arbitrary motion on all axis with roll and tilt less than 45 degrees
@@ -32,6 +33,6 @@ The measurement dataset contain the following 28 tests:
 |Velocity Controller|**#25**|Velocity control, agressive|Velocity controller with zero velocity reference and sliding mode balance controller using qdot sliding manifold and **agressive** gains
 ||**#26**|Velocity LQR, non-agressive|Velocity controller with zero velocity reference and sliding mode balance controller using qdot sliding manifold and **non-agressive** gains<br>1. Start controller and let the position stabilize<br>2. Drag detection enabled, such that position reference is updated if the robot velocity is pushed above a certain threshold – thus when the robot is deliberately dragged to another position which is then kept
 ||**#27**|Velocity LQR, station keeping|Same as **#26** but with drag velocity threshold so high that the robot always tries to stay/come back to the initial position.
-||**#27**|Joystick velocity control|Velocity reference input through joystick control with Velocity LQR controller, setting angular velocity reference and quaternion reference to sliding mode controller using qdot sliding manifold and non-agressive gains<br>1. Drive forward<br>2. Drive backward<br>3. Drive right<br>4. Drive left<br>5. Turn yaw left and right<br>6. Drive forward while turning counter-clockwise
+||**#28**|Joystick velocity control|Velocity reference input through joystick control with Velocity LQR controller, setting angular velocity reference and quaternion reference to sliding mode controller using qdot sliding manifold and non-agressive gains<br>1. Drive forward<br>2. Drive backward<br>3. Drive right<br>4. Drive left<br>5. Turn yaw left and right<br>6. Drive forward while turning counter-clockwise
 
 _Note that all test includes a synchronization "twist" around the yaw axis in the beginning, whereafter the controllers and estimators are reset._

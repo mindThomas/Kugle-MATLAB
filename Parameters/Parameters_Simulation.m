@@ -70,6 +70,9 @@ rate_chirp = 0.05; % hertz per second
 chirp_amplitude_deg = 2;
 
 
+%% Velocity LQR parameters
+VelocityLQR_HeadingAngularVelocity = 0.0; % rad/s
+
 %% MPC simulation parameters
 MPC_TrajectoryType = 0; % 0=oval,  1=figure eight
 MPC_EnableStaticObstacles = true;
