@@ -223,7 +223,7 @@ Parameters_MPC; % load MPC parameters such as sample rate and horizon length
     ocp.subjectTo( domega_ref_y - maxdOmegaRef <= 0 ); % domega_ref_x <= maxdOmegaRef
     ocp.subjectTo( -domega_ref_y - maxdOmegaRef <= 0 ); % domega_ref_x >= -maxdOmegaRef    
         
-    %ocp.subjectTo( ds >= 0 );       
+    ocp.subjectTo( ds >= 0 );       
     %ocp.subjectTo( ds - desiredVelocity <= 0 );
     %ocp.subjectTo( velocity >= 0 );    
     ocp.subjectTo( velocity - maxVelocity - velocity_slack <= 0 );

@@ -14,11 +14,11 @@ maxdOmegaRef = deg2rad(30); % rad/s^2  (this setting is crucial when torque satu
 %% Weights
 WPathFollow = 9999;  % weight on longitudinal tracking error - should be high to achieve accurate path following
 WLateral = 25;  % weight on lateral tracking error
-WVelocity = 100;  % weight on error between desired velocity and actual longitudinal velocity
+WVelocity = 80;  % weight on error between desired velocity and actual longitudinal velocity
 WProgress = 0;  % punishment of being far away from the end of the fitted path
-WSmoothness = 200;  % punishment of changes in angular velocity reference (hence weight on d_omega_ref)
+WSmoothness = 100;  % punishment of changes in angular velocity reference (hence weight on d_omega_ref)
 WOmega = 20;  % weight on angular velocity reference (omega_ref)
-WAngle = 500;  % weight on angle reference
+WAngle = 10;  % weight on angle reference
 WObstacles = 20;  % weight on the exponential obstacle proximity, defined by an offset and scale value
 ProximityOffset = 0.3;  % exponential obstacle offset
 ProximityScale = 10;  % exponential obstacle scale

@@ -304,8 +304,8 @@ real_t w2[ 10 ];
 /** Matrix of size: 120 x 120 (row major format) */
 real_t H[ 14400 ];
 
-/** Matrix of size: 406 x 120 (row major format) */
-real_t A[ 48720 ];
+/** Matrix of size: 426 x 120 (row major format) */
+real_t A[ 51120 ];
 
 /** Column vector of size: 120 */
 real_t g[ 120 ];
@@ -316,17 +316,17 @@ real_t lb[ 120 ];
 /** Column vector of size: 120 */
 real_t ub[ 120 ];
 
-/** Column vector of size: 406 */
-real_t lbA[ 406 ];
+/** Column vector of size: 426 */
+real_t lbA[ 426 ];
 
-/** Column vector of size: 406 */
-real_t ubA[ 406 ];
+/** Column vector of size: 426 */
+real_t ubA[ 426 ];
 
 /** Column vector of size: 120 */
 real_t x[ 120 ];
 
-/** Column vector of size: 526 */
-real_t y[ 526 ];
+/** Column vector of size: 546 */
+real_t y[ 546 ];
 
 
 } ACADOworkspace;

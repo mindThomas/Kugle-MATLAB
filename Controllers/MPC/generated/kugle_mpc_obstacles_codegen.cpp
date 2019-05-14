@@ -199,6 +199,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     ocp1.subjectTo((-domega_ref_x-maxdOmegaRef) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((domega_ref_y-maxdOmegaRef) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((-domega_ref_y-maxdOmegaRef) <= 0.00000000000000000000e+00);
+    ocp1.subjectTo(ds >= 0.00000000000000000000e+00);
     ocp1.subjectTo((intS4-maxVelocity-velocity_slack) <= 0.00000000000000000000e+00);
     ocp1.subjectTo((intS1-trajectoryLength) <= 0.00000000000000000000e+00);
     ocp1.subjectTo(intS1 >= 0.00000000000000000000e+00);

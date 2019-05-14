@@ -291,15 +291,15 @@ for (i = 1:400)
 
     MPClog = [MPClog; out];
     MPCtrajectory = out.STATES(:,4:5);
-    MPCsRef = out.STATES(:,8);
+    MPCsRef = out.STATES(:,8) + minDistancePoint;
     MPCreferencePoints = [polyval(coeff_trajectory_x, MPCsRef), polyval(coeff_trajectory_y, MPCsRef)];    
 
-    % Plot tube constraints
+    % Plot initialization points
     if (PlotEnabled)
         figure(vis.fig);
         subplot(1,2,2);
         hold on;       
-        sInit = xInit(:,8);
+        sInit = xInit(:,8) + minDistancePoint;
         MPCinitReferencePoints = [polyval(coeff_trajectory_x, sInit), polyval(coeff_trajectory_y, sInit)];    
         dcoeff_x = ComputeDerivativePolynomialCoefficients(coeff_trajectory_x);
         dcoeff_y = ComputeDerivativePolynomialCoefficients(coeff_trajectory_y);                
