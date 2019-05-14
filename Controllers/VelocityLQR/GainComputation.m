@@ -102,9 +102,16 @@ vel_ref = vref(1,:)';
 omega_ref_xy = VelocityLQR(X, q_ref0, vel_err_integral_prev, vel_ref, Ts, K, VelocityLQR_IntegralEnabled, VelocityLQR_PositionControlAtZeroVelocityReference)
 
 %% Pole/zero analysis
-C = [0,0,0,0,1,0,0,0,0,0;
-     0,0,0,0,0,1,0,0,0,0];
+% omega_ref_x to dy
+C = [0,0,0,0,0,1,0,0,0,0];
 
-sys = ss(A_cl, B_cl, C, zeros(2,2));
+sys = ss(A_cl, B_cl(:,1), C, zeros(1,1));
+[Poles, Zeros] = pzmap(sys)
+pzmap(sys)
+
+% omega_ref_y to dx
+C = [0,0,0,0,1,0,0,0,0,0];
+
+sys = ss(A_cl, B_cl(:,2), C, zeros(1,1));
 [Poles, Zeros] = pzmap(sys)
 pzmap(sys)

@@ -85,3 +85,11 @@ AccelerationConstant_q3_to_ddx = A(7,5) + A(7,15)
 AccelerationConstant_q2_to_ddy = A(8,4) + A(8,14)
 
 save(fullfile(scriptDir, 'generated/SteadyStateAccelerationConstants.mat'), 'AccelerationConstant_q3_to_ddx', 'AccelerationConstant_q2_to_ddy');
+
+%% Closed-loop Pole/zero analysis
+B1 = B(:,1);
+C = [0,0,0,0,0,0,1,0,0,0,0,0;
+     0,0,0,0,0,0,0,1,0,0,0,0];
+
+sys = ss(A, B, C, zeros(2,3));
+[Poles, Zeros] = pzmap(sys)
