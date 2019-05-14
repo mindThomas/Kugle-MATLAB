@@ -2,6 +2,7 @@ clear all;
 scriptDir = fileparts(mfilename('fullpath'));
 addpath(fullfile(scriptDir, 'functions'));
 addpath(fullfile(scriptDir, '../../Parameters'));
+addpath(fullfile(scriptDir, '../../Misc'));
 load(fullfile(scriptDir, '../../Linearization/generated/SteadyStateAccelerationConstants.mat'));
 cd(fullfile(scriptDir, 'generated')); % move to generated folder if we are not already there for export    
 Parameters_MPC; % load MPC parameters such as sample rate and horizon length

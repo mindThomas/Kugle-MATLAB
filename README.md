@@ -140,6 +140,18 @@ To generate the C++ code for the MPC, [ACADO](http://acado.github.io/) is used.
 
 The code are generated using the MATLAB interface, so ACADO needs to be installed and configured for use with MATLAB: http://acado.github.io/matlab_overview.html
 
+Note that a more recent branch from [November 2018](https://github.com/acado/acado/tree/b4e28f3131f79cadfd1a001e9fff061f361d3a0f) has been chosen and used for all tests. The `stable` branch is not compatible with the MATLAB interface due to a change in the MEX Code generation script related to the `info` return struct. It is therefore recommended to download, compile and install ACADO manually into your home folder.
+```bash
+cd ~
+git clone https://github.com/acado/acado.git -b stable ACADOtoolkit
+cd ~/ACADOtoolkit
+git checkout b4e28f3131f79cadfd1a001e9fff061f361d3a0f
+mkdir build
+cmake -DCMAKE_BUILD_TYPE="Release" ..
+echo 'source acado_env.sh' >> ~/.bashrc 
+source acado_env.sh
+```
+
 The generated C++ code for the MPC is both used in the MPC simulation at [Kugle-Misc](https://github.com/mindThomas/Kugle-Misc/tree/master/src/MPC_Test), in the MPC ROS package at [Kugle-ROS](https://github.com/mindThomas/Kugle-ROS/tree/master/kugle_mpc), and it is compiled into a MEX file to be used in closed-loop Simulink simulations and other MATLAB simulations.
 
 ## MPC simulation videos
