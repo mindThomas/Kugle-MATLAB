@@ -1,3 +1,15 @@
+# ROS bag
+A ROS bag of a log captured while manually driving the Kugle V1 prototype using the Velocity LQR controller and a PS4 joystick can be downloaded from: https://www.dropbox.com/s/8ywmpacohq0nky7/kugle-v1_frb7_log.bag
+
+Play the log by executing:
+```bash
+ roslaunch kugle_launch rosbag.launch bag:="${PWD}/kugle-v2_frb7_log.bag"
+```
+
+The corresponding raw measurements logged from the embedded firmware can be downloaded from: https://www.dropbox.com/s/6o4y08vinqji922/raw%2Broslog_joystick_driving.tar.gz
+Use MATLAB to parse and visualize the logs with the [`LoadDump.m`](https://github.com/mindThomas/Kugle-MATLAB/blob/master/DataProcessing/functions/LoadDump.m) and [`VisualizeDump.m`](https://github.com/mindThomas/Kugle-MATLAB/blob/master/DataProcessing/functions/VisualizeDump.m) scripts.
+
+# Validation measurements
 A set of 28 test measurements recorded on the robot can be downloaded from: https://www.dropbox.com/s/489votquyz91vjj/MeasurementDataset.zip
 This test set is used to test and validate the developed algorithms. All plots in the report are based on this test dataset.
 
