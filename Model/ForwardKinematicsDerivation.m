@@ -31,7 +31,7 @@ dq_ = [dq1, dq2, dq3, dq4]';
 e1 = [1,0,0]';
 e2 = [0,1,0]';
 e3 = [0,0,1]';
-R_alpha_gamma = diag([cos(alpha) cos(alpha) sin(alpha)]) * [1 cos(gamma), cos(2*gamma); 0 sin(gamma) sin(2*gamma); 1, 1, 1];
+R_alpha_gamma = diag([sin(alpha) sin(alpha) cos(alpha)]) * [1 cos(gamma), cos(2*gamma); 0 sin(gamma) sin(2*gamma); 1, 1, 1];
 R_gamma = [0 -sin(gamma) -sin(2*gamma); 1 cos(gamma), cos(2*gamma); 0, 0, 0];
 
 W1 = rk/rw * e1' * R_gamma' * devec * Gamma(vec * R_alpha_gamma*e1)

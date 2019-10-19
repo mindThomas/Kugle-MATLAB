@@ -129,9 +129,9 @@ g_vec = [0; 0; -g];
 B_omeg_k = qDevectorize( Phi(q)' * Gamma(q) * qVectorize(omeg_k) ) - omeg_b;
 
 for (i = 1:3)
-    B_p_c = rk * [cos(alpha) * cos(gamma*(i-1));
-                  cos(alpha) * sin(gamma*(i-1));
-                  sin(alpha)];
+    B_p_c = rk * [sin(alpha) * cos(gamma*(i-1));
+                  sin(alpha) * sin(gamma*(i-1));
+                  cos(alpha)];
     eval(sprintf('B_p_c%d = B_p_c;', i));
     
     B_d_m = [-sin(gamma*(i-1));
