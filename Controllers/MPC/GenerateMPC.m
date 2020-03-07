@@ -156,10 +156,10 @@ Parameters_MPC; % load MPC parameters such as sample rate and horizon length
     y_err = acado.IntermediateState(y - y_ref);  
     
     % Lateral and longitudinal error
-    lateral_deviation = acado.IntermediateState(sin_yaw_ref * x_err - cos_yaw_ref * y_err);  % positive towards right
+    lateral_deviation = acado.IntermediateState(-sin_yaw_ref * x_err + cos_yaw_ref * y_err);  % positive towards left
     longitudinal_velocity = acado.IntermediateState(cos_yaw_ref * dx + sin_yaw_ref * dy);  
     velocity_matching = acado.IntermediateState(longitudinal_velocity - ds);
-    lag_error = acado.IntermediateState(-cos_yaw_ref * x_err - sin_yaw_ref * y_err);
+    lag_error = acado.IntermediateState(cos_yaw_ref * x_err + sin_yaw_ref * y_err);
     velocity_error = acado.IntermediateState(longitudinal_velocity - desiredVelocity);
     away_from_end_error = acado.IntermediateState(trajectoryLength - s);
     
