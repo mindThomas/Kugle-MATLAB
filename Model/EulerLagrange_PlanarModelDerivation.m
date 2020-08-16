@@ -198,7 +198,7 @@ chi_ = [phi, theta]';
 dchi_ = [dphi, dtheta]';
 
 x = [chi_; dchi_];
-dx = [dchi_; inv(M)*(Q - C*chi_ - G - D)];
+dx = [dchi_; inv(M)*(Q - C*dchi_ - G - D)];
 
 A = simplify( jacobian(dx, x) )
 disp('Saving A matrix'); 
